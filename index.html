@@ -1,0 +1,1147 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>DzzStore – Pulsa & Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #050a14;
+    --bg2: #0a1628;
+    --bg3: #0f1f3d;
+    --blue: #1e90ff;
+    --blue2: #0d6efd;
+    --blue-glow: #1e90ff55;
+    --blue-light: #60b4ff;
+    --accent: #00d4ff;
+    --text: #e8f0ff;
+    --text2: #8ba8d4;
+    --card: #0d1a2e;
+    --border: #1a3258;
+    --nav-h: 70px;
+  }
+
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+    padding-bottom: var(--nav-h);
+  }
+
+  /* ── OVERLAY ── */
+  #overlay {
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.6);
+    backdrop-filter: blur(4px);
+    z-index: 900;
+    opacity: 0; pointer-events: none;
+    transition: opacity .3s;
+  }
+  #overlay.show { opacity: 1; pointer-events: all; }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed; top: 0; left: -280px; bottom: 0;
+    width: 280px;
+    background: var(--bg2);
+    border-right: 1px solid var(--border);
+    z-index: 950;
+    transition: left .35s cubic-bezier(.4,0,.2,1);
+    display: flex; flex-direction: column;
+    padding: 0;
+    overflow: hidden;
+  }
+  #sidebar.open { left: 0; }
+
+  .sidebar-header {
+    padding: 28px 24px 20px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, var(--bg3) 0%, var(--bg2) 100%);
+  }
+  .sidebar-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .sidebar-tagline { font-size: 11px; color: var(--text2); margin-top: 2px; letter-spacing: 1px; }
+
+  .sidebar-menu { flex: 1; padding: 16px 0; overflow-y: auto; }
+  .sidebar-item {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 24px;
+    color: var(--text2);
+    font-size: 14px; font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+    border-left: 3px solid transparent;
+  }
+  .sidebar-item:hover, .sidebar-item.active {
+    background: var(--bg3);
+    color: var(--blue-light);
+    border-left-color: var(--blue);
+  }
+  .sidebar-item svg { flex-shrink: 0; }
+
+  .sidebar-section {
+    padding: 8px 24px 4px;
+    font-size: 10px; font-weight: 700;
+    color: var(--text2); letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .sidebar-footer {
+    padding: 16px 24px;
+    border-top: 1px solid var(--border);
+    font-size: 12px; color: var(--text2);
+  }
+
+  /* ── MAIN CONTENT ── */
+  main { display: none; }
+  main.active { display: block; }
+
+  /* ── HOME PAGE ── */
+  #page-home {}
+
+  /* Hero */
+  .hero {
+    position: relative;
+    padding: 24px 20px 28px;
+    overflow: hidden;
+    background: var(--bg);
+  }
+
+  .hero-top {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 24px;
+  }
+  .hamburger-btn {
+    width: 40px; height: 40px;
+    border: 1px solid var(--border);
+    background: var(--bg3);
+    border-radius: 10px;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center; gap: 5px;
+    cursor: pointer; transition: all .2s;
+  }
+  .hamburger-btn:hover { border-color: var(--blue); background: var(--bg3); }
+  .hamburger-btn span {
+    display: block; width: 18px; height: 2px;
+    background: var(--text); border-radius: 2px;
+    transition: all .3s;
+  }
+
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: rgba(30,144,255,.15);
+    border: 1px solid rgba(30,144,255,.3);
+    border-radius: 20px; padding: 4px 12px;
+    font-size: 11px; color: var(--blue-light);
+    font-weight: 600; letter-spacing: .5px;
+  }
+  .badge-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
+
+  .hero-greeting {
+    font-family: 'Syne', sans-serif;
+    font-size: 38px; font-weight: 800;
+    line-height: 1.15; margin: 10px 0 10px;
+    letter-spacing: -0.5px;
+  }
+  .hero-greeting .brand {
+    display: block;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-size: 44px;
+  }
+  .hero-greeting .tagline {
+    display: block;
+    color: #ffffff;
+    font-size: 36px;
+  }
+  .hero-sub { font-size: 13px; color: var(--text2); line-height: 1.5; }
+
+  .hero-stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px; margin-top: 20px;
+  }
+  .stat-chip {
+    background: var(--bg3);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 8px;
+    text-align: center;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+  }
+  .stat-chip .num {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 800;
+    color: var(--blue-light);
+    line-height: 1;
+  }
+  .stat-chip .lbl { font-size: 11px; color: var(--text2); margin-top: 4px; font-weight: 500; }
+
+  /* Banner promo */
+  .promo-banner {
+    margin: 16px 20px;
+    background: linear-gradient(135deg, #0d2c5e, #0a1a3a);
+    border: 1px solid var(--blue2);
+    border-radius: 16px; padding: 16px 18px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: relative; overflow: hidden;
+  }
+  .promo-banner::before {
+    content: '';
+    position: absolute; right: -20px; top: -20px;
+    width: 100px; height: 100px;
+    background: radial-gradient(circle, rgba(30,144,255,.2) 0%, transparent 70%);
+  }
+  .promo-text h3 { font-family:'Syne',sans-serif; font-size:14px; font-weight:700; }
+  .promo-text p { font-size:11px; color:var(--text2); margin-top:3px; }
+  .promo-pill {
+    background: var(--blue2);
+    border-radius: 8px; padding: 6px 12px;
+    font-size: 11px; font-weight: 700;
+    white-space: nowrap;
+  }
+
+  /* Sections */
+  .section { padding: 0 20px 24px; }
+  .section-head {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px; font-weight: 700;
+  }
+  .section-more {
+    font-size: 12px; color: var(--blue-light);
+    cursor: pointer; text-decoration: none;
+  }
+
+  /* Product Cards */
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 18px 16px;
+    cursor: pointer;
+    transition: all .25s;
+    position: relative; overflow: hidden;
+  }
+  .product-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, var(--blue-glow) 0%, transparent 60%);
+    opacity: 0; transition: opacity .3s;
+  }
+  .product-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+  .product-card:hover::before { opacity: 1; }
+  .product-card:active { transform: scale(.97); }
+
+  .product-icon {
+    width: 46px; height: 46px;
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    margin-bottom: 12px;
+    font-size: 22px;
+  }
+  .product-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 13px; font-weight: 700;
+    line-height: 1.3;
+  }
+  .product-desc { font-size: 11px; color: var(--text2); margin-top: 4px; }
+
+  .product-card[data-p="pterodactyl"] .product-icon { background: rgba(100,108,255,.2); }
+  .product-card[data-p="pulsa"] .product-icon { background: rgba(30,144,255,.2); }
+  .product-card[data-p="paket"] .product-icon { background: rgba(0,200,150,.2); }
+  .product-card[data-p="follower"] .product-icon { background: rgba(255,100,150,.2); }
+
+  /* Layanan unggulan (feature list) */
+  .feature-list { display: flex; flex-direction: column; gap: 10px; }
+  .feature-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px; padding: 14px 16px;
+    display: flex; align-items: center; gap: 14px;
+    cursor: pointer; transition: all .2s;
+  }
+  .feature-item:hover { border-color: var(--blue); background: var(--bg3); }
+  .fi-icon {
+    width: 40px; height: 40px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .fi-text { flex: 1; }
+  .fi-name { font-size: 13px; font-weight: 600; }
+  .fi-desc { font-size: 11px; color: var(--text2); margin-top: 2px; }
+  .fi-arrow { color: var(--text2); font-size: 16px; }
+
+  footer {
+    margin: 8px 0 0;
+    background: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 36px 24px 28px;
+  }
+  .footer-brand { margin-bottom: 20px; }
+  .footer-logo {
+    font-family: 'Syne', sans-serif;
+    font-size: 32px; font-weight: 800;
+    letter-spacing: -1px;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 6px;
+    line-height: 1;
+  }
+  .footer-tagline {
+    font-size: 12px; color: var(--text2);
+    line-height: 1.6; max-width: 260px;
+    margin-bottom: 0;
+  }
+  .social-links {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 28px; margin-top: 18px;
+  }
+  .social-btn {
+    display: flex; align-items: center; justify-content: center;
+    width: 42px; height: 42px;
+    border-radius: 12px;
+    cursor: pointer; text-decoration: none;
+    transition: all .2s;
+    border: 1.5px solid transparent;
+    flex-shrink: 0;
+  }
+  .social-btn.wa { background: rgba(37,211,102,.12); border-color: rgba(37,211,102,.35); color: #25d366; }
+  .social-btn.tg { background: rgba(0,136,204,.12); border-color: rgba(0,136,204,.35); color: #0088cc; }
+  .social-btn:hover { transform: translateY(-2px); filter: brightness(1.2); }
+  .footer-cols {
+    display: flex; flex-direction: column; gap: 24px;
+    margin-bottom: 28px;
+  }
+  .footer-col { min-width: 0; padding-right: 0; }
+  .footer-col h4 {
+    font-family: 'Syne', sans-serif;
+    font-size: 11px; font-weight: 800;
+    color: var(--text);
+    text-transform: uppercase; letter-spacing: 1.2px;
+    margin-bottom: 12px;
+  }
+  .footer-col a {
+    display: block; font-size: 12px; color: var(--text2);
+    text-decoration: none; margin-bottom: 8px;
+    transition: color .2s;
+    word-break: break-word;
+  }
+  .footer-col a:hover { color: var(--blue-light); }
+  .footer-divider {
+    border: none; border-top: 1px solid var(--border);
+    margin: 0 0 18px;
+  }
+  .footer-bottom {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .footer-copy {
+    font-size: 11px; color: var(--text2);
+    font-family: 'Syne', sans-serif; font-weight: 600;
+  }
+  .footer-status {
+    display: inline-flex; align-items: center; gap: 7px;
+    border: 1.5px solid #00c853;
+    border-radius: 20px; padding: 6px 14px;
+    font-size: 10px; font-weight: 800;
+    font-family: 'Syne', sans-serif;
+    color: #00c853; letter-spacing: 1.2px;
+    text-transform: uppercase;
+    width: fit-content;
+  }
+  .status-dot { width: 7px; height: 7px; border-radius: 50%; background: #00c853; animation: pulse 2s infinite; flex-shrink: 0; }
+
+  /* ── BOTTOM NAV ── */
+  .bottom-nav {
+    position: fixed; bottom: 0; left: 0; right: 0;
+    height: var(--nav-h);
+    background: var(--bg2);
+    border-top: 1px solid var(--border);
+    display: flex; align-items: center;
+    z-index: 800;
+    backdrop-filter: blur(10px);
+    padding: 0 4px;
+  }
+
+  .nav-item {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; cursor: pointer; padding: 8px 4px;
+    position: relative;
+    transition: all .2s;
+  }
+  .nav-item .nav-icon {
+    width: 24px; height: 24px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text2); transition: color .2s;
+  }
+  .nav-item .nav-label {
+    font-size: 9px; font-weight: 600; color: var(--text2);
+    text-transform: uppercase; letter-spacing: .5px;
+    transition: color .2s;
+  }
+  .nav-item.active .nav-icon { color: var(--blue); }
+  .nav-item.active .nav-label { color: var(--blue-light); }
+
+  /* Center FAB */
+  .nav-fab {
+    flex: 1;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 4px; cursor: pointer;
+    position: relative;
+  }
+  .fab-circle {
+    width: 52px; height: 52px;
+    background: linear-gradient(135deg, var(--blue2), var(--accent));
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 0 20px var(--blue-glow);
+    transition: all .2s;
+    margin-top: -22px;
+    border: 3px solid var(--bg2);
+  }
+  .fab-circle:hover { transform: scale(1.08); box-shadow: 0 0 30px var(--blue-glow); }
+  .fab-circle svg { color: white; }
+  .nav-fab .nav-label {
+    font-size: 9px; font-weight: 600; color: var(--blue-light);
+    text-transform: uppercase; letter-spacing: .5px;
+    margin-top: -2px;
+  }
+  .nav-fab.active .nav-label { color: var(--blue-light); }
+
+  /* Page placeholders */
+  .page-placeholder {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: calc(100vh - var(--nav-h));
+    gap: 16px; padding: 40px 20px; text-align: center;
+  }
+  .placeholder-icon { font-size: 60px; opacity: .4; }
+  .placeholder-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 22px; font-weight: 700; color: var(--text2);
+  }
+  .placeholder-sub { font-size: 13px; color: var(--text2); opacity: .6; }
+
+  /* Animations */
+  @keyframes pulse {
+    0%,100% { opacity:1; transform:scale(1); }
+    50% { opacity:.5; transform:scale(.8); }
+  }
+  @keyframes fadeUp {
+    from { opacity:0; transform:translateY(16px); }
+    to { opacity:1; transform:translateY(0); }
+  }
+  .fade-up { animation: fadeUp .4s ease both; }
+  .fade-up-1 { animation-delay:.05s; }
+  .fade-up-2 { animation-delay:.1s; }
+  .fade-up-3 { animation-delay:.15s; }
+  .fade-up-4 { animation-delay:.2s; }
+  .fade-up-5 { animation-delay:.25s; }
+
+  /* Scrollbar */
+  ::-webkit-scrollbar { width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  /* ── PRODUCT PAGE CARDS ── */
+  .produk-header {
+    padding: 28px 20px 16px;
+  }
+  .produk-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 26px; font-weight: 800;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    background-clip: text;
+    letter-spacing: -0.5px;
+  }
+  .produk-sub { font-size: 12px; color: var(--text2); margin-top: 4px; }
+
+  .produk-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 14px;
+    padding: 0 20px 32px;
+  }
+
+  .pcard {
+    background: var(--card);
+    border: 1.5px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+    position: relative;
+  }
+  .pcard:hover {
+    transform: translateY(-6px) scale(1.02);
+    border-color: var(--blue);
+    box-shadow: 0 12px 32px rgba(30,144,255,.25), 0 0 0 1px rgba(30,144,255,.2);
+  }
+  .pcard:active { transform: scale(.96); }
+
+  .pcard-img {
+    width: 100%; aspect-ratio: 4/3;
+    background: linear-gradient(135deg, #0d1f3c 0%, #0a1628 100%);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 48px;
+    position: relative; overflow: hidden;
+  }
+  .pcard-img::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(to bottom, transparent 50%, rgba(0,0,0,.5) 100%);
+  }
+  .pcard-img .pcard-glow {
+    position: absolute; inset: -20px;
+    opacity: .4;
+    filter: blur(20px);
+    transition: opacity .3s;
+  }
+  .pcard:hover .pcard-glow { opacity: .7; }
+
+  .pcard-body {
+    padding: 12px 14px 14px;
+    background: var(--bg2);
+  }
+  .pcard-name {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px; font-weight: 800;
+    color: var(--text);
+    text-align: center;
+    line-height: 1.3;
+  }
+
+  /* Entrance wobble */
+  @keyframes wobble {
+    0%   { transform: rotate(0deg) scale(1); }
+    15%  { transform: rotate(-2deg) scale(1.03); }
+    30%  { transform: rotate(2deg) scale(1.03); }
+    45%  { transform: rotate(-1.5deg) scale(1.02); }
+    60%  { transform: rotate(1.5deg) scale(1.02); }
+    75%  { transform: rotate(-0.5deg) scale(1.01); }
+    100% { transform: rotate(0deg) scale(1); }
+  }
+  @keyframes slideInUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  .pcard.entrance {
+    animation: slideInUp .4s ease both, wobble .6s ease .4s both;
+  }
+  .pcard.entrance:nth-child(1) { animation-delay: 0s,    .4s; }
+  .pcard.entrance:nth-child(2) { animation-delay: .08s,  .48s; }
+  .pcard.entrance:nth-child(3) { animation-delay: .16s,  .56s; }
+  .pcard.entrance:nth-child(4) { animation-delay: .24s,  .64s; }
+
+  /* Sidebar dropdown */
+  .sidebar-produk-drop {
+    max-height: 0; overflow: hidden;
+    transition: max-height .3s cubic-bezier(.4,0,.2,1);
+  }
+  .sidebar-produk-drop.open { max-height: 300px; }
+  .sidebar-subitem {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 24px 10px 44px;
+    font-size: 13px; color: var(--text2);
+    cursor: pointer; transition: all .2s;
+  }
+  .sidebar-subitem:hover { color: var(--blue-light); background: var(--bg3); }
+  .sidebar-subitem::before {
+    content: '·'; color: var(--blue); font-size: 18px; line-height: 0;
+    flex-shrink: 0;
+  }
+  .sidebar-chevron {
+    margin-left: auto;
+    transition: transform .3s;
+    flex-shrink: 0;
+  }
+  .sidebar-chevron.open { transform: rotate(180deg); }
+
+  /* ── GLOBAL TOPBAR ── */
+  .g-topbar {
+    position: sticky; top: 0; z-index: 400;
+    padding: 10px 16px;
+    background: var(--bg);
+  }
+  .g-topbar-inner {
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    height: 52px;
+    display: flex; align-items: center;
+    padding: 0 14px; gap: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,.4);
+  }
+  .hamburger-btn {
+    display: flex; flex-direction: column;
+    gap: 5px; cursor: pointer;
+    padding: 4px; flex-shrink: 0;
+    background: none; border: none;
+  }
+  .hamburger-btn span {
+    display: block; height: 2px; border-radius: 2px;
+    background: var(--text2); transition: all .3s;
+  }
+  .hamburger-btn span:nth-child(1) { width: 20px; }
+  .hamburger-btn span:nth-child(2) { width: 14px; }
+  .hamburger-btn span:nth-child(3) { width: 17px; }
+  .hamburger-btn:hover span { background: var(--text); }
+  .g-topbar-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 15px; font-weight: 800;
+    color: var(--text); flex: 1;
+  }
+  .g-topbar-actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+  /* Bell - no box, just icon with swing */
+  .bell-btn {
+    position: relative; cursor: pointer;
+    width: 36px; height: 36px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--text2); transition: color .2s;
+    flex-shrink: 0;
+  }
+  .bell-btn:hover { color: var(--text); }
+  .bell-btn svg { transform-origin: top center; }
+  @keyframes bellSwing {
+    0%,100% { transform: rotate(0deg); }
+    10%      { transform: rotate(14deg); }
+    30%      { transform: rotate(-12deg); }
+    50%      { transform: rotate(10deg); }
+    70%      { transform: rotate(-8deg); }
+    85%      { transform: rotate(5deg); }
+  }
+  .bell-btn svg { animation: bellSwing 3s ease-in-out infinite; }
+  .bell-notif {
+    position: absolute; top: 5px; right: 5px;
+    width: 8px; height: 8px; border-radius: 50%;
+    background: #ff4757;
+    border: 2px solid var(--bg2);
+  }
+
+  /* Avatar - plain circle, no box */
+  .avatar-wrap { position: relative; flex-shrink: 0; }
+  .avatar-circle {
+    width: 36px; height: 36px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--bg3), var(--border));
+    border: 2px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer; color: var(--text2);
+    transition: border-color .2s;
+    overflow: hidden;
+  }
+  .avatar-circle:hover { border-color: var(--blue); }
+
+  .avatar-drop {
+    position: absolute; top: calc(100% + 10px); right: 0;
+    min-width: 170px;
+    background: var(--bg2);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    opacity: 0; pointer-events: none;
+    transform: translateY(-8px) scale(.96);
+    transition: all .2s cubic-bezier(.34,1.56,.64,1);
+    z-index: 999;
+    box-shadow: 0 12px 40px rgba(0,0,0,.5);
+  }
+  .avatar-drop.open { opacity: 1; pointer-events: all; transform: translateY(0) scale(1); }
+  .avatar-drop-header {
+    padding: 14px 16px 10px;
+    border-bottom: 1px solid var(--border);
+    font-size: 11px; color: var(--text2);
+  }
+  .avatar-drop-header strong {
+    display: block; font-family: 'Syne', sans-serif;
+    font-size: 14px; color: var(--text); margin-bottom: 2px;
+  }
+  .avatar-drop a {
+    display: flex; align-items: center; gap: 10px;
+    padding: 12px 16px; font-size: 13px; color: var(--text2);
+    text-decoration: none; cursor: pointer; transition: all .15s;
+  }
+  .avatar-drop a:hover { background: var(--bg3); color: var(--text); }
+  .avatar-drop a.danger { color: #ff6b6b; }
+  .avatar-drop a.danger:hover { background: rgba(255,107,107,.1); }
+
+  /* ── BOTTOM NAV INDICATOR ── */
+  /* Regular items: top line when active */
+  .nav-item.active .nav-icon { color: var(--blue); }
+  .nav-item.active .nav-label { color: var(--blue-light); }
+  .nav-item.active::before {
+    content: '';
+    position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+    width: 28px; height: 2.5px;
+    background: linear-gradient(90deg, var(--blue), var(--accent));
+    border-radius: 0 0 4px 4px;
+  }
+  /* FAB Produk: glowing ring when active */
+  .nav-fab.active .fab-circle {
+    box-shadow: 0 0 0 3px rgba(0,212,255,.5), 0 0 20px var(--blue-glow), 0 0 40px rgba(0,212,255,.2);
+    border-color: var(--accent);
+  }
+  .nav-fab.active .nav-label { color: var(--accent); }
+</style>
+</head>
+<body>
+
+<!-- Global Topbar -->
+<div class="g-topbar">
+  <div class="g-topbar-inner">
+    <div class="hamburger-btn" onclick="openSidebar()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </div>
+    <span class="g-topbar-title" id="g-topbar-title">DzzStore</span>
+    <div class="g-topbar-actions">
+      <div class="bell-btn" title="Notifikasi">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="bell-notif"></span>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar-circle" onclick="toggleAvatarDrop(event)" id="avatar-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="avatar-drop" id="avatar-drop">
+          <div id="drop-guest">
+            <div class="avatar-drop-header"><strong>Halo, Tamu!</strong>Masuk untuk akses penuh</div>
+            <a href="#" onclick="navTo('profil');closeAvatarDrop()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>
+              Login
+            </a>
+            <a href="#">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+              Register
+            </a>
+          </div>
+          <div id="drop-user" style="display:none">
+            <div class="avatar-drop-header"><strong id="drop-username">DzzXNzz</strong>Member aktif</div>
+            <a href="#" onclick="navTo('profil');closeAvatarDrop()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+              Profil Saya
+            </a>
+            <a href="#" class="danger" onclick="doLogout()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+              Logout
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Overlay -->
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">DzzStore</div>
+    <div class="sidebar-tagline">DIGITAL SERVICES PLATFORM</div>
+  </div>
+  <div class="sidebar-menu">
+    <div class="sidebar-section">Menu Utama</div>
+    <div class="sidebar-item active" onclick="navTo('home'); closeSidebar()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+      Beranda
+    </div>
+    <div class="sidebar-item" onclick="navTo('riwayat'); closeSidebar()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+      Riwayat Transaksi
+    </div>
+    <div class="sidebar-item" onclick="toggleProdukDrop(this)" id="sidebar-produk-btn">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Produk
+      <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="sidebar-produk-drop" id="sidebar-produk-drop">
+      <div class="sidebar-subitem" onclick="location.href='produk.html#panel-pterodactyl'">Panel Pterodactyl</div>
+      <div class="sidebar-subitem" onclick="location.href='produk.html#pulsa'">Pulsa</div>
+      <div class="sidebar-subitem" onclick="location.href='produk.html#paket-data'">Paket Data</div>
+      <div class="sidebar-subitem" onclick="location.href='produk.html#suntik-follower'">Suntik Follower</div>
+    </div>
+    <div class="sidebar-item" onclick="navTo('kontak'); closeSidebar()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Kontak
+    </div>
+    <div class="sidebar-section">Akun</div>
+    <div class="sidebar-item" onclick="navTo('profil'); closeSidebar()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      Profil Saya
+    </div>
+    <div class="sidebar-item">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93l-1.41 1.41M5.34 18.66l-1.41 1.41M19.07 19.07l-1.41-1.41M5.34 5.34L3.93 3.93M21 12h-2M5 12H3M12 21v-2M12 5V3"/></svg>
+      Pengaturan
+    </div>
+  </div>
+  <div class="sidebar-footer">v1.0.0 · DzzStore © 2025</div>
+</nav>
+
+<!-- ───── HOME PAGE ───── -->
+<main id="page-home" class="active">
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-badge" style="margin-bottom:14px"><span class="badge-dot"></span>Online & Aktif</div>
+    <p class="hero-sub fade-up fade-up-1">Selamat datang di</p>
+    <h1 class="hero-greeting fade-up fade-up-2">
+      <span class="brand">DzzStore</span>
+      <span class="tagline">Toko Digital<br>Terpercaya</span>
+    </h1>
+    <p class="hero-sub fade-up fade-up-3">Pulsa, paket data, panel game, & layanan digital lainnya — cepat, mudah, terpercaya.</p>
+    <div class="hero-stats fade-up fade-up-4">
+      <div class="stat-chip"><div class="num">500+</div><div class="lbl">Pelanggan</div></div>
+      <div class="stat-chip"><div class="num">99%</div><div class="lbl">Sukses</div></div>
+      <div class="stat-chip"><div class="num">24/7</div><div class="lbl">Layanan</div></div>
+    </div>
+  </section>
+
+  <!-- Promo Banner -->
+  <div class="promo-banner fade-up fade-up-5">
+    <div class="promo-text">
+      <h3>🔥 Promo Hari Ini</h3>
+      <p>Cashback special untuk semua transaksi pulsa & paket data</p>
+    </div>
+    <div class="promo-pill">Klaim →</div>
+  </div>
+
+  <!-- Produk -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Layanan Kami</span>
+      <a class="section-more" onclick="navTo('produk')">Lihat semua →</a>
+    </div>
+    <div class="products-grid">
+
+      <div class="product-card fade-up" data-p="pterodactyl" onclick="navTo('produk')">
+        <div class="product-icon">🦕</div>
+        <div class="product-name">Panel Pterodactyl</div>
+        <div class="product-desc">Hosting game server terbaik</div>
+      </div>
+
+      <div class="product-card fade-up fade-up-1" data-p="pulsa" onclick="navTo('produk')">
+        <div class="product-icon">📱</div>
+        <div class="product-name">Pulsa</div>
+        <div class="product-desc">Semua operator, harga termurah</div>
+      </div>
+
+      <div class="product-card fade-up fade-up-2" data-p="paket" onclick="navTo('produk')">
+        <div class="product-icon">📡</div>
+        <div class="product-name">Paket Data</div>
+        <div class="product-desc">Internet cepat & hemat</div>
+      </div>
+
+      <div class="product-card fade-up fade-up-3" data-p="follower" onclick="navTo('produk')">
+        <div class="product-icon">🚀</div>
+        <div class="product-name">Suntik Follower</div>
+        <div class="product-desc">Boost akun sosial media kamu</div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Kenapa Kami -->
+  <div class="section">
+    <div class="section-head">
+      <span class="section-title">Mengapa DzzStore?</span>
+    </div>
+    <div class="feature-list">
+      <div class="feature-item fade-up">
+        <div class="fi-icon" style="background:rgba(30,144,255,.15)">⚡</div>
+        <div class="fi-text">
+          <div class="fi-name">Proses Instan</div>
+          <div class="fi-desc">Transaksi selesai dalam hitungan detik</div>
+        </div>
+        <span class="fi-arrow">›</span>
+      </div>
+      <div class="feature-item fade-up fade-up-1">
+        <div class="fi-icon" style="background:rgba(0,200,150,.15)">🔒</div>
+        <div class="fi-text">
+          <div class="fi-name">Aman & Terpercaya</div>
+          <div class="fi-desc">Transaksi terenkripsi & data terlindungi</div>
+        </div>
+        <span class="fi-arrow">›</span>
+      </div>
+      <div class="feature-item fade-up fade-up-2">
+        <div class="fi-icon" style="background:rgba(255,180,0,.15)">💰</div>
+        <div class="fi-text">
+          <div class="fi-name">Harga Terbaik</div>
+          <div class="fi-desc">Garansi harga termurah se-Indonesia</div>
+        </div>
+        <span class="fi-arrow">›</span>
+      </div>
+      <div class="feature-item fade-up fade-up-3">
+        <div class="fi-icon" style="background:rgba(200,100,255,.15)">🎧</div>
+        <div class="fi-text">
+          <div class="fi-name">CS 24 Jam</div>
+          <div class="fi-desc">Customer service siap membantu kapanpun</div>
+        </div>
+        <span class="fi-arrow">›</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-brand">
+      <div class="footer-logo">DzzXNzz</div>
+      <div class="footer-tagline">Provider hosting generasi baru yang fokus pada performa, keamanan, dan kemudahan penggunaan.</div>
+    </div>
+
+    <div class="social-links">
+      <a class="social-btn wa" href="https://wa.me/6287713472756" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.527 5.862L.057 23.886l6.178-1.448A11.936 11.936 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.82 9.82 0 0 1-5.006-1.371l-.36-.213-3.667.861.876-3.595-.234-.371A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      </a>
+      <a class="social-btn tg" href="https://t.me/DzzXNzz" target="_blank">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </a>
+    </div>
+
+    <div class="footer-cols">
+      <div class="footer-col">
+        <h4>Layanan</h4>
+        <a href="#">Panel Pterodactyl</a>
+        <a href="#">Pulsa</a>
+        <a href="#">Paket Data</a>
+        <a href="#">Suntik Follower</a>
+      </div>
+      <div class="footer-col">
+        <h4>Akun</h4>
+        <a href="#">Login</a>
+        <a href="#">Register</a>
+        <a href="#">Isi Saldo</a>
+      </div>
+      <div class="footer-col">
+        <h4>Kontak</h4>
+        <a href="https://wa.me/6287713472756" target="_blank">WhatsApp</a>
+        <a href="https://t.me/DzzXNzz" target="_blank">Telegram</a>
+        <a href="https://t.me/DzzBot" target="_blank">Bot</a>
+      </div>
+    </div>
+
+    <hr class="footer-divider">
+    <div class="footer-bottom">
+      <div class="footer-copy">© 2026 DzzXNzz Store. All rights reserved.</div>
+      <div class="footer-status"><span class="status-dot"></span>ALL SYSTEMS OPERATIONAL</div>
+    </div>
+  </footer>
+
+</main>
+
+<!-- ───── OTHER PAGES ───── -->
+<main id="page-riwayat">
+  <div class="page-placeholder">
+    <div class="placeholder-icon">🧾</div>
+    <div class="placeholder-title">Riwayat Transaksi</div>
+    <div class="placeholder-sub">Halaman segera hadir</div>
+  </div>
+</main>
+
+<main id="page-produk">
+  <div class="produk-header">
+    <div class="produk-sub">Pilih layanan yang kamu butuhkan</div>
+  </div>
+  <div class="produk-grid" id="produk-grid">
+
+    <div class="pcard entrance" id="card-panel-pterodactyl" onclick="alert('Panel Pterodactyl')">
+      <div class="pcard-img">
+        <div class="pcard-glow" style="background:radial-gradient(circle, #646cff 0%, transparent 70%)"></div>
+        🦕
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-name">Panel Pterodactyl</div>
+      </div>
+    </div>
+
+    <div class="pcard entrance" id="card-pulsa" onclick="alert('Pulsa')">
+      <div class="pcard-img">
+        <div class="pcard-glow" style="background:radial-gradient(circle, #1e90ff 0%, transparent 70%)"></div>
+        📱
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-name">Pulsa</div>
+      </div>
+    </div>
+
+    <div class="pcard entrance" id="card-paket-data" onclick="alert('Paket Data')">
+      <div class="pcard-img">
+        <div class="pcard-glow" style="background:radial-gradient(circle, #00c896 0%, transparent 70%)"></div>
+        📡
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-name">Paket Data</div>
+      </div>
+    </div>
+
+    <div class="pcard entrance" id="card-suntik-follower" onclick="alert('Suntik Follower')">
+      <div class="pcard-img">
+        <div class="pcard-glow" style="background:radial-gradient(circle, #ff6496 0%, transparent 70%)"></div>
+        🚀
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-name">Suntik Follower</div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<main id="page-kontak">
+  <div class="page-placeholder">
+    <div class="placeholder-icon">📞</div>
+    <div class="placeholder-title">Kontak</div>
+    <div class="placeholder-sub">Halaman segera hadir</div>
+  </div>
+</main>
+
+<main id="page-profil">
+  <div class="page-placeholder">
+    <div class="placeholder-icon">👤</div>
+    <div class="placeholder-title">Profil</div>
+    <div class="placeholder-sub">Halaman segera hadir</div>
+  </div>
+</main>
+
+<!-- ───── BOTTOM NAV ───── -->
+<nav class="bottom-nav">
+  <!-- Home -->
+  <div class="nav-item active" id="nav-home" onclick="navTo('home')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </div>
+    <span class="nav-label">Home</span>
+  </div>
+
+  <!-- Riwayat -->
+  <div class="nav-item" id="nav-riwayat" onclick="navTo('riwayat')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+    </div>
+    <span class="nav-label">Riwayat</span>
+  </div>
+
+  <!-- FAB Produk (tengah) -->
+  <div class="nav-fab" id="nav-produk" onclick="location.href='produk.html'">
+    <div class="fab-circle">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </div>
+    <span class="nav-label">Produk</span>
+  </div>
+
+  <!-- Kontak -->
+  <div class="nav-item" id="nav-kontak" onclick="navTo('kontak')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+    </div>
+    <span class="nav-label">Kontak</span>
+  </div>
+
+  <!-- Profil -->
+  <div class="nav-item" id="nav-profil" onclick="navTo('profil')">
+    <div class="nav-icon">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    </div>
+    <span class="nav-label">Profil</span>
+  </div>
+</nav>
+
+<script>
+  const pages = ['home','riwayat','produk','kontak','profil'];
+  const pageTitles = { home:'DzzStore', riwayat:'Riwayat', produk:'Produk', kontak:'Kontak', profil:'Profil' };
+
+  function navTo(page) {
+    pages.forEach(p => {
+      const el = document.getElementById('page-' + p);
+      if (el) el.classList.toggle('active', p === page);
+    });
+    ['home','riwayat','kontak','profil'].forEach(p => {
+      const n = document.getElementById('nav-' + p);
+      if (n) n.classList.toggle('active', p === page);
+    });
+    const fab = document.getElementById('nav-produk');
+    if (fab) fab.classList.toggle('active', page === 'produk');
+
+    // update topbar title
+    const t = document.getElementById('g-topbar-title');
+    if (t) t.textContent = pageTitles[page] || 'DzzStore';
+
+    if (page === 'produk') {
+      const cards = document.querySelectorAll('.pcard.entrance');
+      cards.forEach(c => { c.style.animation='none'; c.offsetHeight; c.style.animation=''; });
+    }
+    window.scrollTo(0,0);
+  }
+
+  function openSidebar() {
+    document.getElementById('sidebar').classList.add('open');
+    document.getElementById('overlay').classList.add('show');
+  }
+  function closeSidebar() {
+    document.getElementById('sidebar').classList.remove('open');
+    document.getElementById('overlay').classList.remove('show');
+  }
+
+  function toggleProdukDrop(btn) {
+    const drop = document.getElementById('sidebar-produk-drop');
+    const chevron = btn.querySelector('.sidebar-chevron');
+    const isOpen = drop.classList.toggle('open');
+    chevron.classList.toggle('open', isOpen);
+    btn.classList.toggle('active', isOpen);
+    if (isOpen) navTo('produk');
+  }
+
+  function goToProduct(id) {
+    closeSidebar();
+    navTo('produk');
+    setTimeout(() => {
+      const el = document.getElementById('card-' + id);
+      if (el) el.scrollIntoView({ behavior:'smooth', block:'center' });
+    }, 200);
+  }
+
+  // Avatar dropdown
+  let isLoggedIn = false;
+  function toggleAvatarDrop(e) {
+    e.stopPropagation();
+    document.getElementById('avatar-drop').classList.toggle('open');
+  }
+  function closeAvatarDrop() {
+    document.getElementById('avatar-drop').classList.remove('open');
+  }
+  document.addEventListener('click', () => closeAvatarDrop());
+
+  function updateAvatarState() {
+    document.getElementById('drop-guest').style.display = isLoggedIn ? 'none' : 'block';
+    document.getElementById('drop-user').style.display = isLoggedIn ? 'block' : 'none';
+  }
+  function doLogout() {
+    isLoggedIn = false;
+    updateAvatarState();
+    closeAvatarDrop();
+  }
+  updateAvatarState();
+</script>
+</body>
+</html>
