@@ -85,6 +85,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   width:100%; aspect-ratio:1/1;
   position:relative; overflow:hidden;
   background:var(--bg3);
+  display:flex; align-items:center; justify-content:center;
 }
 .pcard-thumb img{
   width:100%; height:100%;
@@ -92,13 +93,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   transition:transform .4s ease;
 }
 .pcard:hover .pcard-thumb img{ transform:scale(1.06); }
-
-/* fallback when no image - visible by default */
-.pcard-fallback{
-  display:flex; position:absolute; inset:0;
-  align-items:center; justify-content:center;
-  font-size:52px; background:var(--bg3);
-}
 
 /* badge */
 .pcard-type{
@@ -177,6 +171,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgfloat1 9s ease-in-out infinite 2s;}
 .bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgfloat2 6s ease-in-out infinite 1.5s;}
 .bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgfloat1 7s ease-in-out infinite 3s;}
+.pcard-thumb img{
+  z-index:1;
+  position:relative;
+}
 @keyframes bgfloat1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
 @keyframes bgfloat2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
 </style>
@@ -258,12 +256,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="produk-intro">Pilih layanan yang kamu butuhkan</div>
 <div class="produk-grid">
 
-  <div class="pcard pcard-ptero" id="panel-pterodactyl">
+  <div class="pcard pcard-ptero" id="panel-pterodactyl" onclick="goCard('/produk/panel-pterodactyl')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/84b238a6b52911d65848e3e3e974605f97ff8d64/image/panel-pterodactyl.jpg" alt="Panel Pterodactyl"
-        onload="this.style.opacity='1';document.getElementById('fb-ptero').style.display='none'"
-        onerror="this.remove()"
-        style="opacity:0;transition:opacity .3s">
+      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/84b238a6b52911d65848e3e3e974605f97ff8d64/image/panel-pterodactyl.jpg" alt="Panel Pterodactyl">
       <div class="pcard-type">PANEL</div>
     </div>
     <div class="pcard-body">
@@ -271,12 +266,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <div class="pcard pcard-pulsa" id="pulsa" onclick="goCard('/produk/pulsa', event)">
+  <div class="pcard pcard-pulsa" id="pulsa" onclick="goCard('/produk/pulsa')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/pulsa.jpg" alt="Pulsa"
-        onload="this.style.opacity='1';document.getElementById('fb-pulsa').style.display='none'"
-        onerror="this.remove()"
-        style="opacity:0;transition:opacity .3s">
+      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/pulsa.jpg" alt="Pulsa">
       <div class="pcard-type">PULSA</div>
     </div>
     <div class="pcard-body">
@@ -284,12 +276,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <div class="pcard pcard-data" id="paket-data" onclick="goCard('/produk/paket-data', event)">
+  <div class="pcard pcard-data" id="paket-data" onclick="goCard('/produk/paket-data')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/paket-data.jpg" alt="Paket Data"
-        onload="this.style.opacity='1';document.getElementById('fb-data').style.display='none'"
-        onerror="this.remove()"
-        style="opacity:0;transition:opacity .3s">
+      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/paket-data.jpg" alt="Paket Data">
       <div class="pcard-type">DATA</div>
     </div>
     <div class="pcard-body">
@@ -297,12 +286,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <div class="pcard pcard-follower" id="suntik-follower" onclick="goCard('/produk/suntik-follower', event)">
+  <div class="pcard pcard-follower" id="suntik-follower" onclick="goCard('/produk/suntik-follower')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/suntik-follower.jpg" alt="Suntik Follower"
-        onload="this.style.opacity='1';document.getElementById('fb-follower').style.display='none'"
-        onerror="this.remove()"
-        style="opacity:0;transition:opacity .3s">
+      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/suntik-follower.jpg" alt="Suntik Follower">
       <div class="pcard-type">BOOST</div>
     </div>
     <div class="pcard-body">
@@ -337,20 +323,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </nav>
 
 <script>
-function goCard(url, e) {
-  const card = e.currentTarget;
-  const ripple = document.createElement('div');
-  ripple.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,.15);width:10px;height:10px;transform:scale(0);animation:ripple .5s ease;pointer-events:none;z-index:10;top:50%;left:50%;margin:-5px;';
-  card.appendChild(ripple);
-  setTimeout(() => { ripple.remove(); location.href = url; }, 380);
-}
-const styleEl = document.createElement('style');
-styleEl.textContent = '@keyframes ripple{to{transform:scale(30);opacity:0;}}';
-document.head.appendChild(styleEl);
-</script>
-</body>
-</html>
-<script>
+function goCard(url) { location.href = url; }
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
 function toggleProdukDrop(btn){const d=document.getElementById('sidebar-produk-drop');const c=btn.querySelector('.sidebar-chevron');const o=d.classList.toggle('open');c.classList.toggle('open',o);}
@@ -362,3 +335,5 @@ document.addEventListener('click',()=>document.getElementById('avatar-drop').cla
 const hash=location.hash.replace('#','');
 if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},600);}
 </script>
+</body>
+</html>
