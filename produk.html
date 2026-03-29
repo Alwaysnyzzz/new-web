@@ -93,9 +93,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 }
 .pcard:hover .pcard-thumb img{ transform:scale(1.06); }
 
-/* fallback when no image */
+/* fallback when no image - visible by default */
 .pcard-fallback{
-  display:none; position:absolute; inset:0;
+  display:flex; position:absolute; inset:0;
   align-items:center; justify-content:center;
   font-size:52px; background:var(--bg3);
 }
@@ -199,12 +199,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="avatar-drop" id="avatar-drop">
           <div id="drop-guest">
             <div class="avatar-drop-header"><strong>Halo, Tamu!</strong>Masuk untuk akses penuh</div>
-            <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Login</a>
-            <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Register</a>
+            <a href="/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Login</a>
+            <a href="/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Register</a>
           </div>
           <div id="drop-user" style="display:none">
             <div class="avatar-drop-header"><strong>DzzXNzz</strong>Member aktif</div>
-            <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya</a>
+            <a href="/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya</a>
             <a href="#" class="danger" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
           </div>
         </div>
@@ -222,11 +222,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="sidebar-menu">
     <div class="sidebar-section">Menu Utama</div>
-    <div class="sidebar-item" onclick="location.href='index.html'">
+    <div class="sidebar-item" onclick="location.href='/'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Beranda
     </div>
-    <div class="sidebar-item" onclick="location.href='index.html'">
+    <div class="sidebar-item" onclick="location.href='/'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       Riwayat Transaksi
     </div>
@@ -241,12 +241,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="sidebar-subitem" onclick="goTo('paket-data');closeSidebar()">Paket Data</div>
       <div class="sidebar-subitem" onclick="goTo('suntik-follower');closeSidebar()">Suntik Follower</div>
     </div>
-    <div class="sidebar-item" onclick="location.href='kontak.html'">
+    <div class="sidebar-item" onclick="location.href='/'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       Kontak
     </div>
     <div class="sidebar-section">Akun</div>
-    <div class="sidebar-item" onclick="location.href='index.html'">
+    <div class="sidebar-item" onclick="location.href='/'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profil Saya
     </div>
@@ -258,10 +258,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 <div class="produk-intro">Pilih layanan yang kamu butuhkan</div>
 <div class="produk-grid">
 
-  <div class="pcard pcard-ptero" id="panel-pterodactyl" onclick="location.href='#'">
+  <div class="pcard pcard-ptero" id="panel-pterodactyl" onclick="goCard('/produk/panel-pterodactyl', event)">
     <div class="pcard-thumb">
-      <img src="./image/panel-pterodactyl.jpg" alt="Panel Pterodactyl" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
-      <div class="pcard-fallback"><div class="pcard-emoji">🦕</div></div>
+      <div class="pcard-fallback" id="fb-ptero"><div class="pcard-emoji">🦕</div></div>
+      <img src="./image/panel-pterodactyl.jpg" alt="Panel Pterodactyl"
+        onload="this.style.opacity='1';document.getElementById('fb-ptero').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">PANEL</div>
     </div>
     <div class="pcard-body">
@@ -269,21 +272,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <div class="pcard pcard-pulsa" id="pulsa" onclick="location.href='#'">
+  <div class="pcard pcard-pulsa" id="pulsa" onclick="goCard('/produk/pulsa', event)">
     <div class="pcard-thumb">
-      <img src="./image/pulsa.jpg" alt="Pulsa" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
-      <div class="pcard-fallback"><div class="pcard-emoji">📱</div></div>
+      <div class="pcard-fallback" id="fb-pulsa"><div class="pcard-emoji">📱</div></div>
+      <img src="./image/pulsa.jpg" alt="Pulsa"
+        onload="this.style.opacity='1';document.getElementById('fb-pulsa').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">PULSA</div>
     </div>
     <div class="pcard-body">
-      <div class="pcard-name">Pulsa &<br>Operator</div>
+      <div class="pcard-name">Pulsa &amp;<br>Operator</div>
     </div>
   </div>
 
-  <div class="pcard pcard-data" id="paket-data" onclick="location.href='#'">
+  <div class="pcard pcard-data" id="paket-data" onclick="goCard('/produk/paket-data', event)">
     <div class="pcard-thumb">
-      <img src="./image/paket-data.jpg" alt="Paket Data" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
-      <div class="pcard-fallback"><div class="pcard-emoji">📡</div></div>
+      <div class="pcard-fallback" id="fb-data"><div class="pcard-emoji">📡</div></div>
+      <img src="./image/paket-data.jpg" alt="Paket Data"
+        onload="this.style.opacity='1';document.getElementById('fb-data').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">DATA</div>
     </div>
     <div class="pcard-body">
@@ -291,10 +300,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     </div>
   </div>
 
-  <div class="pcard pcard-follower" id="suntik-follower" onclick="location.href='#'">
+  <div class="pcard pcard-follower" id="suntik-follower" onclick="goCard('/produk/suntik-follower', event)">
     <div class="pcard-thumb">
-      <img src="./image/suntik-follower.jpg" alt="Suntik Follower" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
-      <div class="pcard-fallback"><div class="pcard-emoji">🚀</div></div>
+      <div class="pcard-fallback" id="fb-follower"><div class="pcard-emoji">🚀</div></div>
+      <img src="./image/suntik-follower.jpg" alt="Suntik Follower"
+        onload="this.style.opacity='1';document.getElementById('fb-follower').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">BOOST</div>
     </div>
     <div class="pcard-body">
@@ -306,11 +318,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </div>
 
 <nav class="bottom-nav">
-  <div class="nav-item" onclick="location.href='index.html'">
+  <div class="nav-item" onclick="location.href='/'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
     <span class="nav-label">Home</span>
   </div>
-  <div class="nav-item" onclick="location.href='index.html'">
+  <div class="nav-item" onclick="location.href='/'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
     <span class="nav-label">Riwayat</span>
   </div>
@@ -318,16 +330,30 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="fab-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
     <span class="nav-label">Produk</span>
   </div>
-  <div class="nav-item" onclick="location.href='kontak.html'">
+  <div class="nav-item" onclick="location.href='/'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
     <span class="nav-label">Kontak</span>
   </div>
-  <div class="nav-item" onclick="location.href='index.html'">
+  <div class="nav-item" onclick="location.href='/'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
     <span class="nav-label">Profil</span>
   </div>
 </nav>
 
+<script>
+function goCard(url, e) {
+  const card = e.currentTarget;
+  const ripple = document.createElement('div');
+  ripple.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,.15);width:10px;height:10px;transform:scale(0);animation:ripple .5s ease;pointer-events:none;z-index:10;top:50%;left:50%;margin:-5px;';
+  card.appendChild(ripple);
+  setTimeout(() => { ripple.remove(); location.href = url; }, 380);
+}
+const styleEl = document.createElement('style');
+styleEl.textContent = '@keyframes ripple{to{transform:scale(30);opacity:0;}}';
+document.head.appendChild(styleEl);
+</script>
+</body>
+</html>
 <script>
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
@@ -340,5 +366,3 @@ document.addEventListener('click',()=>document.getElementById('avatar-drop').cla
 const hash=location.hash.replace('#','');
 if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},600);}
 </script>
-</body>
-</html>
