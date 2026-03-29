@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
 <title>Produk – DzzStore</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;--blue:#1e90ff;--blue2:#0d6efd;--blue-glow:#1e90ff55;--blue-light:#60b4ff;--accent:#00d4ff;--text:#e8f0ff;--text2:#8ba8d4;--card:#0d1a2e;--border:#1a3258;--nav-h:70px;}
 *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
@@ -16,7 +16,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 #sidebar{position:fixed;top:0;left:-280px;bottom:0;width:280px;background:var(--bg2);border-right:1px solid var(--border);z-index:950;transition:left .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;}
 #sidebar.open{left:0;}
 .sidebar-header{padding:28px 24px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg3),var(--bg2));}
-.sidebar-logo{font-family:'Syne',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--blue),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sidebar-logo{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--blue),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
 .sidebar-tagline{font-size:11px;color:var(--text2);margin-top:2px;letter-spacing:1px;}
 .sidebar-menu{flex:1;padding:16px 0;overflow-y:auto;}
 .sidebar-item{display:flex;align-items:center;gap:14px;padding:14px 24px;color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;border-left:3px solid transparent;}
@@ -41,7 +41,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .hamburger-btn span:nth-child(2){width:14px;}
 .hamburger-btn span:nth-child(3){width:17px;}
 .hamburger-btn:hover span{background:var(--text);}
-.g-topbar-title{font-family:'Syne',sans-serif;font-size:15px;font-weight:800;color:var(--text);flex:1;}
+.g-topbar-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--text);flex:1;}
 .g-topbar-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
 .bell-btn{position:relative;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:color .2s;flex-shrink:0;}
 .bell-btn:hover{color:var(--text);}
@@ -54,119 +54,79 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .avatar-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:170px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.96);transition:all .2s cubic-bezier(.34,1.56,.64,1);z-index:999;box-shadow:0 12px 40px rgba(0,0,0,.5);}
 .avatar-drop.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
 .avatar-drop-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);}
-.avatar-drop-header strong{display:block;font-family:'Syne',sans-serif;font-size:14px;color:var(--text);margin-bottom:2px;}
+.avatar-drop-header strong{display:block;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);margin-bottom:2px;}
 .avatar-drop a{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:13px;color:var(--text2);text-decoration:none;cursor:pointer;transition:all .15s;}
 .avatar-drop a:hover{background:var(--bg3);color:var(--text);}
 .avatar-drop a.danger{color:#ff6b6b;}
 .avatar-drop a.danger:hover{background:rgba(255,107,107,.1);}
 
 /* PRODUCT GRID */
-.produk-intro{padding:14px 20px 4px;font-size:12px;color:var(--text2);}
-.produk-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;padding:10px 16px 32px;}
+.page-wrap{max-width:1200px;margin:0 auto;padding:0 24px;}
+.produk-intro{padding:20px 0 8px;font-size:13px;color:var(--text2);}
+.produk-grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:16px;
+  padding:0 0 40px;
+}
 
-/* ═══ PREMIUM CARDS ═══ */
+/* ═══ CARDS ═══ */
 .pcard{
-  border-radius:20px;overflow:hidden;cursor:pointer;
-  position:relative;
+  border-radius:16px; overflow:hidden; cursor:pointer;
   transition:transform .3s cubic-bezier(.34,1.56,.64,1), box-shadow .3s;
-  border:1px solid var(--border);
+  border:1.5px solid var(--border);
+  background:var(--bg2);
 }
-.pcard:active{transform:scale(.94)!important;}
+.pcard:hover{ transform:translateY(-8px) scale(1.02); }
+.pcard:active{ transform:scale(.94)!important; }
 
-/* Thumbnail area */
+/* square image top */
 .pcard-thumb{
-  width:100%;aspect-ratio:3/2;
-  position:relative;overflow:hidden;
-  display:flex;align-items:center;justify-content:center;
+  width:100%; aspect-ratio:1/1;
+  position:relative; overflow:hidden;
+  background:var(--bg3);
 }
-.pcard-thumb-bg{
-  position:absolute;inset:0;
-  transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+.pcard-thumb img{
+  width:100%; height:100%;
+  object-fit:cover; display:block;
+  transition:transform .4s ease;
 }
-.pcard:hover .pcard-thumb-bg{transform:scale(1.12);}
+.pcard:hover .pcard-thumb img{ transform:scale(1.06); }
 
-/* Gradient overlay on thumb */
-.pcard-thumb::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(to bottom, transparent 30%, rgba(0,0,0,.6) 100%);
-  z-index:1;
+/* fallback when no image */
+.pcard-fallback{
+  display:none; position:absolute; inset:0;
+  align-items:center; justify-content:center;
+  font-size:52px; background:var(--bg3);
 }
 
-/* emoji icon */
-.pcard-emoji{
-  position:relative;z-index:2;
-  font-size:52px;
-  filter:drop-shadow(0 4px 16px rgba(0,0,0,.5));
-  transition:transform .3s cubic-bezier(.34,1.56,.64,1);
-  line-height:1;
-}
-.pcard:hover .pcard-emoji{transform:scale(1.2) translateY(-4px);}
-
-/* type badge top-right */
+/* badge */
 .pcard-type{
-  position:absolute;top:10px;right:10px;z-index:3;
-  font-size:8px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;
-  padding:3px 8px;border-radius:6px;
-  background:rgba(0,0,0,.5);backdrop-filter:blur(8px);
+  position:absolute; top:10px; right:10px; z-index:3;
+  font-size:8px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase;
+  padding:4px 8px; border-radius:6px;
+  background:rgba(0,0,0,.6); backdrop-filter:blur(6px);
+  color:rgba(255,255,255,.9);
+  border:1px solid rgba(255,255,255,.15);
 }
 
-/* bottom overlay with name */
-.pcard-info{
-  position:absolute;bottom:0;left:0;right:0;z-index:3;
-  padding:10px 12px 0;
+/* name bar - taller like reference */
+.pcard-body{
+  padding:18px 12px 20px;
+  text-align:center;
+  border-top:1.5px solid var(--border);
 }
 .pcard-name{
-  font-family:'Syne',sans-serif;
-  font-size:13px;font-weight:800;
-  line-height:1.2;color:#fff;
+  font-family:'Outfit',sans-serif;
+  font-size:15px; font-weight:800;
+  color:var(--text); line-height:1.35;
 }
 
-/* footer bar */
-.pcard-footer{
-  padding:8px 12px 10px;
-  display:flex;align-items:center;justify-content:space-between;
-}
-.pcard-sub{font-size:10px;font-weight:600;opacity:.8;}
-.pcard-arrow{
-  width:22px;height:22px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  font-size:12px;font-weight:700;
-  transition:transform .2s;
-}
-.pcard:hover .pcard-arrow{transform:translateX(3px);}
-
-/* ── Card Themes ── */
-.pcard-ptero .pcard-thumb-bg{background:radial-gradient(ellipse at 60% 30%,#4a2aff 0%,#1a0533 60%,#0a001a 100%);}
-.pcard-ptero{border-color:#3a20cc44;}
-.pcard-ptero:hover{transform:translateY(-7px) scale(1.01);box-shadow:0 16px 48px rgba(90,60,255,.4),0 0 0 1px rgba(90,60,255,.25);}
-.pcard-ptero .pcard-type{color:#c4aaff;border:1px solid rgba(150,100,255,.3);}
-.pcard-ptero .pcard-footer{background:linear-gradient(180deg,#14062e,#0d0020);}
-.pcard-ptero .pcard-sub{color:#9d7fff;}
-.pcard-ptero .pcard-arrow{background:rgba(100,70,255,.25);color:#b08dff;}
-
-.pcard-pulsa .pcard-thumb-bg{background:radial-gradient(ellipse at 60% 30%,#1e90ff 0%,#003380 60%,#000d26 100%);}
-.pcard-pulsa{border-color:#1e90ff33;}
-.pcard-pulsa:hover{transform:translateY(-7px) scale(1.01);box-shadow:0 16px 48px rgba(30,144,255,.4),0 0 0 1px rgba(30,144,255,.25);}
-.pcard-pulsa .pcard-type{color:#93cfff;border:1px solid rgba(30,144,255,.3);}
-.pcard-pulsa .pcard-footer{background:linear-gradient(180deg,#001640,#000d26);}
-.pcard-pulsa .pcard-sub{color:#60b4ff;}
-.pcard-pulsa .pcard-arrow{background:rgba(30,144,255,.2);color:#60b4ff;}
-
-.pcard-data .pcard-thumb-bg{background:radial-gradient(ellipse at 60% 30%,#00d48a 0%,#004d32 60%,#001510 100%);}
-.pcard-data{border-color:#00c89633;}
-.pcard-data:hover{transform:translateY(-7px) scale(1.01);box-shadow:0 16px 48px rgba(0,200,150,.4),0 0 0 1px rgba(0,200,150,.25);}
-.pcard-data .pcard-type{color:#7dffcc;border:1px solid rgba(0,200,150,.3);}
-.pcard-data .pcard-footer{background:linear-gradient(180deg,#001e14,#001510);}
-.pcard-data .pcard-sub{color:#00e8a8;}
-.pcard-data .pcard-arrow{background:rgba(0,200,150,.2);color:#00e8a8;}
-
-.pcard-follower .pcard-thumb-bg{background:radial-gradient(ellipse at 60% 30%,#ff3d78 0%,#660028 60%,#1e000a 100%);}
-.pcard-follower{border-color:#ff649633;}
-.pcard-follower:hover{transform:translateY(-7px) scale(1.01);box-shadow:0 16px 48px rgba(255,60,120,.4),0 0 0 1px rgba(255,60,120,.25);}
-.pcard-follower .pcard-type{color:#ffaacc;border:1px solid rgba(255,100,150,.3);}
-.pcard-follower .pcard-footer{background:linear-gradient(180deg,#280012,#1e000a);}
-.pcard-follower .pcard-sub{color:#ff85ae;}
-.pcard-follower .pcard-arrow{background:rgba(255,60,120,.2);color:#ff85ae;}
+/* hover glow per theme */
+.pcard-ptero:hover{ border-color:#7c55ff; box-shadow:0 16px 48px rgba(90,60,255,.35); }
+.pcard-pulsa:hover{ border-color:#1e90ff; box-shadow:0 16px 48px rgba(30,144,255,.35); }
+.pcard-data:hover{  border-color:#00c896; box-shadow:0 16px 48px rgba(0,200,150,.35); }
+.pcard-follower:hover{ border-color:#ff6496; box-shadow:0 16px 48px rgba(255,100,150,.35); }
 
 /* Animations */
 @keyframes wobble{0%{transform:rotate(0) scale(1);}15%{transform:rotate(-2.5deg) scale(1.04);}35%{transform:rotate(2deg) scale(1.04);}55%{transform:rotate(-1.5deg) scale(1.02);}75%{transform:rotate(1deg) scale(1.02);}100%{transform:rotate(0) scale(1);}}
@@ -175,6 +135,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pcard:nth-child(2){animation:slideUp .4s ease .1s both,wobble .65s ease .52s both;}
 .pcard:nth-child(3){animation:slideUp .4s ease .2s both,wobble .65s ease .62s both;}
 .pcard:nth-child(4){animation:slideUp .4s ease .3s both,wobble .65s ease .72s both;}
+
+/* ── DESKTOP RESPONSIVE ── */
+@media(min-width:640px){
+  .produk-grid{ grid-template-columns:repeat(3,1fr); gap:20px; }
+  .pcard-name{ font-size:16px; }
+}
+@media(min-width:1024px){
+  .produk-grid{ grid-template-columns:repeat(4,1fr); gap:24px; }
+  .g-topbar{ padding:14px 40px; }
+  .g-topbar-inner{ max-width:1200px; margin:0 auto; }
+  .pcard-name{ font-size:17px; }
+  .pcard-body{ padding:22px 16px 24px; }
+}
 
 /* BOTTOM NAV */
 .bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;z-index:800;backdrop-filter:blur(10px);padding:0 4px;}
@@ -192,10 +165,25 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* ── BG DECO ── */
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{position:absolute;border:1px solid rgba(30,144,255,.15);border-radius:6px;background:rgba(30,144,255,.025);}
+.bg-deco span:nth-child(1){width:40px;height:40px;top:8%;left:6%;}
+.bg-deco span:nth-child(2){width:22px;height:22px;top:18%;right:10%;animation:bgfloat1 6s ease-in-out infinite;}
+.bg-deco span:nth-child(3){width:60px;height:60px;top:35%;left:3%;animation:bgfloat2 8s ease-in-out infinite;border-color:rgba(0,212,255,.1);}
+.bg-deco span:nth-child(4){width:16px;height:16px;top:50%;right:7%;animation:bgfloat1 5s ease-in-out infinite 1s;}
+.bg-deco span:nth-child(5){width:32px;height:32px;top:65%;left:12%;animation:bgfloat2 7s ease-in-out infinite .5s;}
+.bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgfloat1 9s ease-in-out infinite 2s;}
+.bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgfloat2 6s ease-in-out infinite 1.5s;}
+.bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgfloat1 7s ease-in-out infinite 3s;}
+@keyframes bgfloat1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes bgfloat2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
 </style>
 </head>
 <body>
 
+<div class="bg-deco"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
 <div class="g-topbar">
   <div class="g-topbar-inner">
     <div class="hamburger-btn" onclick="openSidebar()"><span></span><span></span><span></span></div>
@@ -203,7 +191,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="g-topbar-actions">
       <div class="bell-btn">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
-        <span class="bell-notif"></span>
       </div>
       <div class="avatar-wrap">
         <div class="avatar-circle" onclick="toggleAvatarDrop(event)">
@@ -235,11 +222,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   </div>
   <div class="sidebar-menu">
     <div class="sidebar-section">Menu Utama</div>
-    <div class="sidebar-item" onclick="location.href="index.html"">
+    <div class="sidebar-item" onclick="location.href='index.html'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Beranda
     </div>
-    <div class="sidebar-item" onclick="location.href="index.html"">
+    <div class="sidebar-item" onclick="location.href='index.html'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       Riwayat Transaksi
     </div>
@@ -254,12 +241,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="sidebar-subitem" onclick="goTo('paket-data');closeSidebar()">Paket Data</div>
       <div class="sidebar-subitem" onclick="goTo('suntik-follower');closeSidebar()">Suntik Follower</div>
     </div>
-    <div class="sidebar-item" onclick="location.href="index.html"">
+    <div class="sidebar-item" onclick="location.href='kontak.html'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       Kontak
     </div>
     <div class="sidebar-section">Akun</div>
-    <div class="sidebar-item" onclick="location.href="index.html"">
+    <div class="sidebar-item" onclick="location.href='index.html'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profil Saya
     </div>
@@ -267,69 +254,63 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="sidebar-footer">v1.0.0 · DzzStore © 2026</div>
 </nav>
 
+<div class="page-wrap">
 <div class="produk-intro">Pilih layanan yang kamu butuhkan</div>
 <div class="produk-grid">
 
   <div class="pcard pcard-ptero" id="panel-pterodactyl" onclick="location.href='#'">
     <div class="pcard-thumb">
-      <div class="pcard-thumb-bg"></div>
-      <div class="pcard-emoji">🦕</div>
+      <img src="./image/panel-pterodactyl.jpg" alt="Panel Pterodactyl" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
+      <div class="pcard-fallback"><div class="pcard-emoji">🦕</div></div>
       <div class="pcard-type">PANEL</div>
-      <div class="pcard-info"><div class="pcard-name">Panel<br>Pterodactyl</div></div>
     </div>
-    <div class="pcard-footer">
-      <span class="pcard-sub" style="color:#9d7fff">Game Server</span>
-      <div class="pcard-arrow" style="background:rgba(100,70,255,.25);color:#b08dff">›</div>
+    <div class="pcard-body">
+      <div class="pcard-name">Panel<br>Pterodactyl</div>
     </div>
   </div>
 
   <div class="pcard pcard-pulsa" id="pulsa" onclick="location.href='#'">
     <div class="pcard-thumb">
-      <div class="pcard-thumb-bg"></div>
-      <div class="pcard-emoji">📱</div>
+      <img src="./image/pulsa.jpg" alt="Pulsa" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
+      <div class="pcard-fallback"><div class="pcard-emoji">📱</div></div>
       <div class="pcard-type">PULSA</div>
-      <div class="pcard-info"><div class="pcard-name">Pulsa &<br>Operator</div></div>
     </div>
-    <div class="pcard-footer">
-      <span class="pcard-sub" style="color:#60b4ff">Semua Operator</span>
-      <div class="pcard-arrow" style="background:rgba(30,144,255,.2);color:#60b4ff">›</div>
+    <div class="pcard-body">
+      <div class="pcard-name">Pulsa &<br>Operator</div>
     </div>
   </div>
 
   <div class="pcard pcard-data" id="paket-data" onclick="location.href='#'">
     <div class="pcard-thumb">
-      <div class="pcard-thumb-bg"></div>
-      <div class="pcard-emoji">📡</div>
+      <img src="./image/paket-data.jpg" alt="Paket Data" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
+      <div class="pcard-fallback"><div class="pcard-emoji">📡</div></div>
       <div class="pcard-type">DATA</div>
-      <div class="pcard-info"><div class="pcard-name">Paket<br>Internet</div></div>
     </div>
-    <div class="pcard-footer">
-      <span class="pcard-sub" style="color:#00e8a8">Internet Hemat</span>
-      <div class="pcard-arrow" style="background:rgba(0,200,150,.2);color:#00e8a8">›</div>
+    <div class="pcard-body">
+      <div class="pcard-name">Paket<br>Internet</div>
     </div>
   </div>
 
   <div class="pcard pcard-follower" id="suntik-follower" onclick="location.href='#'">
     <div class="pcard-thumb">
-      <div class="pcard-thumb-bg"></div>
-      <div class="pcard-emoji">🚀</div>
+      <img src="./image/suntik-follower.jpg" alt="Suntik Follower" onerror="this.style.display='none';this.parentElement.querySelector('.pcard-fallback').style.display='flex'">
+      <div class="pcard-fallback"><div class="pcard-emoji">🚀</div></div>
       <div class="pcard-type">BOOST</div>
-      <div class="pcard-info"><div class="pcard-name">Suntik<br>Follower</div></div>
     </div>
-    <div class="pcard-footer">
-      <span class="pcard-sub" style="color:#ff85ae">Social Media</span>
-      <div class="pcard-arrow" style="background:rgba(255,60,120,.2);color:#ff85ae">›</div>
+    <div class="pcard-body">
+      <div class="pcard-name">Suntik<br>Follower</div>
     </div>
   </div>
 
 </div>
+</div>
 
 <nav class="bottom-nav">
-  <div class="nav-item" onclick="location.href="index.html"">
+  <div class="nav-item" onclick="location.href='index.html'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
     <span class="nav-label">Home</span>
   </div>
-  <div class="nav-item" onclick="location.href="index.html"">
+  <div class="nav-item" onclick="location.href='index.html'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
     <span class="nav-label">Riwayat</span>
   </div>
@@ -337,11 +318,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="fab-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
     <span class="nav-label">Produk</span>
   </div>
-  <div class="nav-item" onclick="location.href="index.html"">
+  <div class="nav-item" onclick="location.href='kontak.html'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
     <span class="nav-label">Kontak</span>
   </div>
-  <div class="nav-item" onclick="location.href="index.html"">
+  <div class="nav-item" onclick="location.href='index.html'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
     <span class="nav-label">Profil</span>
   </div>

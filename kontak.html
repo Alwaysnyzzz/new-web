@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Kontak – DzzStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;
+  --blue:#1e90ff;--blue2:#0d6efd;--blue-glow:#1e90ff55;
+  --blue-light:#60b4ff;--accent:#00d4ff;
+  --text:#e8f0ff;--text2:#8ba8d4;
+  --card:#0d1a2e;--border:#1a3258;--nav-h:70px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden;padding-bottom:var(--nav-h);}
+
+/* ── BG DECO: blue floating boxes ── */
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{
+  position:absolute;
+  border:1px solid rgba(30,144,255,.18);
+  border-radius:6px;
+  background:rgba(30,144,255,.03);
+}
+.bg-deco span:nth-child(1){ width:40px;height:40px; top:8%;left:6%;   transform:rotate(15deg); }
+.bg-deco span:nth-child(2){ width:22px;height:22px; top:18%;right:10%; transform:rotate(-20deg); animation:float1 6s ease-in-out infinite; }
+.bg-deco span:nth-child(3){ width:60px;height:60px; top:35%;left:3%;  transform:rotate(8deg);  animation:float2 8s ease-in-out infinite; border-color:rgba(0,212,255,.12); }
+.bg-deco span:nth-child(4){ width:16px;height:16px; top:50%;right:7%; transform:rotate(30deg); animation:float1 5s ease-in-out infinite 1s; }
+.bg-deco span:nth-child(5){ width:32px;height:32px; top:65%;left:12%; transform:rotate(-10deg);animation:float2 7s ease-in-out infinite .5s; border-color:rgba(0,212,255,.15); }
+.bg-deco span:nth-child(6){ width:48px;height:48px; top:78%;right:5%; transform:rotate(22deg); animation:float1 9s ease-in-out infinite 2s; }
+.bg-deco span:nth-child(7){ width:18px;height:18px; top:88%;left:40%; transform:rotate(-15deg);animation:float2 6s ease-in-out infinite 1.5s; }
+.bg-deco span:nth-child(8){ width:28px;height:28px; top:12%;left:50%; transform:rotate(5deg);  animation:float1 7s ease-in-out infinite 3s; border-color:rgba(0,212,255,.1); }
+@keyframes float1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes float2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
+
+/* ── OVERLAY ── */
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s;}
+#overlay.show{opacity:1;pointer-events:all;}
+
+/* ── SIDEBAR ── */
+#sidebar{position:fixed;top:0;left:-280px;bottom:0;width:280px;background:var(--bg2);border-right:1px solid var(--border);z-index:950;transition:left .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;}
+#sidebar.open{left:0;}
+.sidebar-header{padding:28px 24px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg3),var(--bg2));}
+.sidebar-logo{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--blue),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sidebar-tagline{font-size:11px;color:var(--text2);margin-top:2px;letter-spacing:1px;}
+.sidebar-menu{flex:1;padding:16px 0;overflow-y:auto;}
+.sidebar-item{display:flex;align-items:center;gap:14px;padding:14px 24px;color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;border-left:3px solid transparent;}
+.sidebar-item:hover,.sidebar-item.active{background:var(--bg3);color:var(--blue-light);border-left-color:var(--blue);}
+.sidebar-item svg{flex-shrink:0;}
+.sidebar-section{padding:8px 24px 4px;font-size:10px;font-weight:700;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;}
+.sidebar-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);}
+.sidebar-chevron{margin-left:auto;transition:transform .3s;flex-shrink:0;}
+.sidebar-chevron.open{transform:rotate(180deg);}
+.sidebar-produk-drop{max-height:0;overflow:hidden;transition:max-height .3s cubic-bezier(.4,0,.2,1);}
+.sidebar-produk-drop.open{max-height:300px;}
+.sidebar-subitem{display:flex;align-items:center;gap:10px;padding:10px 24px 10px 44px;font-size:13px;color:var(--text2);cursor:pointer;transition:all .2s;}
+.sidebar-subitem:hover{color:var(--blue-light);background:var(--bg3);}
+.sidebar-subitem::before{content:'·';color:var(--blue);font-size:18px;line-height:0;flex-shrink:0;}
+
+/* ── TOPBAR ── */
+.g-topbar{position:sticky;top:0;z-index:400;padding:10px 16px;background:var(--bg);}
+.g-topbar-inner{background:var(--bg2);border:1px solid var(--border);border-radius:18px;height:52px;display:flex;align-items:center;padding:0 14px;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.4);max-width:1200px;margin:0 auto;}
+.hamburger-btn{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:4px;flex-shrink:0;background:none;border:none;}
+.hamburger-btn span{display:block;height:2px;border-radius:2px;background:var(--text2);transition:all .3s;}
+.hamburger-btn span:nth-child(1){width:20px;}
+.hamburger-btn span:nth-child(2){width:14px;}
+.hamburger-btn span:nth-child(3){width:17px;}
+.hamburger-btn:hover span{background:var(--text);}
+.g-topbar-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--text);flex:1;}
+.g-topbar-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.bell-btn{position:relative;cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:color .2s;flex-shrink:0;}
+.bell-btn:hover{color:var(--text);}
+@keyframes bellSwing{0%,100%{transform:rotate(0);}10%{transform:rotate(14deg);}30%{transform:rotate(-12deg);}50%{transform:rotate(10deg);}70%{transform:rotate(-8deg);}85%{transform:rotate(5deg);}}
+.bell-btn svg{animation:bellSwing 3s ease-in-out infinite;transform-origin:top center;}
+.avatar-wrap{position:relative;flex-shrink:0;}
+.avatar-circle{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--bg3),var(--border));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:border-color .2s;}
+.avatar-circle:hover{border-color:var(--blue);}
+.avatar-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:170px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.96);transition:all .2s cubic-bezier(.34,1.56,.64,1);z-index:999;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+.avatar-drop.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
+.avatar-drop-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);}
+.avatar-drop-header strong{display:block;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);margin-bottom:2px;}
+.avatar-drop a{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:13px;color:var(--text2);text-decoration:none;cursor:pointer;transition:all .15s;}
+.avatar-drop a:hover{background:var(--bg3);color:var(--text);}
+.avatar-drop a.danger{color:#ff6b6b;}
+.avatar-drop a.danger:hover{background:rgba(255,107,107,.1);}
+
+/* ── PAGE CONTENT ── */
+.page-wrap{max-width:680px;margin:0 auto;padding:0 20px 40px;position:relative;z-index:1;}
+
+/* Hero section */
+.kontak-hero{
+  padding:32px 0 28px;
+  text-align:center;
+}
+.kontak-hero-badge{
+  display:inline-flex;align-items:center;gap:7px;
+  background:rgba(30,144,255,.1);
+  border:1px solid rgba(30,144,255,.25);
+  border-radius:20px;padding:5px 14px;
+  font-size:11px;font-weight:600;color:var(--blue-light);
+  letter-spacing:.5px;margin-bottom:16px;
+}
+.kontak-hero-badge span{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2s infinite;}
+.kontak-hero h1{
+  font-family:'Outfit',sans-serif;
+  font-size:28px;font-weight:800;
+  line-height:1.2;margin-bottom:10px;
+  background:linear-gradient(90deg,var(--text) 40%,var(--blue-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.kontak-hero p{font-size:13px;color:var(--text2);line-height:1.7;max-width:440px;margin:0 auto;}
+
+/* Contact cards */
+.kontak-grid{display:flex;flex-direction:column;gap:12px;margin-top:8px;}
+
+.kontak-card{
+  background:var(--bg2);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:20px 20px;
+  display:flex;align-items:center;gap:18px;
+  cursor:pointer;text-decoration:none;
+  transition:all .25s cubic-bezier(.34,1.56,.64,1);
+  position:relative;overflow:hidden;
+}
+.kontak-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(30,144,255,.04) 0%,transparent 60%);
+  opacity:0;transition:opacity .2s;
+}
+.kontak-card:hover{
+  transform:translateY(-4px);
+  border-color:var(--blue);
+  box-shadow:0 10px 32px rgba(30,144,255,.2);
+}
+.kontak-card:hover::before{opacity:1;}
+
+.kontak-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;
+  position:relative;z-index:1;
+}
+.kontak-info{flex:1;position:relative;z-index:1;}
+.kontak-label{font-size:11px;font-weight:600;color:var(--text2);letter-spacing:.8px;text-transform:uppercase;margin-bottom:3px;}
+.kontak-value{font-family:'Outfit',sans-serif;font-size:15px;font-weight:700;color:var(--text);}
+.kontak-desc{font-size:11px;color:var(--text2);margin-top:2px;}
+.kontak-arrow{
+  width:32px;height:32px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text2);flex-shrink:0;
+  transition:all .2s;position:relative;z-index:1;
+}
+.kontak-card:hover .kontak-arrow{background:var(--blue);border-color:var(--blue);color:#fff;transform:translateX(3px);}
+
+/* card color variants */
+.k-wa .kontak-icon{background:rgba(37,211,102,.12);border:1px solid rgba(37,211,102,.2);}
+.k-wa:hover{border-color:#25d366;box-shadow:0 10px 32px rgba(37,211,102,.2);}
+.k-tg .kontak-icon{background:rgba(0,136,204,.12);border:1px solid rgba(0,136,204,.2);}
+.k-tg:hover{border-color:#0088cc;box-shadow:0 10px 32px rgba(0,136,204,.2);}
+.k-tg:hover .kontak-arrow{background:#0088cc;border-color:#0088cc;}
+.k-bot .kontak-icon{background:rgba(100,108,255,.12);border:1px solid rgba(100,108,255,.2);}
+.k-bot:hover{border-color:#646cff;box-shadow:0 10px 32px rgba(100,108,255,.2);}
+.k-bot:hover .kontak-arrow{background:#646cff;border-color:#646cff;}
+.k-email .kontak-icon{background:rgba(255,165,0,.12);border:1px solid rgba(255,165,0,.2);}
+.k-email:hover{border-color:#ffa500;box-shadow:0 10px 32px rgba(255,165,0,.2);}
+.k-email:hover .kontak-arrow{background:#ffa500;border-color:#ffa500;}
+
+/* Divider section */
+.kontak-section-label{
+  font-size:10px;font-weight:700;color:var(--text2);
+  letter-spacing:1.5px;text-transform:uppercase;
+  padding:20px 0 10px;
+  display:flex;align-items:center;gap:10px;
+}
+.kontak-section-label::after{content:'';flex:1;height:1px;background:var(--border);}
+
+/* Info note */
+.kontak-note{
+  margin-top:20px;
+  background:rgba(30,144,255,.06);
+  border:1px solid rgba(30,144,255,.15);
+  border-radius:14px;
+  padding:16px 18px;
+  font-size:12px;color:var(--text2);line-height:1.7;
+  display:flex;gap:12px;align-items:flex-start;
+}
+.kontak-note-icon{font-size:18px;flex-shrink:0;margin-top:1px;}
+
+/* ── BOTTOM NAV ── */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;z-index:800;backdrop-filter:blur(10px);padding:0 4px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:8px 4px;position:relative;transition:all .2s;}
+.nav-item .nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--text2);transition:color .2s;}
+.nav-item .nav-label{font-size:9px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;transition:color .2s;}
+.nav-item.active .nav-icon{color:var(--blue);}
+.nav-item.active .nav-label{color:var(--blue-light);}
+.nav-item.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2.5px;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:0 0 4px 4px;}
+.nav-fab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;position:relative;}
+.fab-circle{width:52px;height:52px;background:linear-gradient(135deg,var(--blue2),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px var(--blue-glow);transition:all .2s;margin-top:-22px;border:3px solid var(--bg2);}
+.nav-fab .nav-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:-2px;color:var(--blue-light);}
+
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.5;transform:scale(.8);}}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.fade-in{animation:slideUp .4s ease both;}
+.fade-in:nth-child(1){animation-delay:.05s;}
+.fade-in:nth-child(2){animation-delay:.12s;}
+.fade-in:nth-child(3){animation-delay:.19s;}
+.fade-in:nth-child(4){animation-delay:.26s;}
+
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+</style>
+</head>
+<body>
+
+<!-- BG Deco -->
+<div class="bg-deco">
+  <span></span><span></span><span></span><span></span>
+  <span></span><span></span><span></span><span></span>
+</div>
+
+<!-- Topbar -->
+<div class="g-topbar">
+  <div class="g-topbar-inner">
+    <div class="hamburger-btn" onclick="openSidebar()"><span></span><span></span><span></span></div>
+    <span class="g-topbar-title">Kontak</span>
+    <div class="g-topbar-actions">
+      <div class="bell-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+      </div>
+      <div class="avatar-wrap">
+        <div class="avatar-circle" onclick="toggleAvatarDrop(event)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        </div>
+        <div class="avatar-drop" id="avatar-drop">
+          <div id="drop-guest">
+            <div class="avatar-drop-header"><strong>Halo, Tamu!</strong>Masuk untuk akses penuh</div>
+            <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Login</a>
+            <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Register</a>
+          </div>
+          <div id="drop-user" style="display:none">
+            <div class="avatar-drop-header"><strong>DzzXNzz</strong>Member aktif</div>
+            <a href="index.html"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya</a>
+            <a href="#" class="danger" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="overlay" onclick="closeSidebar()"></div>
+
+<!-- Sidebar -->
+<nav id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-logo">DzzStore</div>
+    <div class="sidebar-tagline">DIGITAL SERVICES PLATFORM</div>
+  </div>
+  <div class="sidebar-menu">
+    <div class="sidebar-section">Menu Utama</div>
+    <div class="sidebar-item" onclick="location.href='index.html'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Beranda
+    </div>
+    <div class="sidebar-item" onclick="location.href='index.html'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Riwayat Transaksi
+    </div>
+    <div class="sidebar-item" onclick="toggleProdukDrop(this)">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+      Produk
+      <svg class="sidebar-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+    </div>
+    <div class="sidebar-produk-drop" id="sidebar-produk-drop">
+      <div class="sidebar-subitem" onclick="location.href='produk.html#panel-pterodactyl'">Panel Pterodactyl</div>
+      <div class="sidebar-subitem" onclick="location.href='produk.html#pulsa'">Pulsa</div>
+      <div class="sidebar-subitem" onclick="location.href='produk.html#paket-data'">Paket Data</div>
+      <div class="sidebar-subitem" onclick="location.href='produk.html#suntik-follower'">Suntik Follower</div>
+    </div>
+    <div class="sidebar-item active" onclick="location.href='kontak.html'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+      Kontak
+    </div>
+    <div class="sidebar-section">Akun</div>
+    <div class="sidebar-item" onclick="location.href='index.html'">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya
+    </div>
+  </div>
+  <div class="sidebar-footer">v1.0.0 · DzzStore © 2026</div>
+</nav>
+
+<!-- Page Content -->
+<div class="page-wrap">
+
+  <div class="kontak-hero">
+    <div class="kontak-hero-badge"><span></span>We're Online</div>
+    <h1>Hubungi Kami</h1>
+    <p>Ada pertanyaan, kendala transaksi, atau mau request layanan? Tim DzzStore siap membantu kamu kapan saja — tinggal pilih channel yang paling nyaman.</p>
+  </div>
+
+  <div class="kontak-section-label">Langsung Chat</div>
+
+  <div class="kontak-grid">
+    <a class="kontak-card k-wa fade-in" href="https://wa.me/6287713472756" target="_blank">
+      <div class="kontak-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#25d366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z"/><path d="M12 0C5.373 0 0 5.373 0 12c0 2.125.557 4.126 1.527 5.862L.057 23.886l6.178-1.448A11.936 11.936 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.82 9.82 0 0 1-5.006-1.371l-.36-.213-3.667.861.876-3.595-.234-.371A9.818 9.818 0 0 1 2.182 12C2.182 6.57 6.57 2.182 12 2.182S21.818 6.57 21.818 12 17.43 21.818 12 21.818z"/></svg>
+      </div>
+      <div class="kontak-info">
+        <div class="kontak-label">WhatsApp</div>
+        <div class="kontak-value">+62 877-1347-2756</div>
+        <div class="kontak-desc">Respon cepat, jam 08.00 – 22.00</div>
+      </div>
+      <div class="kontak-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+
+    <a class="kontak-card k-tg fade-in" href="https://t.me/DzzXNzz" target="_blank">
+      <div class="kontak-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="#0088cc"><path d="M11.944 0A12 12 0 0 0 0 12a12 12 0 0 0 12 12 12 12 0 0 0 12-12A12 12 0 0 0 12 0a12 12 0 0 0-.056 0zm4.962 7.224c.1-.002.321.023.465.14a.506.506 0 0 1 .171.325c.016.093.036.306.02.472-.18 1.898-.962 6.502-1.36 8.627-.168.9-.499 1.201-.82 1.23-.696.065-1.225-.46-1.9-.902-1.056-.693-1.653-1.124-2.678-1.8-1.185-.78-.417-1.21.258-1.91.177-.184 3.247-2.977 3.307-3.23.007-.032.014-.15-.056-.212s-.174-.041-.249-.024c-.106.024-1.793 1.14-5.061 3.345-.48.33-.913.49-1.302.48-.428-.008-1.252-.241-1.865-.44-.752-.245-1.349-.374-1.297-.789.027-.216.325-.437.893-.663 3.498-1.524 5.83-2.529 6.998-3.014 3.332-1.386 4.025-1.627 4.476-1.635z"/></svg>
+      </div>
+      <div class="kontak-info">
+        <div class="kontak-label">Telegram</div>
+        <div class="kontak-value">@DzzXNzz</div>
+        <div class="kontak-desc">Chat personal developer</div>
+      </div>
+      <div class="kontak-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+
+    <a class="kontak-card k-bot fade-in" href="https://t.me/DzzBot" target="_blank">
+      <div class="kontak-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#646cff" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="10" rx="2"/><circle cx="12" cy="5" r="2"/><path d="M12 7v4"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="12" y1="16" x2="12" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
+      </div>
+      <div class="kontak-info">
+        <div class="kontak-label">Telegram Bot</div>
+        <div class="kontak-value">@DzzBot</div>
+        <div class="kontak-desc">Auto-respon 24 jam nonstop</div>
+      </div>
+      <div class="kontak-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+
+    <a class="kontak-card k-email fade-in" href="mailto:admin@nyzz.my.id">
+      <div class="kontak-icon">
+        <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#ffa500" stroke-width="2" stroke-linecap="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+      </div>
+      <div class="kontak-info">
+        <div class="kontak-label">Email</div>
+        <div class="kontak-value">admin@nyzz.my.id</div>
+        <div class="kontak-desc">Untuk keperluan formal & kerjasama</div>
+      </div>
+      <div class="kontak-arrow">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+      </div>
+    </a>
+  </div>
+
+  <div class="kontak-note">
+    <div class="kontak-note-icon">💡</div>
+    <div>Untuk komplain transaksi, sertakan <strong>ID transaksi</strong> dan <strong>screenshot</strong> bukti pembayaran agar proses pengecekan lebih cepat. Tim kami akan merespons dalam waktu <strong>kurang dari 1 jam</strong> di jam aktif.</div>
+  </div>
+
+</div>
+
+<!-- Bottom Nav -->
+<nav class="bottom-nav">
+  <div class="nav-item" onclick="location.href='index.html'">
+    <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+    <span class="nav-label">Home</span>
+  </div>
+  <div class="nav-item" onclick="location.href='index.html'">
+    <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div>
+    <span class="nav-label">Riwayat</span>
+  </div>
+  <div class="nav-fab" onclick="location.href='produk.html'">
+    <div class="fab-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
+    <span class="nav-label">Produk</span>
+  </div>
+  <div class="nav-item active">
+    <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+    <span class="nav-label">Kontak</span>
+  </div>
+  <div class="nav-item" onclick="location.href='index.html'">
+    <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+    <span class="nav-label">Profil</span>
+  </div>
+</nav>
+
+<script>
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function toggleProdukDrop(btn){const d=document.getElementById('sidebar-produk-drop');const c=btn.querySelector('.sidebar-chevron');const o=d.classList.toggle('open');c.classList.toggle('open',o);}
+let isLoggedIn=false;
+function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
+function doLogout(){isLoggedIn=false;document.getElementById('drop-guest').style.display='block';document.getElementById('drop-user').style.display='none';document.getElementById('avatar-drop').classList.remove('open');}
+document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
+</script>
+</body>
+</html>
