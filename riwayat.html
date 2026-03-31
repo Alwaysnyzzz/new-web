@@ -170,23 +170,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="nav-item" onclick="location.href='/profil'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></div>
 </nav>
 
+<script src="/auth.js"></script>
 <script>
-function getUser() { try{ return JSON.parse(localStorage.getItem('dzz_user')); }catch{ return null; } }
-function doLogout() { localStorage.removeItem('dzz_user'); location.reload(); }
-function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
-function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
-document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
-
-const user = getUser();
-if (user) {
-  document.getElementById('drop-guest').style.display = 'none';
-  document.getElementById('drop-user').style.display = 'block';
-  document.getElementById('drop-uname').textContent = user.username;
-}
-
 function renderContent() {
-  const el = document.getElementById('content');
+  const el   = document.getElementById('content');
+  const user = Auth.get();
   if (!user) {
     el.innerHTML = `
     <div class="guest-state">
@@ -200,7 +188,6 @@ function renderContent() {
     </div>`;
     return;
   }
-  // TODO: fetch orders from Supabase
   const orders = JSON.parse(localStorage.getItem('dzz_orders_' + user.id) || '[]');
   if (orders.length === 0) {
     el.innerHTML = `<div class="order-empty"><div class="order-empty-icon">📭</div>Riwayat masih kosong</div>`;

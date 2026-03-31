@@ -6,8 +6,8 @@
 const CONFIG = {
 
   // ── SUPABASE ─────────────────────────────────────
-  SUPABASE_URL : 'https://XXXXXXXX.supabase.co',
-  SUPABASE_KEY : 'eyXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
+  SUPABASE_URL : 'https://ccadysepuoxqeezwvdqu.supabase.co',
+  SUPABASE_KEY : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjYWR5c2VwdW94cWVlend2ZHF1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDkxNDkyNiwiZXhwIjoyMDkwNDkwOTI2fQ.OwfriPVLVTG8voC8yoD7d5dE7MJcnm2twf7DKHK4DGw',
 
   // ── PTERODACTYL PANEL ────────────────────────────
   PTERO_URL    : 'https://panel.namawebmu.com',

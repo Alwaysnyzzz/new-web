@@ -160,19 +160,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   <div class="nav-item active"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></div>
 </nav>
 
+<script src="/auth.js"></script>
 <script>
-function getUser(){try{return JSON.parse(localStorage.getItem('dzz_user'));}catch{return null;}}
-function doLogout(){localStorage.removeItem('dzz_user');location.href='/';}
-function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
-function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
-function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
-document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
-
-const user = getUser();
-if(user){document.getElementById('drop-guest').style.display='none';document.getElementById('drop-user').style.display='block';document.getElementById('drop-uname').textContent=user.username;}
-
 function renderContent() {
-  const el = document.getElementById('content');
+  const el   = document.getElementById('content');
+  const user = Auth.get();
   if (!user) {
     el.innerHTML = `
     <div class="guest-state">
@@ -186,7 +178,7 @@ function renderContent() {
     </div>`;
     return;
   }
-  const orders = JSON.parse(localStorage.getItem('dzz_orders_'+user.id)||'[]');
+  const orders     = JSON.parse(localStorage.getItem('dzz_orders_'+user.id)||'[]');
   const panelUsers = JSON.parse(localStorage.getItem('panel_users')||'[]');
   el.innerHTML = `
   <div style="padding-top:16px">
@@ -201,7 +193,6 @@ function renderContent() {
         <div class="stat-box"><div class="stat-num">${orders.filter(o=>o.status==='aktif').length}</div><div class="stat-lbl">Aktif</div></div>
       </div>
     </div>
-
     <div class="section-header">Akun</div>
     <div class="menu-item" onclick="location.href='/riwayat'">
       <div class="menu-item-icon">🧾</div>
@@ -213,14 +204,12 @@ function renderContent() {
       <div class="menu-item-text"><div class="menu-item-label">Ganti Password</div><div class="menu-item-sub">Ubah password akun DzzStore</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-
     <div class="section-header">Panel Users</div>
     <div class="menu-item" onclick="alert('Fitur segera hadir')">
       <div class="menu-item-icon">🖥️</div>
       <div class="menu-item-text"><div class="menu-item-label">User Panel Saya</div><div class="menu-item-sub">${panelUsers.length} user terdaftar</div></div>
       <div class="menu-item-arrow">›</div>
     </div>
-
     <div class="section-header">Lainnya</div>
     <div class="menu-item" onclick="location.href='/kontak'">
       <div class="menu-item-icon">💬</div>
