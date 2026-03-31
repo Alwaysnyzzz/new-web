@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Buat User Panel – DzzStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;--blue:#1e90ff;--blue2:#0d6efd;--blue-glow:#1e90ff55;--blue-light:#60b4ff;--accent:#00d4ff;--text:#e8f0ff;--text2:#8ba8d4;--border:#1a3258;--nav-h:70px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:40px;}
+
+/* BG DECO - sama persis halaman lain */
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{position:absolute;border:1px solid rgba(30,144,255,.18);border-radius:6px;background:rgba(30,144,255,.03);}
+.bg-deco span:nth-child(1){width:40px;height:40px;top:8%;left:6%;transform:rotate(15deg);}
+.bg-deco span:nth-child(2){width:22px;height:22px;top:18%;right:10%;animation:bgf1 6s ease-in-out infinite;}
+.bg-deco span:nth-child(3){width:60px;height:60px;top:35%;left:3%;animation:bgf2 8s ease-in-out infinite;border-color:rgba(0,212,255,.12);}
+.bg-deco span:nth-child(4){width:16px;height:16px;top:50%;right:7%;animation:bgf1 5s ease-in-out infinite 1s;}
+.bg-deco span:nth-child(5){width:32px;height:32px;top:65%;left:12%;animation:bgf2 7s ease-in-out infinite .5s;border-color:rgba(0,212,255,.15);}
+.bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgf1 9s ease-in-out infinite 2s;}
+.bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgf2 6s ease-in-out infinite 1.5s;}
+.bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgf1 7s ease-in-out infinite 3s;border-color:rgba(0,212,255,.1);}
+@keyframes bgf1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes bgf2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
+
+/* TOPBAR */
+.g-topbar{position:sticky;top:0;z-index:400;padding:10px 16px;background:var(--bg);}
+.g-topbar-inner{background:var(--bg2);border:1px solid var(--border);border-radius:18px;height:52px;display:flex;align-items:center;padding:0 14px;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.back-btn{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:6px;flex-shrink:0;background:none;border:none;color:var(--text2);transition:color .2s;}
+.back-btn:hover{color:var(--text);}
+.g-topbar-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--text);flex:1;}
+
+/* MAIN */
+.page-wrap{max-width:480px;margin:0 auto;padding:24px 20px 40px;position:relative;z-index:1;}
+
+.page-hero{
+  background:linear-gradient(135deg,#0a1f3d,#0d2850);
+  border:1px solid rgba(30,144,255,.25);
+  border-radius:20px;padding:24px 20px;margin-bottom:24px;
+  position:relative;overflow:hidden;
+}
+.page-hero::before{content:'🖥️';position:absolute;right:-8px;bottom:-8px;font-size:70px;opacity:.08;pointer-events:none;}
+.page-hero h2{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#fff;margin-bottom:6px;}
+.page-hero p{font-size:13px;color:rgba(255,255,255,.5);line-height:1.6;}
+
+.field-label{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:8px;}
+.field-input{width:100%;background:var(--bg2);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;color:var(--text);font-size:15px;font-family:'Outfit',sans-serif;font-weight:700;outline:none;transition:border-color .2s;margin-bottom:6px;}
+.field-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,144,255,.1);}
+.field-input::placeholder{color:var(--text2);opacity:.5;font-weight:400;}
+
+.preview-card{
+  background:var(--bg3);border:1px solid var(--border);border-radius:12px;
+  padding:14px 16px;margin:8px 0 24px;
+}
+.preview-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.preview-row:last-child{margin-bottom:0;}
+.preview-key{font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+.preview-val{font-family:'Outfit',sans-serif;font-size:13px;font-weight:700;color:var(--accent);}
+
+.info-box{
+  background:rgba(30,144,255,.05);border:1px solid rgba(30,144,255,.15);
+  border-radius:12px;padding:14px 16px;margin-bottom:24px;
+  font-size:12px;color:var(--text2);line-height:1.7;
+  display:flex;gap:10px;align-items:flex-start;
+}
+.info-box svg{flex-shrink:0;margin-top:1px;color:var(--blue);}
+
+.btn-create{
+  width:100%;padding:16px;
+  background:linear-gradient(135deg,var(--blue),var(--accent));
+  border:none;border-radius:14px;color:#000;
+  font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;
+  cursor:pointer;transition:all .2s;
+  box-shadow:0 6px 24px rgba(30,144,255,.3);
+  display:flex;align-items:center;justify-content:center;gap:10px;
+}
+.btn-create:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(30,144,255,.4);}
+.btn-create:active{transform:scale(.97);}
+.btn-create:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.spinner{width:18px;height:18px;border:2.5px solid rgba(0,0,0,.2);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* SUCCESS STATE */
+.success-card{
+  background:rgba(0,200,100,.06);border:1px solid rgba(0,200,100,.25);
+  border-radius:20px;padding:24px 20px;display:none;
+  animation:slideUp .4s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes slideUp{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:translateY(0);}}
+.success-card.show{display:block;}
+.success-header{display:flex;align-items:center;gap:12px;margin-bottom:16px;}
+.success-icon{width:48px;height:48px;border-radius:50%;background:rgba(0,200,100,.15);border:1px solid rgba(0,200,100,.3);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.success-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#00c864;}
+.success-sub{font-size:12px;color:var(--text2);}
+.cred-grid{display:flex;flex-direction:column;gap:10px;}
+.cred-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;align-items:center;justify-content:space-between;}
+.cred-key{font-size:10px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;}
+.cred-val{font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;color:var(--text);}
+.copy-btn{background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:4px 10px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .2s;flex-shrink:0;}
+.copy-btn:hover{border-color:var(--blue);color:var(--text);}
+.back-to-panel{display:block;text-align:center;margin-top:16px;padding:14px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--text2);text-decoration:none;font-size:14px;font-weight:700;transition:all .2s;}
+.back-to-panel:hover{border-color:var(--blue);color:var(--text);}
+
+.err-box{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.25);border-radius:12px;padding:12px 14px;margin-bottom:16px;font-size:13px;color:#ff6b6b;display:none;align-items:center;gap:8px;}
+.err-box.show{display:flex;}
+</style>
+</head>
+<body>
+<div class="bg-deco"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="g-topbar">
+  <div class="g-topbar-inner">
+    <button class="back-btn" onclick="history.back()">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <span class="g-topbar-title">Buat User Panel</span>
+  </div>
+</div>
+
+<div class="page-wrap">
+
+  <div class="page-hero">
+    <h2>Buat User Panel Baru</h2>
+    <p>User ini digunakan untuk login ke Pterodactyl panel setelah server berhasil dibuat.</p>
+  </div>
+
+  <!-- FORM -->
+  <div id="form-section">
+    <div class="err-box" id="err-box"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12" y2="16"/></svg><span id="err-text"></span></div>
+
+    <label class="field-label">Username</label>
+    <input class="field-input" id="uname" placeholder="contoh: dzz atau gameserver1" autocapitalize="none">
+
+    <div class="preview-card">
+      <div class="preview-row">
+        <span class="preview-key">Email Panel</span>
+        <span class="preview-val" id="preview-email">username@buyer.dzz</span>
+      </div>
+      <div class="preview-row">
+        <span class="preview-key">Password</span>
+        <span class="preview-val">Otomatis (random)</span>
+      </div>
+    </div>
+
+    <div class="info-box">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+      <div>Password akan dibuat <strong>otomatis oleh sistem</strong> dan tidak bisa dilihat siapapun kecuali kamu. Simpan credential yang muncul setelah pembuatan berhasil.</div>
+    </div>
+
+    <button class="btn-create" id="create-btn" onclick="doCreate()">
+      <span id="btn-text">Buat User</span>
+      <div class="spinner" id="spinner"></div>
+    </button>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="success-card" id="success-card">
+    <div class="success-header">
+      <div class="success-icon">✅</div>
+      <div>
+        <div class="success-title">User Berhasil Dibuat!</div>
+        <div class="success-sub">Simpan credential ini, tidak bisa dilihat lagi.</div>
+      </div>
+    </div>
+    <div class="cred-grid">
+      <div class="cred-item">
+        <div><div class="cred-key">Username</div><div class="cred-val" id="res-uname">-</div></div>
+        <button class="copy-btn" onclick="copyText('res-uname')">Salin</button>
+      </div>
+      <div class="cred-item">
+        <div><div class="cred-key">Email Panel</div><div class="cred-val" id="res-email">-</div></div>
+        <button class="copy-btn" onclick="copyText('res-email')">Salin</button>
+      </div>
+      <div class="cred-item">
+        <div><div class="cred-key">Password</div><div class="cred-val" id="res-pass">-</div></div>
+        <button class="copy-btn" onclick="copyText('res-pass')">Salin</button>
+      </div>
+      <div class="cred-item">
+        <div><div class="cred-key">URL Panel</div><div class="cred-val" id="res-url">-</div></div>
+        <button class="copy-btn" onclick="copyText('res-url')">Salin</button>
+      </div>
+    </div>
+    <a href="/produk/panel-pterodactyl" class="back-to-panel">← Kembali ke Panel Pterodactyl</a>
+  </div>
+
+</div>
+
+<script src="config.js"></script>
+<script src="pterodactyl.js"></script>
+<script>
+const BUYER_DOMAIN = (typeof CONFIG !== 'undefined' ? CONFIG.BUYER_DOMAIN : null) || 'buyer.dzz';
+const PTERO_URL    = (typeof CONFIG !== 'undefined' ? CONFIG.PTERO_URL    : null) || 'https://panel.nyzz.my.id';
+
+document.getElementById('uname').addEventListener('input', function() {
+  const val = this.value.trim().toLowerCase().replace(/[^a-z0-9_]/g, '') || 'username';
+  document.getElementById('preview-email').textContent = val + '@' + BUYER_DOMAIN;
+});
+
+function genPass() {
+  const c = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
+  return Array.from({length:12}, () => c[Math.floor(Math.random()*c.length)]).join('');
+}
+
+function showErr(msg) {
+  const box = document.getElementById('err-box');
+  document.getElementById('err-text').textContent = msg;
+  box.classList.add('show');
+}
+
+async function doCreate() {
+  document.getElementById('err-box').classList.remove('show');
+  const uname = document.getElementById('uname').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if (!uname || uname.length < 3) { showErr('Username minimal 3 karakter (huruf/angka/garis bawah)'); return; }
+
+  const btn = document.getElementById('create-btn');
+  btn.disabled = true;
+  document.getElementById('btn-text').style.display = 'none';
+  document.getElementById('spinner').style.display = 'block';
+
+  try {
+    const pass  = genPass();
+    const email = uname + '@' + BUYER_DOMAIN;
+
+    // Simpan ke localStorage dulu (selalu, bahkan jika API gagal)
+    const users = JSON.parse(localStorage.getItem('panel_users') || '[]');
+    if (users.find(u => u.username === uname)) {
+      showErr('Username sudah digunakan'); btn.disabled=false;
+      document.getElementById('btn-text').style.display='block';
+      document.getElementById('spinner').style.display='none';
+      return;
+    }
+
+    let panelId = null;
+    // Coba buat di panel jika API tersedia
+    if (typeof PTERO !== 'undefined') {
+      try {
+        const u = await PTERO.createUser({ username: uname, email, password: pass });
+        panelId = u.id;
+      } catch (e) {
+        console.warn('Panel API gagal, simpan lokal saja:', e.message);
+      }
+    }
+
+    const newUser = { username: uname, email, password: pass, panelId, created: Date.now() };
+    users.push(newUser);
+    localStorage.setItem('panel_users', JSON.stringify(users));
+
+    // Tampilkan sukses
+    document.getElementById('form-section').style.display = 'none';
+    document.getElementById('res-uname').textContent = uname;
+    document.getElementById('res-email').textContent  = email;
+    document.getElementById('res-pass').textContent   = pass;
+    document.getElementById('res-url').textContent    = PTERO_URL;
+    document.getElementById('success-card').classList.add('show');
+
+  } catch(e) {
+    showErr(e.message || 'Terjadi kesalahan');
+    btn.disabled = false;
+    document.getElementById('btn-text').style.display = 'block';
+    document.getElementById('spinner').style.display  = 'none';
+  }
+}
+
+function copyText(id) {
+  const text = document.getElementById(id).textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = event.target;
+    btn.textContent = '✓';
+    setTimeout(() => btn.textContent = 'Salin', 1500);
+  });
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Profil – DzzStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;--blue:#1e90ff;--blue2:#0d6efd;--blue-glow:#1e90ff55;--blue-light:#60b4ff;--accent:#00d4ff;--text:#e8f0ff;--text2:#8ba8d4;--border:#1a3258;--nav-h:70px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h)+16px);}
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{position:absolute;border:1px solid rgba(30,144,255,.18);border-radius:6px;background:rgba(30,144,255,.03);}
+.bg-deco span:nth-child(1){width:40px;height:40px;top:8%;left:6%;transform:rotate(15deg);}
+.bg-deco span:nth-child(2){width:22px;height:22px;top:18%;right:10%;animation:bgf1 6s ease-in-out infinite;}
+.bg-deco span:nth-child(3){width:60px;height:60px;top:35%;left:3%;animation:bgf2 8s ease-in-out infinite;border-color:rgba(0,212,255,.12);}
+.bg-deco span:nth-child(4){width:16px;height:16px;top:50%;right:7%;animation:bgf1 5s ease-in-out infinite 1s;}
+.bg-deco span:nth-child(5){width:32px;height:32px;top:65%;left:12%;animation:bgf2 7s ease-in-out infinite .5s;border-color:rgba(0,212,255,.15);}
+.bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgf1 9s ease-in-out infinite 2s;}
+.bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgf2 6s ease-in-out infinite 1.5s;}
+.bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgf1 7s ease-in-out infinite 3s;border-color:rgba(0,212,255,.1);}
+@keyframes bgf1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes bgf2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
+
+
+
+
+
+#overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);backdrop-filter:blur(4px);z-index:900;opacity:0;pointer-events:none;transition:opacity .3s;}
+#overlay.show{opacity:1;pointer-events:all;}
+#sidebar{position:fixed;top:0;left:-280px;bottom:0;width:280px;background:var(--bg2);border-right:1px solid var(--border);z-index:950;transition:left .35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;overflow:hidden;}
+#sidebar.open{left:0;}
+.sidebar-header{padding:28px 24px 20px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,var(--bg3),var(--bg2));}
+.sidebar-logo{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;background:linear-gradient(90deg,var(--blue),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.sidebar-tagline{font-size:11px;color:var(--text2);margin-top:2px;letter-spacing:1px;}
+.sidebar-menu{flex:1;padding:16px 0;overflow-y:auto;}
+.sidebar-item{display:flex;align-items:center;gap:14px;padding:14px 24px;color:var(--text2);font-size:14px;font-weight:500;cursor:pointer;transition:all .2s;border-left:3px solid transparent;}
+.sidebar-item:hover,.sidebar-item.active{background:var(--bg3);color:var(--blue-light);border-left-color:var(--blue);}
+.sidebar-section{padding:8px 24px 4px;font-size:10px;font-weight:700;color:var(--text2);letter-spacing:1.5px;text-transform:uppercase;}
+.sidebar-footer{padding:16px 24px;border-top:1px solid var(--border);font-size:12px;color:var(--text2);}
+.g-topbar{position:sticky;top:0;z-index:400;padding:10px 16px;background:var(--bg);}
+.g-topbar-inner{background:var(--bg2);border:1px solid var(--border);border-radius:18px;height:52px;display:flex;align-items:center;padding:0 14px;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.hamburger-btn{display:flex;flex-direction:column;gap:5px;cursor:pointer;padding:4px;flex-shrink:0;background:none;border:none;}
+.hamburger-btn span{display:block;height:2px;border-radius:2px;background:var(--text2);}
+.hamburger-btn span:nth-child(1){width:20px;}
+.hamburger-btn span:nth-child(2){width:14px;}
+.hamburger-btn span:nth-child(3){width:17px;}
+.g-topbar-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--text);flex:1;}
+.g-topbar-actions{display:flex;align-items:center;gap:10px;flex-shrink:0;}
+.bell-btn{cursor:pointer;width:36px;height:36px;display:flex;align-items:center;justify-content:center;color:var(--text2);}
+@keyframes bellSwing{0%,100%{transform:rotate(0);}10%{transform:rotate(14deg);}30%{transform:rotate(-12deg);}50%{transform:rotate(10deg);}70%{transform:rotate(-8deg);}85%{transform:rotate(5deg);}}
+.bell-btn svg{animation:bellSwing 3s ease-in-out infinite;transform-origin:top center;}
+.avatar-wrap{position:relative;}
+.avatar-circle{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--bg3),var(--border));border:2px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;color:var(--text2);transition:border-color .2s;}
+.avatar-circle:hover{border-color:var(--blue);}
+.avatar-drop{position:absolute;top:calc(100% + 10px);right:0;min-width:170px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;opacity:0;pointer-events:none;transform:translateY(-8px) scale(.96);transition:all .2s cubic-bezier(.34,1.56,.64,1);z-index:999;box-shadow:0 12px 40px rgba(0,0,0,.5);}
+.avatar-drop.open{opacity:1;pointer-events:all;transform:translateY(0) scale(1);}
+.avatar-drop-header{padding:14px 16px 10px;border-bottom:1px solid var(--border);font-size:11px;color:var(--text2);}
+.avatar-drop-header strong{display:block;font-family:'Outfit',sans-serif;font-size:14px;color:var(--text);margin-bottom:2px;}
+.avatar-drop a{display:flex;align-items:center;gap:10px;padding:12px 16px;font-size:13px;color:var(--text2);text-decoration:none;cursor:pointer;transition:all .15s;}
+.avatar-drop a:hover{background:var(--bg3);color:var(--text);}
+.avatar-drop a.danger{color:#ff6b6b;}
+
+.page-wrap{max-width:680px;margin:0 auto;padding:0 20px 40px;position:relative;z-index:1;}
+
+/* GUEST */
+.guest-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:40px 20px;}
+.guest-icon{font-size:56px;margin-bottom:16px;opacity:.4;}
+.guest-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text2);margin-bottom:6px;}
+.guest-sub{font-size:13px;color:var(--text2);opacity:.6;margin-bottom:28px;}
+.guest-btns{display:flex;gap:12px;}
+.guest-btn-login{padding:12px 28px;background:var(--blue);border:2px solid #000;border-radius:12px;color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none;}
+.guest-btn-register{padding:12px 28px;background:#000;border:2px solid var(--blue);border-radius:12px;color:var(--blue);font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;text-decoration:none;}
+
+/* PROFILE */
+.profile-banner{height:100px;background:linear-gradient(135deg,var(--bg3),#0d1f3d);border-radius:16px 16px 0 0;margin-top:16px;position:relative;}
+.profile-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(30,144,255,.15),rgba(0,212,255,.1));border-radius:16px 16px 0 0;}
+.profile-card{background:var(--bg2);border:1px solid var(--border);border-radius:0 0 16px 16px;padding:0 20px 24px;}
+.profile-avatar{width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--blue),var(--accent));border:3px solid var(--bg2);display:flex;align-items:center;justify-content:center;font-size:28px;margin-top:-36px;position:relative;z-index:1;}
+.profile-name{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;margin-top:10px;}
+.profile-email{font-size:12px;color:var(--text2);margin-top:2px;}
+.profile-stats{display:flex;gap:20px;margin-top:16px;flex-wrap:wrap;}
+.stat-box{background:var(--bg3);border:1px solid var(--border);border-radius:12px;padding:12px 16px;text-align:center;min-width:80px;}
+.stat-num{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:var(--accent);}
+.stat-lbl{font-size:10px;color:var(--text2);margin-top:2px;font-weight:600;}
+.section-header{font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;color:var(--text2);text-transform:uppercase;letter-spacing:1px;margin:20px 0 10px;}
+.menu-item{display:flex;align-items:center;gap:14px;padding:14px 16px;background:var(--bg2);border:1px solid var(--border);border-radius:12px;cursor:pointer;transition:border-color .2s;margin-bottom:8px;}
+.menu-item:hover{border-color:var(--blue);}
+.menu-item-icon{width:36px;height:36px;border-radius:10px;background:var(--bg3);display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.menu-item-text{flex:1;}
+.menu-item-label{font-size:14px;font-weight:600;}
+.menu-item-sub{font-size:11px;color:var(--text2);margin-top:1px;}
+.menu-item-arrow{color:var(--text2);font-size:16px;}
+.logout-btn{width:100%;padding:14px;background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.2);border-radius:12px;color:#ff6b6b;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;cursor:pointer;transition:all .2s;margin-top:8px;}
+.logout-btn:hover{background:rgba(255,80,80,.15);}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;z-index:800;backdrop-filter:blur(10px);padding:0 4px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:8px 4px;position:relative;}
+.nav-item .nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.nav-item .nav-label{font-size:9px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;}
+.nav-item.active .nav-icon{color:var(--blue);}
+.nav-item.active .nav-label{color:var(--blue-light);}
+.nav-item.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2.5px;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:0 0 4px 4px;}
+.nav-fab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;position:relative;}
+.fab-circle{width:52px;height:52px;background:linear-gradient(135deg,var(--blue2),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px var(--blue-glow);transition:all .2s;margin-top:-22px;border:3px solid var(--bg2);}
+.nav-fab .nav-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:-2px;color:var(--blue-light);}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+</style>
+</head>
+<body>
+<div class="bg-deco"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="g-topbar">
+  <div class="g-topbar-inner">
+    <div class="hamburger-btn" onclick="openSidebar()"><span></span><span></span><span></span></div>
+    <span class="g-topbar-title">Profil</span>
+    <div class="g-topbar-actions">
+      <div class="bell-btn"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg></div>
+      <div class="avatar-wrap">
+        <div class="avatar-circle" onclick="toggleAvatarDrop(event)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>
+        <div class="avatar-drop" id="avatar-drop">
+          <div id="drop-guest">
+            <div class="avatar-drop-header"><strong>Halo, Tamu!</strong>Masuk untuk akses penuh</div>
+            <a href="/login"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Login</a>
+            <a href="/register"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Register</a>
+          </div>
+          <div id="drop-user" style="display:none">
+            <div class="avatar-drop-header"><strong id="drop-uname">User</strong>Member aktif</div>
+            <a href="#" class="danger" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="overlay" onclick="closeSidebar()"></div>
+<nav id="sidebar">
+  <div class="sidebar-header"><div class="sidebar-logo">DzzStore</div><div class="sidebar-tagline">DIGITAL SERVICES PLATFORM</div></div>
+  <div class="sidebar-menu">
+    <div class="sidebar-section">Menu Utama</div>
+    <div class="sidebar-item" onclick="location.href='/'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>Beranda</div>
+    <div class="sidebar-item" onclick="location.href='/riwayat'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>Riwayat Transaksi</div>
+    <div class="sidebar-item" onclick="location.href='/produk'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Produk</div>
+    <div class="sidebar-item" onclick="location.href='/kontak'"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>Kontak</div>
+    <div class="sidebar-section">Akun</div>
+    <div class="sidebar-item active"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya</div>
+  </div>
+  <div class="sidebar-footer">v1.0.0 · DzzStore © 2026</div>
+</nav>
+
+<div class="page-wrap" id="content"><!-- rendered by JS --></div>
+
+<nav class="bottom-nav">
+  <div class="nav-item" onclick="location.href='/'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><span class="nav-label">Home</span></div>
+  <div class="nav-item" onclick="location.href='/riwayat'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg></div><span class="nav-label">Riwayat</span></div>
+  <div class="nav-fab" onclick="location.href='/produk'"><div class="fab-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><span class="nav-label">Produk</span></div>
+  <div class="nav-item" onclick="location.href='/kontak'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><span class="nav-label">Kontak</span></div>
+  <div class="nav-item active"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></div>
+</nav>
+
+<script>
+function getUser(){try{return JSON.parse(localStorage.getItem('dzz_user'));}catch{return null;}}
+function doLogout(){localStorage.removeItem('dzz_user');location.href='/';}
+function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
+function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
+function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
+document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
+
+const user = getUser();
+if(user){document.getElementById('drop-guest').style.display='none';document.getElementById('drop-user').style.display='block';document.getElementById('drop-uname').textContent=user.username;}
+
+function renderContent() {
+  const el = document.getElementById('content');
+  if (!user) {
+    el.innerHTML = `
+    <div class="guest-state">
+      <div class="guest-icon">👤</div>
+      <div class="guest-title">Anda belum login</div>
+      <div class="guest-sub">Silakan login untuk melihat profil kamu</div>
+      <div class="guest-btns">
+        <a href="/register" class="guest-btn-register">Register</a>
+        <a href="/login" class="guest-btn-login">Login</a>
+      </div>
+    </div>`;
+    return;
+  }
+  const orders = JSON.parse(localStorage.getItem('dzz_orders_'+user.id)||'[]');
+  const panelUsers = JSON.parse(localStorage.getItem('panel_users')||'[]');
+  el.innerHTML = `
+  <div style="padding-top:16px">
+    <div class="profile-banner"></div>
+    <div class="profile-card">
+      <div class="profile-avatar">🧑</div>
+      <div class="profile-name">${user.username}</div>
+      <div class="profile-email">${user.username}@dzzstore.id</div>
+      <div class="profile-stats">
+        <div class="stat-box"><div class="stat-num">${orders.length}</div><div class="stat-lbl">Order</div></div>
+        <div class="stat-box"><div class="stat-num">${panelUsers.length}</div><div class="stat-lbl">User Panel</div></div>
+        <div class="stat-box"><div class="stat-num">${orders.filter(o=>o.status==='aktif').length}</div><div class="stat-lbl">Aktif</div></div>
+      </div>
+    </div>
+
+    <div class="section-header">Akun</div>
+    <div class="menu-item" onclick="location.href='/riwayat'">
+      <div class="menu-item-icon">🧾</div>
+      <div class="menu-item-text"><div class="menu-item-label">Riwayat Transaksi</div><div class="menu-item-sub">${orders.length} order</div></div>
+      <div class="menu-item-arrow">›</div>
+    </div>
+    <div class="menu-item" onclick="alert('Fitur segera hadir')">
+      <div class="menu-item-icon">🔑</div>
+      <div class="menu-item-text"><div class="menu-item-label">Ganti Password</div><div class="menu-item-sub">Ubah password akun DzzStore</div></div>
+      <div class="menu-item-arrow">›</div>
+    </div>
+
+    <div class="section-header">Panel Users</div>
+    <div class="menu-item" onclick="alert('Fitur segera hadir')">
+      <div class="menu-item-icon">🖥️</div>
+      <div class="menu-item-text"><div class="menu-item-label">User Panel Saya</div><div class="menu-item-sub">${panelUsers.length} user terdaftar</div></div>
+      <div class="menu-item-arrow">›</div>
+    </div>
+
+    <div class="section-header">Lainnya</div>
+    <div class="menu-item" onclick="location.href='/kontak'">
+      <div class="menu-item-icon">💬</div>
+      <div class="menu-item-text"><div class="menu-item-label">Hubungi Support</div><div class="menu-item-sub">WA, Telegram, Email</div></div>
+      <div class="menu-item-arrow">›</div>
+    </div>
+    <button class="logout-btn" onclick="doLogout()">🚪 Keluar dari Akun</button>
+  </div>`;
+}
+renderContent();
+</script>
+</body>
+</html>

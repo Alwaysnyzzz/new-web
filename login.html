@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Login – DzzStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;--blue:#1e90ff;--accent:#00d4ff;--text:#e8f0ff;--text2:#8ba8d4;--border:#1a3258;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+
+/* BG DECO - sama persis */
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{position:absolute;border:1px solid rgba(30,144,255,.18);border-radius:6px;background:rgba(30,144,255,.03);}
+.bg-deco span:nth-child(1){width:40px;height:40px;top:8%;left:6%;transform:rotate(15deg);}
+.bg-deco span:nth-child(2){width:22px;height:22px;top:18%;right:10%;animation:bgf1 6s ease-in-out infinite;}
+.bg-deco span:nth-child(3){width:60px;height:60px;top:35%;left:3%;animation:bgf2 8s ease-in-out infinite;border-color:rgba(0,212,255,.12);}
+.bg-deco span:nth-child(4){width:16px;height:16px;top:50%;right:7%;animation:bgf1 5s ease-in-out infinite 1s;}
+.bg-deco span:nth-child(5){width:32px;height:32px;top:65%;left:12%;animation:bgf2 7s ease-in-out infinite .5s;border-color:rgba(0,212,255,.15);}
+.bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgf1 9s ease-in-out infinite 2s;}
+.bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgf2 6s ease-in-out infinite 1.5s;}
+.bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgf1 7s ease-in-out infinite 3s;border-color:rgba(0,212,255,.1);}
+@keyframes bgf1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes bgf2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
+
+.card{position:relative;z-index:1;background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:36px 28px;width:100%;max-width:380px;box-shadow:0 0 40px rgba(30,144,255,.08),0 25px 60px rgba(0,0,0,.5);animation:slideUp .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--blue),var(--accent),var(--blue));background-size:200%;animation:shine 3s linear infinite;border-radius:24px 24px 0 0;}
+@keyframes shine{0%{background-position:0%}100%{background-position:200%}}
+
+.brand{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;text-align:center;margin-bottom:4px;background:linear-gradient(90deg,var(--blue),var(--accent));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.brand-sub{text-align:center;color:var(--text2);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:28px;}
+
+.field{margin-bottom:16px;}
+.field-label{display:block;font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
+.field-wrap{position:relative;}
+/* SVG icon inside input */
+.field-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text2);pointer-events:none;display:flex;align-items:center;}
+.field-wrap input{width:100%;padding:13px 14px 13px 42px;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.field-wrap input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(30,144,255,.1);}
+.field-wrap input::placeholder{color:var(--text2);opacity:.5;}
+/* Eye toggle with SVG */
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;padding:4px;transition:color .2s;display:flex;align-items:center;}
+.eye-btn:hover{color:var(--text);}
+/* strikethrough line over eye when password hidden */
+.eye-line{transition:opacity .15s;}
+
+.err{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.25);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#ff6b6b;display:none;align-items:center;gap:8px;}
+.err.show{display:flex;}
+
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--blue),var(--accent));border:none;border-radius:12px;color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all .2s;letter-spacing:.5px;box-shadow:0 6px 24px rgba(30,144,255,.3);display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn:hover{transform:translateY(-2px);box-shadow:0 10px 32px rgba(30,144,255,.4);}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.spinner{width:18px;height:18px;border:2.5px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+.foot{text-align:center;margin-top:20px;font-size:13px;color:var(--text2);}
+.foot a{color:var(--accent);text-decoration:none;font-weight:700;}
+.foot a:hover{color:#fff;}
+</style>
+</head>
+<body>
+<div class="bg-deco"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="card">
+  <div class="brand">DzzStore</div>
+  <div class="brand-sub">Masuk ke akun kamu</div>
+
+  <div class="err" id="err">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span id="err-text"></span>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Username</label>
+    <div class="field-wrap">
+      <span class="field-icon">
+        <!-- user icon SVG -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </span>
+      <input type="text" id="uname" placeholder="username kamu" autocapitalize="none" autocomplete="username">
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Password</label>
+    <div class="field-wrap">
+      <span class="field-icon">
+        <!-- lock icon SVG -->
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+      </span>
+      <input type="password" id="pass" placeholder="••••••••" autocomplete="current-password">
+      <!-- Eye toggle SVG - line through = hidden, no line = visible -->
+      <button class="eye-btn" id="eye-btn" type="button" onclick="togglePass()">
+        <svg id="eye-svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+          <circle cx="12" cy="12" r="3"/>
+          <!-- strikethrough line, visible when password hidden -->
+          <line class="eye-line" id="eye-line" x1="3" y1="3" x2="21" y2="21" stroke="currentColor" stroke-width="2"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <button class="btn" id="login-btn">
+    <span id="btn-text">MASUK</span>
+    <div class="spinner" id="spinner"></div>
+  </button>
+
+  <div class="foot">Belum punya akun? <a href="/register">Daftar sekarang</a></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://XXXXXXXX.supabase.co';
+const SUPABASE_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+let passVisible = false;
+function togglePass() {
+  passVisible = !passVisible;
+  document.getElementById('pass').type = passVisible ? 'text' : 'password';
+  // show/hide strikethrough line
+  document.getElementById('eye-line').style.opacity = passVisible ? '0' : '1';
+}
+
+document.getElementById('pass').addEventListener('keydown', e => {
+  if(e.key === 'Enter') document.getElementById('login-btn').click();
+});
+
+function showErr(msg) {
+  document.getElementById('err-text').textContent = msg;
+  document.getElementById('err').classList.add('show');
+}
+
+document.getElementById('login-btn').addEventListener('click', async function() {
+  document.getElementById('err').classList.remove('show');
+  const uname = document.getElementById('uname').value.trim().toLowerCase();
+  const pass  = document.getElementById('pass').value;
+  if (!uname || !pass) { showErr('Username dan password wajib diisi'); return; }
+
+  this.disabled = true;
+  document.getElementById('btn-text').style.display = 'none';
+  document.getElementById('spinner').style.display  = 'block';
+  try {
+    const email = uname + '@dzzstore.id';
+    const { data, error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if (error) { showErr('Username atau password salah'); return; }
+    localStorage.setItem('dzz_user', JSON.stringify({ id: data.user.id, username: uname }));
+    window.location.href = '/';
+  } catch(e) { showErr('Gagal terhubung ke server'); }
+  finally {
+    this.disabled = false;
+    document.getElementById('btn-text').style.display = 'block';
+    document.getElementById('spinner').style.display  = 'none';
+  }
+});
+</script>
+</body>
+</html>

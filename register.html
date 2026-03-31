@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Daftar – DzzStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;--blue:#1e90ff;--accent:#00d4ff;--text:#e8f0ff;--text2:#8ba8d4;--border:#1a3258;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;}
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{position:absolute;border:1px solid rgba(30,144,255,.18);border-radius:6px;background:rgba(30,144,255,.03);}
+.bg-deco span:nth-child(1){width:40px;height:40px;top:8%;left:6%;transform:rotate(15deg);}
+.bg-deco span:nth-child(2){width:22px;height:22px;top:18%;right:10%;animation:bgf1 6s ease-in-out infinite;}
+.bg-deco span:nth-child(3){width:60px;height:60px;top:35%;left:3%;animation:bgf2 8s ease-in-out infinite;border-color:rgba(0,212,255,.12);}
+.bg-deco span:nth-child(4){width:16px;height:16px;top:50%;right:7%;animation:bgf1 5s ease-in-out infinite 1s;}
+.bg-deco span:nth-child(5){width:32px;height:32px;top:65%;left:12%;animation:bgf2 7s ease-in-out infinite .5s;border-color:rgba(0,212,255,.15);}
+.bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgf1 9s ease-in-out infinite 2s;}
+.bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgf2 6s ease-in-out infinite 1.5s;}
+.bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgf1 7s ease-in-out infinite 3s;border-color:rgba(0,212,255,.1);}
+@keyframes bgf1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes bgf2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
+.card{position:relative;z-index:1;background:var(--bg2);border:1px solid var(--border);border-radius:24px;padding:36px 28px;width:100%;max-width:380px;box-shadow:0 0 40px rgba(0,212,255,.07),0 25px 60px rgba(0,0,0,.5);animation:slideUp .5s cubic-bezier(.34,1.56,.64,1);}
+@keyframes slideUp{from{opacity:0;transform:translateY(24px);}to{opacity:1;transform:translateY(0);}}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,var(--accent),var(--blue),var(--accent));background-size:200%;animation:shine 3s linear infinite;border-radius:24px 24px 0 0;}
+@keyframes shine{0%{background-position:0%}100%{background-position:200%}}
+.brand{font-family:'Outfit',sans-serif;font-size:26px;font-weight:800;text-align:center;margin-bottom:4px;background:linear-gradient(90deg,var(--accent),var(--blue));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.brand-sub{text-align:center;color:var(--text2);font-size:11px;font-weight:600;letter-spacing:2px;text-transform:uppercase;margin-bottom:24px;}
+.field{margin-bottom:14px;}
+.field-label{display:block;font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;margin-bottom:7px;}
+.field-wrap{position:relative;}
+.field-icon{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text2);pointer-events:none;display:flex;align-items:center;}
+.field-wrap input{width:100%;padding:13px 14px 13px 42px;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;font-family:'DM Sans',sans-serif;outline:none;transition:border-color .2s;}
+.field-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px rgba(0,212,255,.1);}
+.field-wrap input::placeholder{color:var(--text2);opacity:.5;}
+.eye-btn{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:var(--text2);cursor:pointer;padding:4px;transition:color .2s;display:flex;align-items:center;}
+.eye-btn:hover{color:var(--text);}
+.err{background:rgba(255,80,80,.08);border:1px solid rgba(255,80,80,.25);border-radius:10px;padding:10px 14px;margin-bottom:14px;font-size:13px;color:#ff6b6b;display:none;align-items:center;gap:8px;}
+.err.show{display:flex;}
+.btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),var(--blue));border:none;border-radius:12px;color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:15px;cursor:pointer;transition:all .2s;letter-spacing:.5px;box-shadow:0 6px 24px rgba(0,212,255,.25);display:flex;align-items:center;justify-content:center;gap:10px;}
+.btn:hover{transform:translateY(-2px);}
+.btn:active{transform:scale(.97);}
+.btn:disabled{opacity:.6;cursor:not-allowed;transform:none;}
+.spinner{width:18px;height:18px;border:2.5px solid rgba(0,0,0,.25);border-top-color:#000;border-radius:50%;animation:spin .7s linear infinite;display:none;}
+@keyframes spin{to{transform:rotate(360deg);}}
+.foot{text-align:center;margin-top:20px;font-size:13px;color:var(--text2);}
+.foot a{color:var(--blue);text-decoration:none;font-weight:700;}
+.hint{font-size:11px;color:var(--text2);margin-top:5px;}
+</style>
+</head>
+<body>
+<div class="bg-deco"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+<div class="card">
+  <div class="brand">DzzStore</div>
+  <div class="brand-sub">Buat akun baru</div>
+  <div class="err" id="err"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg><span id="err-text"></span></div>
+
+  <div class="field">
+    <label class="field-label">Username</label>
+    <div class="field-wrap">
+      <span class="field-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+      <input type="text" id="uname" placeholder="pilih username" autocapitalize="none" autocomplete="username">
+    </div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Password</label>
+    <div class="field-wrap">
+      <span class="field-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+      <input type="password" id="pass" placeholder="••••••••" autocomplete="new-password">
+      <button class="eye-btn" type="button" onclick="togglePass(0)">
+        <svg id="eye0" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          <line id="el0" x1="3" y1="3" x2="21" y2="21"/>
+        </svg>
+      </button>
+    </div>
+    <div class="hint">Minimal 8 karakter</div>
+  </div>
+
+  <div class="field">
+    <label class="field-label">Verifikasi Password</label>
+    <div class="field-wrap">
+      <span class="field-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></span>
+      <input type="password" id="pass2" placeholder="ulangi password" autocomplete="new-password">
+      <button class="eye-btn" type="button" onclick="togglePass(1)">
+        <svg id="eye1" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+          <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+          <line id="el1" x1="3" y1="3" x2="21" y2="21"/>
+        </svg>
+      </button>
+    </div>
+    <div class="hint">Ketik ulang password di atas</div>
+  </div>
+
+  <button class="btn" id="reg-btn">
+    <span id="btn-text">DAFTAR</span>
+    <div class="spinner" id="spinner"></div>
+  </button>
+  <div class="foot">Sudah punya akun? <a href="/login">Masuk</a></div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+<script>
+const SUPABASE_URL = 'https://XXXXXXXX.supabase.co';
+const SUPABASE_KEY = 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+const vis = [false, false];
+function togglePass(i) {
+  vis[i] = !vis[i];
+  document.getElementById(i===0?'pass':'pass2').type = vis[i]?'text':'password';
+  document.getElementById('el'+i).style.opacity = vis[i]?'0':'1';
+}
+function showErr(m){document.getElementById('err-text').textContent=m;document.getElementById('err').classList.add('show');}
+
+document.getElementById('reg-btn').addEventListener('click', async function() {
+  document.getElementById('err').classList.remove('show');
+  const uname = document.getElementById('uname').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const pass  = document.getElementById('pass').value;
+  const pass2 = document.getElementById('pass2').value;
+  if (!uname)           {showErr('Username wajib diisi');return;}
+  if (uname.length < 3) {showErr('Username minimal 3 karakter');return;}
+  if (pass.length < 8)  {showErr('Password minimal 8 karakter');return;}
+  if (pass !== pass2)   {showErr('Password tidak cocok');return;}
+  this.disabled=true;document.getElementById('btn-text').style.display='none';document.getElementById('spinner').style.display='block';
+  try {
+    const email = uname+'@dzzstore.id';
+    const {data,error} = await sb.auth.signUp({email,password:pass,options:{data:{username:uname}}});
+    if(error){showErr(error.message||'Gagal mendaftar');return;}
+    localStorage.setItem('dzz_user',JSON.stringify({id:data.user.id,username:uname}));
+    window.location.href='/';
+  } catch(e){showErr('Gagal terhubung ke server');}
+  finally{
+    this.disabled=false;document.getElementById('btn-text').style.display='block';document.getElementById('spinner').style.display='none';
+  }
+});
+</script>
+</body>
+</html>

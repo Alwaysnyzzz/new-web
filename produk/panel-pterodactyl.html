@@ -104,14 +104,18 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
 /* ── CARD ── */
 .pkg{
-  border-radius:20px;overflow:hidden;cursor:pointer;
-  transition:transform .28s cubic-bezier(.34,1.56,.64,1),box-shadow .28s;
+  border-radius:20px;overflow:hidden;
+  transition:box-shadow .3s, border-color .3s;
   position:relative;display:flex;flex-direction:column;
   background:#131b2e;border:1px solid rgba(255,255,255,.06);
+  cursor:default;
 }
-.pkg:active{transform:scale(.97)!important;}
-.t15:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(30,144,255,.28);}
-.t30:hover{transform:translateY(-5px);box-shadow:0 18px 50px rgba(124,85,255,.28);}
+/* card hover — glow tipis, NO gerak */
+.t15:hover{box-shadow:0 0 0 1px rgba(30,144,255,.2), 0 8px 32px rgba(30,144,255,.12);}
+.t30:hover{box-shadow:0 0 0 1px rgba(124,85,255,.2), 0 8px 32px rgba(124,85,255,.12);}
+/* card click — glow lebih terang sebentar */
+.pkg.clicked-15{box-shadow:0 0 0 2px rgba(0,212,255,.5), 0 0 30px rgba(0,212,255,.2)!important;}
+.pkg.clicked-30{box-shadow:0 0 0 2px rgba(192,132,252,.5), 0 0 30px rgba(192,132,252,.2)!important;}
 
 /* rainbow top bar */
 .pkg-topbar{height:4px;width:100%;}
@@ -150,11 +154,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pkg-renewable::before{content:'↻';font-size:12px;}
 
 /* button */
-.pkg-btn{border-radius:50px;padding:15px 0;text-align:center;font-size:15px;font-weight:800;font-family:'Outfit',sans-serif;transition:all .25s;border:1.5px solid;display:flex;align-items:center;justify-content:center;gap:8px;}
+.pkg-btn{
+  border-radius:50px;padding:15px 0;text-align:center;font-size:15px;font-weight:800;
+  font-family:'Outfit',sans-serif;transition:background .15s, color .15s, transform .1s;
+  border:1.5px solid;display:flex;align-items:center;justify-content:center;gap:8px;
+  cursor:pointer;
+}
 .t15 .pkg-btn{border-color:var(--accent);color:var(--accent);background:transparent;}
-.t15:hover .pkg-btn{background:var(--accent);color:#000;}
 .t30 .pkg-btn{border-color:#c084fc;color:#c084fc;background:transparent;}
-.t30:hover .pkg-btn{background:#c084fc;color:#000;}
+/* flash state saat diklik — ditambah via JS */
+.pkg-btn.flash-15{background:var(--accent)!important;color:#000!important;transform:scale(.97);}
+.pkg-btn.flash-30{background:#c084fc!important;color:#000!important;transform:scale(.97);}
 
 /* Unlimited full-width */
 .pkg.unlimited{grid-column:1/-1;}
@@ -206,6 +216,116 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 @keyframes slideUp{from{opacity:0;transform:translateY(18px) scale(.96);}to{opacity:1;transform:translateY(0) scale(1);}}
 @keyframes ripple{to{transform:scale(30);opacity:0;}}
 ::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+/* ── IMG Z-INDEX FIX ── */
+.pcard-thumb img{z-index:1;position:relative;}
+
+/* ── BUY MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:1000;
+  background:rgba(0,0,0,.75);backdrop-filter:blur(8px);
+  display:none;align-items:flex-end;justify-content:center;
+  padding-bottom:0;
+}
+.modal-overlay.open{display:flex;}
+.modal-card{
+  background:var(--bg2);border:1px solid var(--border);
+  border-radius:24px 24px 0 0;
+  width:100%;max-width:520px;
+  padding:24px 20px 32px;
+  max-height:90vh;overflow-y:auto;
+  animation:modalUp .3s cubic-bezier(.34,1.56,.64,1);
+}
+@keyframes modalUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:20px;}
+.modal-pkg-name{font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#fff;}
+.modal-pkg-price{font-size:13px;color:var(--accent);margin-top:3px;}
+.modal-close{background:var(--bg3);border:1px solid var(--border);border-radius:50%;width:32px;height:32px;color:var(--text2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .2s;}
+.modal-close:hover{color:#fff;border-color:var(--blue);}
+.modal-section{margin-bottom:18px;}
+.modal-label{font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:8px;}
+.modal-input{width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;padding:12px 14px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s;font-family:'DM Sans',sans-serif;}
+.modal-input:focus{border-color:var(--blue);}
+.modal-input::placeholder{color:var(--text2);opacity:.6;}
+.modal-hint{font-size:11px;color:var(--text2);margin-top:5px;}
+
+/* User selector */
+.user-sel-header{
+  width:100%;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;
+  padding:12px 14px;display:flex;align-items:center;justify-content:space-between;
+  cursor:pointer;transition:border-color .2s;color:var(--text);font-size:14px;
+}
+.user-sel-header:hover{border-color:var(--blue);}
+.user-sel-chevron{transition:transform .25s;flex-shrink:0;}
+.user-sel-chevron.open{transform:rotate(180deg);}
+.user-sel-body{
+  max-height:0;overflow:hidden;transition:max-height .3s ease;
+  background:var(--bg3);border:1.5px solid var(--border);border-top:none;
+  border-radius:0 0 12px 12px;
+}
+.user-sel-body.open{max-height:280px;}
+.user-sel-scroll{overflow-y:auto;max-height:280px;}
+.user-sel-new{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;cursor:pointer;
+  border-bottom:1px solid var(--border);
+  font-size:13px;font-weight:700;color:var(--accent);
+  transition:background .2s;
+}
+.user-sel-new:hover{background:rgba(0,212,255,.08);}
+.user-sel-new-circle{
+  width:26px;height:26px;border-radius:50%;
+  border:2px solid var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:16px;color:var(--accent);flex-shrink:0;
+}
+.user-sel-item{
+  display:flex;align-items:center;gap:10px;
+  padding:12px 14px;cursor:pointer;
+  font-size:13px;color:var(--text2);
+  transition:all .2s;
+}
+.user-sel-item:hover,.user-sel-item.selected{background:var(--bg);color:var(--text);}
+.user-sel-item.selected::after{content:'✓';margin-left:auto;color:var(--accent);font-weight:800;}
+.user-sel-empty{
+  padding:28px 14px;text-align:center;color:var(--text2);font-size:13px;
+}
+.user-sel-empty-plus{
+  width:48px;height:48px;border-radius:50%;
+  border:2px solid var(--border);
+  display:flex;align-items:center;justify-content:center;
+  font-size:28px;color:var(--text2);
+  margin:0 auto 10px;cursor:pointer;transition:all .2s;
+}
+.user-sel-empty-plus:hover{border-color:var(--accent);color:var(--accent);}
+
+/* Pay button */
+.modal-pay-btn{
+  width:100%;padding:16px;
+  background:linear-gradient(135deg,var(--blue2),var(--accent));
+  border:none;border-radius:14px;
+  color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:16px;
+  cursor:pointer;transition:all .2s;margin-top:8px;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.modal-pay-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,212,255,.35);}
+.modal-pay-btn:active{transform:scale(.97);}
+
+/* Create user mini modal */
+.create-user-modal{
+  position:fixed;inset:0;z-index:1100;
+  background:rgba(0,0,0,.8);backdrop-filter:blur(8px);
+  display:none;align-items:center;justify-content:center;padding:20px;
+}
+.create-user-modal.open{display:flex;}
+.create-user-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:20px;
+  padding:24px 20px;width:100%;max-width:360px;
+  animation:slideUp .3s cubic-bezier(.34,1.56,.64,1);
+}
+.create-user-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:#fff;margin-bottom:6px;}
+.create-user-sub{font-size:12px;color:var(--text2);margin-bottom:18px;line-height:1.5;}
+.create-user-note{font-size:11px;color:var(--text2);margin-top:12px;padding:10px 12px;background:var(--bg3);border-radius:10px;line-height:1.6;}
 </style>
 </head>
 <body>
@@ -304,11 +424,80 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="pkg-grid" id="grid30"></div>
   </div>
 
-  <div class="pkg-note">
-    <div class="pkg-note-icon">⚠️</div>
-    <div>Harga di atas adalah <strong>estimasi sementara</strong>. Setelah memesan, hubungi kami via <strong>WhatsApp</strong> untuk konfirmasi harga final & aktivasi. Komplain & koreksi harga bisa dilakukan melalui menu Kontak.</div>
-  </div>
+</div>
 
+<!-- ── BUY MODAL ── -->
+<div class="modal-overlay" id="buy-modal">
+  <div class="modal-card">
+    <div class="modal-header">
+      <div>
+        <div class="modal-pkg-name" id="modal-pkg-name">Paket</div>
+        <div class="modal-pkg-price" id="modal-pkg-price"></div>
+      </div>
+      <button class="modal-close" onclick="closeBuyModal()">✕</button>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-label">Username Panel</div>
+      <input class="modal-input" id="modal-uname" placeholder="contoh: dzz123" autocapitalize="none">
+      <div class="modal-hint">Ini adalah username untuk akun panel server kamu</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-label">Password Panel <span style="color:var(--text2);font-weight:400;text-transform:none;letter-spacing:0">(kosong = otomatis)</span></div>
+      <input class="modal-input" id="modal-pass" type="password" placeholder="••••••••">
+      <div class="modal-hint">Kosongkan jika ingin password dibuat otomatis oleh sistem</div>
+    </div>
+
+    <div class="modal-section">
+      <div class="modal-label">Pilih User</div>
+      <div class="user-sel-header" id="user-sel-header" onclick="toggleUserSel()">
+        <span id="user-sel-text">Pilih atau buat user baru</span>
+        <svg class="user-sel-chevron" id="user-sel-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="user-sel-body" id="user-sel-body">
+        <div class="user-sel-scroll" id="user-sel-scroll"></div>
+      </div>
+      <a href="/buat-user" style="display:flex;align-items:center;gap:8px;margin-top:8px;padding:11px 14px;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);border-radius:10px;color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+        Buat User Panel Baru
+      </a>
+    </div>
+
+    <button class="modal-pay-btn" onclick="proceedBuy()">⚡ Beli Sekarang</button>
+  </div>
+</div>
+
+<!-- SUCCESS MODAL -->
+<div class="modal-overlay" id="success-modal">
+  <div class="modal-card">
+    <div style="text-align:center;margin-bottom:20px">
+      <div style="width:64px;height:64px;border-radius:50%;background:rgba(0,200,100,.15);border:2px solid rgba(0,200,100,.3);display:flex;align-items:center;justify-content:center;font-size:28px;margin:0 auto 12px">✅</div>
+      <div style="font-family:'Outfit',sans-serif;font-size:20px;font-weight:800;color:#00c864">Server Berhasil Dibuat!</div>
+      <div style="font-size:12px;color:var(--text2);margin-top:4px">Simpan informasi berikut baik-baik</div>
+    </div>
+
+    <!-- Specs -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:14px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:12px">Spesifikasi Server</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="spec-rows"></div>
+    </div>
+
+    <!-- Credentials -->
+    <div style="background:var(--bg3);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:16px;">
+      <div style="font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:var(--text2);margin-bottom:12px">Akses Panel</div>
+      <div style="display:flex;flex-direction:column;gap:8px" id="cred-rows"></div>
+    </div>
+
+    <!-- Green note: check panel -->
+    <div id="panel-check-note" style="display:none;background:rgba(0,200,100,.07);border:1px solid rgba(0,200,100,.25);border-radius:12px;padding:14px 16px;font-size:13px;color:#00c864;margin-bottom:16px;line-height:1.6;text-align:center;">
+      ✅ <strong>Silakan cek akun panel Anda</strong><br>
+      <span style="font-size:12px;color:var(--text2)">Login menggunakan credential di atas</span>
+    </div>
+
+    <button class="modal-pay-btn" onclick="location.href=currentPteroUrl" style="margin-bottom:8px">Buka Panel →</button>
+    <button onclick="document.getElementById('success-modal').classList.remove('open');document.body.style.overflow=''" style="width:100%;padding:12px;background:var(--bg3);border:1px solid var(--border);border-radius:12px;color:var(--text2);font-family:'Outfit',sans-serif;font-weight:700;font-size:14px;cursor:pointer;">Tutup</button>
+  </div>
 </div>
 
 <nav class="bottom-nav">
@@ -388,7 +577,7 @@ function makeCard(gb, type) {
         <div class="pkg-period">${period}</div>
       </div>
       <div class="pkg-renewable">Bisa Diperpanjang</div>
-      <div class="pkg-btn" onclick="order('${gb}GB-${type}hari',event,'${waMsg}')">⚡ Beli Sekarang</div>
+      <div class="pkg-btn" onclick="openBuyModal('${gb}GB-${type}hari','${gb} GB','${fmt(price)} ${period}',event)">⚡ Beli Sekarang</div>
     </div>
   </div>`;
 }
@@ -396,9 +585,11 @@ function makeCard(gb, type) {
 function makeUnlimited(type) {
   const is30  = type === 30;
   const cls   = is30 ? 't30' : 't15';
-  const waMsg = encodeURIComponent(`Halo DzzXNzz, saya tertarik paket Panel Pterodactyl Unlimited ${type} hari. Mohon info harga custom-nya!`);
+  const pkg   = `Unlimited-${type}hari`;
   const priceColor = is30 ? '#c084fc' : 'var(--accent)';
   const btnBorder  = is30 ? '#c084fc' : 'var(--accent)';
+  const price = is30 ? 'Rp 20.000' : 'Rp 12.000';
+  const period = is30 ? '/30 Hari' : '/15 Hari';
   return `
   <div class="pkg ${cls} unlimited">
     <div class="pkg-topbar"></div>
@@ -409,22 +600,22 @@ function makeUnlimited(type) {
         <div class="unlimited-titles">
           <div class="unlimited-badge">&#8734; UNLIMITED STORAGE</div>
           <div class="pkg-ram" style="font-size:28px">Unlimited <span>GB</span></div>
-          <div class="unlimited-desc">Storage tanpa batas. Spek &amp; harga disesuaikan kebutuhan kamu &mdash; hubungi kami untuk penawaran khusus.</div>
+          <div class="unlimited-desc">Storage tanpa batas untuk proyek besar &amp; game server skala penuh.</div>
         </div>
       </div>
       <div class="pkg-divider"></div>
       <div class="unlimited-specs">
         <div class="unlimited-spec-box">
           <div class="unlimited-spec-label">CPU</div>
-          <div class="unlimited-spec-val">Custom</div>
+          <div class="unlimited-spec-val">Unlimited</div>
         </div>
         <div class="unlimited-spec-box">
           <div class="unlimited-spec-label">Memori</div>
-          <div class="unlimited-spec-val">Custom</div>
+          <div class="unlimited-spec-val">Unlimited</div>
         </div>
         <div class="unlimited-spec-box">
           <div class="unlimited-spec-label">Disk</div>
-          <div class="unlimited-spec-val">Custom</div>
+          <div class="unlimited-spec-val">Unlimited</div>
         </div>
         <div class="unlimited-spec-box">
           <div class="unlimited-spec-label">Spek VPS</div>
@@ -435,11 +626,12 @@ function makeUnlimited(type) {
       <div class="unlimited-bottom">
         <div class="unlimited-left-side">
           <div class="pkg-price-wrap">
-            <div class="pkg-price" style="font-size:28px;color:${priceColor}">Harga Custom</div>
+            <div class="pkg-price" style="font-size:28px;color:${priceColor}">${price}</div>
+            <div class="pkg-period">${period}</div>
           </div>
           <div class="pkg-renewable">Bisa Diperpanjang</div>
         </div>
-        <div class="pkg-btn" style="border-color:${btnBorder};color:${btnBorder};padding:14px 28px;white-space:nowrap;flex-shrink:0;" onclick="order('Unlimited-${type}hari',event,'${waMsg}')">&#9889; Hubungi Kami</div>
+        <div class="pkg-btn" style="border-color:${btnBorder};color:${btnBorder};padding:14px 28px;white-space:nowrap;flex-shrink:0;" onclick="openBuyModal('${pkg}','Unlimited GB','${price} ${period}',event)">&#9889; Beli Sekarang</div>
       </div>
     </div>
   </div>`;
@@ -473,16 +665,228 @@ function switchTab(t) {
 }
 
 // ── Order ──
-function order(pkg, e, waMsg) {
-  e.stopPropagation();
-  const btn = e.currentTarget;
-  const r = document.createElement('div');
-  r.style.cssText = 'position:absolute;border-radius:50%;background:rgba(255,255,255,.15);width:10px;height:10px;transform:scale(0);animation:ripple .4s ease;pointer-events:none;z-index:10;top:50%;left:50%;margin:-5px;';
-  btn.style.position = 'relative';
-  btn.style.overflow = 'hidden';
-  btn.appendChild(r);
-  setTimeout(() => r.remove(), 400);
-  window.open('https://wa.me/6287713472756?text=' + waMsg, '_blank');
+// Card click → glow sebentar (bukan redirect)
+document.addEventListener('click', function(e) {
+  const card = e.target.closest('.pkg');
+  if (!card || e.target.closest('.pkg-btn')) return;
+  const cls = card.classList.contains('t30') ? 'clicked-30' : 'clicked-15';
+  card.classList.add(cls);
+  setTimeout(() => card.classList.remove(cls), 400);
+});
+
+// ── BUY MODAL ──
+let currentPkg = null;
+
+function openBuyModal(pkg, name, price, e) {
+  if(e) e.stopPropagation();
+  currentPkg = pkg;
+  document.getElementById('modal-pkg-name').textContent = 'Paket ' + name;
+  document.getElementById('modal-pkg-price').textContent = price;
+  document.getElementById('modal-uname').value = '';
+  document.getElementById('modal-pass').value = '';
+  document.getElementById('user-sel-body').classList.remove('open');
+  document.getElementById('user-sel-chevron').classList.remove('open');
+  renderUserList();
+  document.getElementById('buy-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeBuyModal() {
+  document.getElementById('buy-modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.getElementById('buy-modal').addEventListener('click', function(e) {
+  if(e.target === this) closeBuyModal();
+});
+
+// ── USER SELECTOR ──
+let selectedUser = null;
+
+function getPanelUsers() {
+  try { return JSON.parse(localStorage.getItem('panel_users') || '[]'); } catch{ return []; }
+}
+function savePanelUsers(arr) {
+  localStorage.setItem('panel_users', JSON.stringify(arr));
+}
+
+function renderUserList() {
+  const users = getPanelUsers();
+  const scroll = document.getElementById('user-sel-scroll');
+  let html = `<div class="user-sel-new" onclick="openCreateUser()"><div class="user-sel-new-circle">+</div>Buat User Baru</div>`;
+  if (users.length === 0) {
+    html += `<div class="user-sel-empty">
+      <div class="user-sel-empty-plus" onclick="openCreateUser()">+</div>
+      Belum ada user. Buat dulu ya!
+    </div>`;
+  } else {
+    users.forEach(u => {
+      const sel = selectedUser === u.username ? 'selected' : '';
+      html += `<div class="user-sel-item ${sel}" onclick="selectUser('${u.username}')">${u.username}<span style="font-size:10px;color:var(--text2);margin-left:6px">${u.email}</span></div>`;
+    });
+  }
+  scroll.innerHTML = html;
+  const selText = selectedUser || 'Pilih atau buat user baru';
+  document.getElementById('user-sel-text').textContent = selText;
+}
+
+function toggleUserSel() {
+  const body = document.getElementById('user-sel-body');
+  const chev = document.getElementById('user-sel-chevron');
+  const open = body.classList.toggle('open');
+  chev.classList.toggle('open', open);
+}
+
+function selectUser(uname) {
+  selectedUser = uname;
+  document.getElementById('user-sel-text').textContent = uname;
+  document.getElementById('modal-uname').value = uname;
+  renderUserList();
+  document.getElementById('user-sel-body').classList.remove('open');
+  document.getElementById('user-sel-chevron').classList.remove('open');
+}
+
+// ── CREATE USER ──
+function openCreateUser() {
+  document.getElementById('new-user-input').value = '';
+  document.getElementById('new-user-preview').textContent = 'username@buyer.dzz';
+  document.getElementById('create-user-modal').classList.add('open');
+}
+function closeCreateUser() {
+  document.getElementById('create-user-modal').classList.remove('open');
+}
+document.getElementById('new-user-input').addEventListener('input', function() {
+  const val = this.value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'') || 'username';
+  document.getElementById('new-user-preview').textContent = val + '@buyer.dzz';
+});
+
+function genPassword() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$';
+  return Array.from({length:12}, () => chars[Math.floor(Math.random()*chars.length)]).join('');
+}
+
+function doCreateUser() {
+  const uname = document.getElementById('new-user-input').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
+  if (!uname) { alert('Username tidak boleh kosong'); return; }
+  const users = getPanelUsers();
+  if (users.find(u => u.username === uname)) { alert('Username sudah ada'); return; }
+  const newUser = { username: uname, email: uname+'@buyer.dzz', password: genPassword(), created: Date.now() };
+  users.push(newUser);
+  savePanelUsers(users);
+  selectedUser = uname;
+  closeCreateUser();
+  renderUserList();
+  document.getElementById('modal-uname').value = uname;
+  // tutup selector
+  document.getElementById('user-sel-body').classList.remove('open');
+  document.getElementById('user-sel-chevron').classList.remove('open');
+}
+
+let currentPteroUrl = (typeof CONFIG !== 'undefined' ? CONFIG.PTERO_URL : null) || 'https://panel.nyzz.my.id';
+
+// ── PROCEED BUY — langsung proses tanpa payment ──
+async function proceedBuy() {
+  const uname = document.getElementById('modal-uname').value.trim().toLowerCase().replace(/[^a-z0-9_]/g,'');
+  const pass  = document.getElementById('modal-pass').value.trim();
+  if (!uname) { alert('Isi username panel dulu'); return; }
+
+  const btn = document.querySelector('.modal-pay-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Memproses...';
+
+  try {
+    // Ambil data dari localStorage
+    const buyers  = JSON.parse(localStorage.getItem('panel_users') || '[]');
+    let user = buyers.find(u => u.username === uname);
+
+    // Kalau user tidak ada di lokal, buat baru
+    const finalPass = pass || genPassword();
+    if (!user) {
+      const domain = (typeof CONFIG !== 'undefined' ? CONFIG.BUYER_DOMAIN : null) || 'buyer.dzz';
+      user = { username: uname, email: uname+'@'+domain, password: finalPass, created: Date.now() };
+      buyers.push(user);
+      localStorage.setItem('panel_users', JSON.stringify(buyers));
+    } else if (pass) {
+      user.password = finalPass;
+      localStorage.setItem('panel_users', JSON.stringify(buyers));
+    }
+
+    // Parse GB dari pkg
+    const gbMatch = currentPkg.match(/^(\d+)GB/);
+    const gb = gbMatch ? parseInt(gbMatch[1]) : 1;
+    const isUnlimited = currentPkg.startsWith('Unlimited');
+    const is30 = currentPkg.includes('30hari');
+    const cpu  = isUnlimited ? 'Unlimited' : (is30 ? (100+(gb-1)*25)+'%' : (100+(gb-1)*15)+'%');
+    const mem  = isUnlimited ? 'Unlimited' : ((is30 ? 1095 : 1035) + (gb-1)*1000).toLocaleString('id-ID') + ' MB';
+    const disk = mem;
+    const days = is30 ? 30 : 15;
+    const exp  = new Date(Date.now() + days*24*60*60*1000).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'});
+
+    // Simpan order ke localStorage
+    const dzzUser = JSON.parse(localStorage.getItem('dzz_user') || 'null');
+    if (dzzUser) {
+      const orders = JSON.parse(localStorage.getItem('dzz_orders_'+dzzUser.id) || '[]');
+      orders.push({ pkg: currentPkg, user: uname, price: document.getElementById('modal-pkg-price').textContent, status:'aktif', expires: exp, created: Date.now() });
+      localStorage.setItem('dzz_orders_'+dzzUser.id, JSON.stringify(orders));
+    }
+
+    // Coba buat di Pterodactyl API jika tersedia
+    let serverId = null;
+    if (typeof processBuy !== 'undefined') {
+      try {
+        const result = await processBuy({ username: uname, password: finalPass, pkg: currentPkg, type: is30?30:15 });
+        serverId = result.serverId;
+        currentPteroUrl = result.panelUrl || currentPteroUrl;
+      } catch(e) { console.warn('API Panel:', e.message); }
+    }
+
+    // Tutup buy modal, buka success
+    closeBuyModal();
+    showSuccess({ uname, email: user.email, password: user.password, cpu, mem, disk, exp, pkg: currentPkg, serverId });
+
+  } catch(e) {
+    alert('Gagal: ' + e.message);
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '⚡ Beli Sekarang';
+  }
+}
+
+function showSuccess({ uname, email, password, cpu, mem, disk, exp, pkg, serverId }) {
+  const specs = [
+    ['RAM', pkg.startsWith('Unlimited') ? 'Unlimited' : pkg.replace(/GB.*/, ' GB')],
+    ['CPU', cpu],
+    ['Memori', mem],
+    ['Disk', disk],
+    ['Expired', exp],
+  ];
+  const creds = [
+    ['Username', uname],
+    ['Email Panel', email],
+    ['Password', password],
+    ['URL Panel', currentPteroUrl],
+  ];
+  if (serverId) creds.push(['Server ID', serverId]);
+
+  document.getElementById('spec-rows').innerHTML = specs.map(([k,v]) =>
+    `<div style="display:flex;justify-content:space-between;align-items:center;">
+      <span style="font-size:11px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px">${k}</span>
+      <span style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;color:#fff">${v}</span>
+    </div>`
+  ).join('');
+
+  document.getElementById('cred-rows').innerHTML = creds.map(([k,v]) =>
+    `<div style="display:flex;justify-content:space-between;align-items:center;gap:8px;">
+      <div>
+        <div style="font-size:10px;color:var(--text2);font-weight:700;text-transform:uppercase;letter-spacing:.5px">${k}</div>
+        <div style="font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;color:#fff;word-break:break-all">${v}</div>
+      </div>
+      <button onclick="navigator.clipboard.writeText('${v.replace(/'/g,"\\'")}').then(()=>{this.textContent='✓';setTimeout(()=>this.textContent='Salin',1500)})"
+        style="background:var(--bg3);border:1px solid var(--border);border-radius:8px;padding:5px 10px;font-size:11px;color:var(--text2);cursor:pointer;flex-shrink:0;">Salin</button>
+    </div>`
+  ).join('');
+
+  document.getElementById('panel-check-note').style.display = 'block';
+  document.getElementById('success-modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
 }
 
 // ── Sidebar / Avatar ──
