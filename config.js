@@ -7,8 +7,7 @@ const CONFIG = {
 
   // ── SUPABASE ─────────────────────────────────────
   SUPABASE_URL : 'https://ccadysepuoxqeezwvdqu.supabase.co',
-  SUPABASE_KEY : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjYWR5c2VwdW94cWVlend2ZHF1Iiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NDkxNDkyNiwiZXhwIjoyMDkwNDkwOTI2fQ.OwfriPVLVTG8voC8yoD7d5dE7MJcnm2twf7DKHK4DGw',
-
+  SUPABASE_KEY : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNjYWR5c2VwdW94cWVlend2ZHF1Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQ5MTQ5MjYsImV4cCI6MjA5MDQ5MDkyNn0.F7bms684KoYLqddyaxQ1w8F2t9pIfqKKzOCputs51ss',
   // ── PTERODACTYL PANEL ────────────────────────────
   PTERO_URL    : 'https://panel.namawebmu.com',
   PTERO_API_KEY: 'ptla_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX',
