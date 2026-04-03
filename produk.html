@@ -199,12 +199,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
         <div class="avatar-drop" id="avatar-drop">
           <div id="drop-guest">
             <div class="avatar-drop-header"><strong>Halo, Tamu!</strong>Masuk untuk akses penuh</div>
-            <a href="/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Login</a>
-            <a href="/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Register</a>
+            <a href="/login"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/><polyline points="10 17 15 12 10 7"/><line x1="15" y1="12" x2="3" y2="12"/></svg>Login</a>
+            <a href="/register"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>Register</a>
           </div>
           <div id="drop-user" style="display:none">
-            <div class="avatar-drop-header"><strong>DzzXNzz</strong>Member aktif</div>
-            <a href="/"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya</a>
+            <div class="avatar-drop-header"><strong id="drop-uname">User</strong>Member DzzStore</div>
+            <a href="/profil"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>Profil Saya</a>
+            <a href="/riwayat"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Riwayat</a>
             <a href="#" class="danger" onclick="doLogout()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</a>
           </div>
         </div>
@@ -226,7 +227,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
       Beranda
     </div>
-    <div class="sidebar-item" onclick="location.href='/'">
+    <div class="sidebar-item" onclick="location.href='/riwayat'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
       Riwayat Transaksi
     </div>
@@ -241,12 +242,12 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="sidebar-subitem" onclick="goTo('paket-data');closeSidebar()">Paket Data</div>
       <div class="sidebar-subitem" onclick="goTo('suntik-follower');closeSidebar()">Suntik Follower</div>
     </div>
-    <div class="sidebar-item" onclick="location.href='/'">
+    <div class="sidebar-item" onclick="location.href='/kontak'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       Kontak
     </div>
     <div class="sidebar-section">Akun</div>
-    <div class="sidebar-item" onclick="location.href='/'">
+    <div class="sidebar-item" onclick="location.href='/profil'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
       Profil Saya
     </div>
@@ -341,19 +342,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </nav>
 
 <script>
-function goCard(url) {
-  location.href = url;
-}
+function getUser(){try{return JSON.parse(localStorage.getItem('dzz_user'));}catch{return null;}}
+function doLogout(){localStorage.removeItem('dzz_user');location.href='/';}
+function goCard(url){location.href=url;}
+function goTo(id){setTimeout(function(){var el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},150);}
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
-function toggleProdukDrop(btn){const d=document.getElementById('sidebar-produk-drop');const c=btn.querySelector('.sidebar-chevron');const o=d.classList.toggle('open');c.classList.toggle('open',o);}
-let isLoggedIn=false;
+function toggleProdukDrop(btn){var d=document.getElementById('sidebar-produk-drop');var c=btn.querySelector('.sidebar-chevron');var o=d.classList.toggle('open');c.classList.toggle('open',o);}
 function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
-function doLogout(){isLoggedIn=false;document.getElementById('drop-guest').style.display='block';document.getElementById('drop-user').style.display='none';document.getElementById('avatar-drop').classList.remove('open');}
-document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
+document.addEventListener('click',function(){document.getElementById('avatar-drop').classList.remove('open');});
+
+// Auth init
+(function(){
+  var user=getUser();
+  if(user){
+    document.getElementById('drop-guest').style.display='none';
+    document.getElementById('drop-user').style.display='block';
+    document.getElementById('drop-uname').textContent=user.username;
+  }
+  var hash=location.hash.replace('#','');
+  if(hash){setTimeout(function(){var el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},600);}
+})();
 </script>
 </body>
 </html>
-const hash=location.hash.replace('#','');
-if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},600);}
-</script>
