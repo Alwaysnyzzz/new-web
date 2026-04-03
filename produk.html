@@ -85,7 +85,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   width:100%; aspect-ratio:1/1;
   position:relative; overflow:hidden;
   background:var(--bg3);
-  display:flex; align-items:center; justify-content:center;
 }
 .pcard-thumb img{
   width:100%; height:100%;
@@ -93,6 +92,13 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   transition:transform .4s ease;
 }
 .pcard:hover .pcard-thumb img{ transform:scale(1.06); }
+
+/* fallback when no image - visible by default */
+.pcard-fallback{
+  display:flex; position:absolute; inset:0;
+  align-items:center; justify-content:center;
+  font-size:52px; background:var(--bg3);
+}
 
 /* badge */
 .pcard-type{
@@ -171,10 +177,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgfloat1 9s ease-in-out infinite 2s;}
 .bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgfloat2 6s ease-in-out infinite 1.5s;}
 .bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgfloat1 7s ease-in-out infinite 3s;}
-.pcard-thumb img{
-  z-index:1;
-  position:relative;
-}
 @keyframes bgfloat1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
 @keyframes bgfloat2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
 </style>
@@ -239,7 +241,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
       <div class="sidebar-subitem" onclick="goTo('paket-data');closeSidebar()">Paket Data</div>
       <div class="sidebar-subitem" onclick="goTo('suntik-follower');closeSidebar()">Suntik Follower</div>
     </div>
-    <div class="sidebar-item" onclick="location.href='./kontak.html'">
+    <div class="sidebar-item" onclick="location.href='/'">
       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
       Kontak
     </div>
@@ -258,7 +260,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="pcard pcard-ptero" id="panel-pterodactyl" onclick="goCard('/produk/panel-pterodactyl')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/84b238a6b52911d65848e3e3e974605f97ff8d64/image/panel-pterodactyl.jpg" alt="Panel Pterodactyl">
+      <div class="pcard-fallback" id="fb-ptero"><div class="pcard-emoji">🦕</div></div>
+      <img src="image/panel-pterodactyl.jpg" alt="Panel Pterodactyl"
+        onload="this.style.opacity='1';document.getElementById('fb-ptero').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">PANEL</div>
     </div>
     <div class="pcard-body">
@@ -268,7 +274,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="pcard pcard-pulsa" id="pulsa" onclick="goCard('/produk/pulsa')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/pulsa.jpg" alt="Pulsa">
+      <div class="pcard-fallback" id="fb-pulsa"><div class="pcard-emoji">📱</div></div>
+      <img src="image/pulsa.jpg" alt="Pulsa"
+        onload="this.style.opacity='1';document.getElementById('fb-pulsa').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">PULSA</div>
     </div>
     <div class="pcard-body">
@@ -278,7 +288,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="pcard pcard-data" id="paket-data" onclick="goCard('/produk/paket-data')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/paket-data.jpg" alt="Paket Data">
+      <div class="pcard-fallback" id="fb-data"><div class="pcard-emoji">📡</div></div>
+      <img src="image/paket-data.jpg" alt="Paket Data"
+        onload="this.style.opacity='1';document.getElementById('fb-data').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">DATA</div>
     </div>
     <div class="pcard-body">
@@ -288,7 +302,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 
   <div class="pcard pcard-follower" id="suntik-follower" onclick="goCard('/produk/suntik-follower')">
     <div class="pcard-thumb">
-      <img src="https://raw.githubusercontent.com/Alwaysnyzzz/new-web/refs/heads/main/image/suntik-follower.jpg" alt="Suntik Follower">
+      <div class="pcard-fallback" id="fb-follower"><div class="pcard-emoji">🚀</div></div>
+      <img src="image/suntik-follower.jpg" alt="Suntik Follower"
+        onload="this.style.opacity='1';document.getElementById('fb-follower').style.display='none'"
+        onerror="this.remove()"
+        style="opacity:0;transition:opacity .3s">
       <div class="pcard-type">BOOST</div>
     </div>
     <div class="pcard-body">
@@ -312,7 +330,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
     <div class="fab-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div>
     <span class="nav-label">Produk</span>
   </div>
-  <div class="nav-item" onclick="location.href='./kontak.html'">
+  <div class="nav-item" onclick="location.href='/'">
     <div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
     <span class="nav-label">Kontak</span>
   </div>
@@ -323,17 +341,19 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 </nav>
 
 <script>
-function goCard(url) { location.href = url; }
+function goCard(url) {
+  location.href = url;
+}
 function openSidebar(){document.getElementById('sidebar').classList.add('open');document.getElementById('overlay').classList.add('show');}
 function closeSidebar(){document.getElementById('sidebar').classList.remove('open');document.getElementById('overlay').classList.remove('show');}
 function toggleProdukDrop(btn){const d=document.getElementById('sidebar-produk-drop');const c=btn.querySelector('.sidebar-chevron');const o=d.classList.toggle('open');c.classList.toggle('open',o);}
-function goTo(id){setTimeout(()=>{const el=document.getElementById(id);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},150);}
 let isLoggedIn=false;
 function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
 function doLogout(){isLoggedIn=false;document.getElementById('drop-guest').style.display='block';document.getElementById('drop-user').style.display='none';document.getElementById('avatar-drop').classList.remove('open');}
 document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
-const hash=location.hash.replace('#','');
-if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},600);}
 </script>
 </body>
 </html>
+const hash=location.hash.replace('#','');
+if(hash){setTimeout(()=>{const el=document.getElementById(hash);if(el)el.scrollIntoView({behavior:'smooth',block:'center'});},600);}
+</script>

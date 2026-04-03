@@ -225,238 +225,152 @@ function closeSidebar(){document.getElementById('sidebar').classList.remove('ope
 function toggleAvatarDrop(e){e.stopPropagation();document.getElementById('avatar-drop').classList.toggle('open');}
 document.addEventListener('click',()=>document.getElementById('avatar-drop').classList.remove('open'));
 
-// Toggle accordion
-function toggleAcc(id) {
-  const el = document.getElementById(id);
-  el.classList.toggle('open');
+function toggleAcc(id){document.getElementById(id).classList.toggle('open');}
+
+function togglePw(id,btn){
+  var inp=document.getElementById(id);
+  inp.type=inp.type==='password'?'text':'password';
+  var line=btn.querySelector('line');
+  if(line) line.style.opacity=inp.type==='password'?'1':'0';
 }
 
-// Toggle password visibility
-function togglePw(id, btn) {
-  const inp = document.getElementById(id);
-  inp.type = inp.type === 'password' ? 'text' : 'password';
-  btn.querySelector('svg line')?.setAttribute('opacity', inp.type === 'password' ? '1' : '0');
+function prodClass(pkg){
+  if(!pkg) return 'ptero';
+  var p=pkg.toLowerCase();
+  if(p.indexOf('pulsa')>-1) return 'pulsa';
+  if(p.indexOf('data')>-1||p.indexOf('paket')>-1) return 'data';
+  if(p.indexOf('follow')>-1||p.indexOf('suntik')>-1) return 'follo';
+  return 'ptero';
+}
+function prodName(pkg){
+  if(!pkg) return 'Panel Pterodactyl';
+  var p=pkg.toLowerCase();
+  if(p.indexOf('pulsa')>-1) return 'Pulsa & Operator';
+  if(p.indexOf('data')>-1||p.indexOf('paket')>-1) return 'Paket Internet';
+  if(p.indexOf('follow')>-1||p.indexOf('suntik')>-1) return 'Suntik Follower';
+  return 'Panel Pterodactyl';
 }
 
-function renderContent() {
-  const el   = document.getElementById('content');
-  if (!el) return;
-  const user = getUser();
-  if (!user) {
-    el.innerHTML = `
-    <div class="guest-state">
-      <div class="guest-icon">👤</div>
-      <div class="guest-title">Anda belum login</div>
-      <div class="guest-sub">Silakan login untuk melihat profil kamu</div>
-      <div class="guest-btns">
-        <a href="/register" class="guest-btn-register">Register</a>
-        <a href="/login" class="guest-btn-login">Login</a>
-      </div>
-    </div>`;
+function gantiPassword(){
+  var oldPw=document.getElementById('pw-old').value;
+  var newPw=document.getElementById('pw-new').value;
+  var newPw2=document.getElementById('pw-new2').value;
+  var msg=document.getElementById('pw-msg');
+  msg.style.display='block';
+  if(!oldPw||!newPw||!newPw2){msg.style.color='#ff6b6b';msg.textContent='Semua field wajib diisi';return;}
+  if(newPw.length<8){msg.style.color='#ff6b6b';msg.textContent='Password baru minimal 8 karakter';return;}
+  if(newPw!==newPw2){msg.style.color='#ff6b6b';msg.textContent='Password baru tidak cocok';return;}
+  msg.style.color='#00c864';msg.textContent='✓ Password berhasil diubah';
+}
+
+var CHEV='<svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>';
+var EYE='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line x1="3" y1="3" x2="21" y2="21" stroke-width="2"/></svg>';
+
+function renderContent(){
+  var el=document.getElementById('content');
+  if(!el) return;
+  var user=getUser();
+
+  if(!user){
+    el.innerHTML='<div class="guest-state"><div class="guest-icon">👤</div><div class="guest-title">Anda belum login</div><div class="guest-sub">Silakan login untuk melihat profil kamu</div><div class="guest-btns"><a href="/register" class="guest-btn-register">Register</a><a href="/login" class="guest-btn-login">Login</a></div></div>';
     return;
   }
 
-  const orders     = JSON.parse(localStorage.getItem('dzz_orders_'+user.id)||'[]');
-  const panelUsers = JSON.parse(localStorage.getItem('panel_users')||'[]');
-  const pending  = orders.filter(o=>o.status==='pending').length;
-  const sukses   = orders.filter(o=>o.status==='aktif').length;
-  const batal    = orders.filter(o=>o.status==='expired'||o.status==='batal').length;
+  var orders=JSON.parse(localStorage.getItem('dzz_orders_'+user.id)||'[]');
+  var panelUsers=JSON.parse(localStorage.getItem('panel_users')||'[]');
+  var pending=orders.filter(function(o){return o.status==='pending';}).length;
+  var sukses=orders.filter(function(o){return o.status==='aktif';}).length;
+  var batal=orders.filter(function(o){return o.status==='expired'||o.status==='batal';}).length;
 
-  // Render user list
-  // const userListHTML = panelUsers.length === 0
-    ? `<div class="user-empty">Belum ada user panel</div>`
-    : panelUsers.map(u => `
-      <div class="user-item">
-        <div class="user-avatar-sm">${u.username.slice(0,2).toUpperCase()}</div>
-        <div class="user-info">
-          <div class="user-name-sm">${u.username}</div>
-          <div class="user-email-sm">${u.email}</div>
-        </div>
-      </div>`).join('');
+  var userListHTML=panelUsers.length===0
+    ?'<div class="user-empty">Belum ada user panel</div>'
+    :panelUsers.map(function(u){
+      return '<div class="user-item"><div class="user-avatar-sm">'+u.username.slice(0,2).toUpperCase()+'</div><div class="user-info"><div class="user-name-sm">'+u.username+'</div><div class="user-email-sm">'+u.email+'</div></div></div>';
+    }).join('');
 
-  // Render orders
-  const orderListHTML = orders.length === 0
-    ? `<div class="order-empty">📭 Belum ada order</div>`
-    : orders.slice().reverse().map(o => `
-      <div class="order-card-mini">
-        <div class="order-top-mini">
-          <div class="order-pkg-mini">${o.pkg}</div>
-          <div class="order-badge ${o.status}">${o.status==='aktif'?'Aktif':o.status==='pending'?'Pending':'Expired'}</div>
-        </div>
-        <div class="order-meta">
-          <div class="order-meta-item">User: <strong>${o.user||'-'}</strong></div>
-          <div class="order-meta-item">Harga: <strong>${o.price||'-'}</strong></div>
-          <div class="order-meta-item">Tanggal: <strong>${new Date(o.created).toLocaleDateString('id-ID')}</strong></div>
-        </div>
-      </div>`).join('');
+  var orderListHTML=orders.length===0
+    ?'<div class="order-empty">📭 Belum ada order</div>'
+    :orders.slice().reverse().map(function(o){
+      var cls=prodClass(o.pkg);
+      var nm=prodName(o.pkg);
+      var badge=o.status==='aktif'?'Aktif':o.status==='pending'?'Pending':'Expired';
+      var tgl=o.created?new Date(o.created).toLocaleDateString('id-ID'):'-';
+      return '<div class="prod-card '+cls+'"><div class="prod-card-top"><div class="prod-card-name">'+nm+'</div><div class="order-badge '+o.status+'">'+badge+'</div></div><div class="order-meta"><div class="order-meta-item">Paket: <strong>'+(o.pkg||'-')+'</strong></div><div class="order-meta-item">User: <strong>'+(o.user||'-')+'</strong></div><div class="order-meta-item">Harga: <strong>'+(o.price||'-')+'</strong></div><div class="order-meta-item">Tanggal: <strong>'+tgl+'</strong></div></div></div>';
+    }).join('');
 
-  // Chevron SVG
-  const chev = `<svg class="acc-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>`;
-  // Eye SVG
-  const eyeSvg = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/><line id="el" x1="3" y1="3" x2="21" y2="21"/></svg>`;
+  el.innerHTML=
+  '<div class="profile-hero">'+
+    '<div class="profile-avatar-wrap">'+
+      '<div class="profile-avatar"><svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div>'+
+      '<div class="profile-name">'+user.username+'</div>'+
+    '</div>'+
+    '<div class="stats-row">'+
+      '<div class="stat-box kuning"><div class="stat-num">'+pending+'</div><div class="stat-label">Transaksi</div><div class="stat-sub">Pending</div></div>'+
+      '<div class="stat-box hijau"><div class="stat-num">'+sukses+'</div><div class="stat-label">Transaksi</div><div class="stat-sub">Sukses</div></div>'+
+      '<div class="stat-box merah"><div class="stat-num">'+batal+'</div><div class="stat-label">Transaksi</div><div class="stat-sub">Batal</div></div>'+
+    '</div>'+
+  '</div>'+
+  '<div style="height:10px"></div>'+
 
-  // Render user list
-  const userListHTML = panelUsers.length === 0
-    ? `<div class="user-empty">Belum ada user panel</div>`
-    : panelUsers.map(u => `
-      <div class="user-item">
-        <div class="user-avatar-sm">${u.username.slice(0,2).toUpperCase()}</div>
-        <div class="user-info">
-          <div class="user-name-sm">${u.username}</div>
-          <div class="user-email-sm">${u.email}</div>
-        </div>
-      </div>`).join('');
+  // Accordion Ganti Password
+  '<div class="acc" id="acc-pw">'+
+    '<div class="acc-header" onclick="toggleAcc(\'acc-pw\')">'+
+      '<div class="acc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>'+
+      '<div style="flex:1"><div class="acc-title">Ganti Password</div><div class="acc-sub">Ubah password akun DzzStore</div></div>'+
+      CHEV+
+    '</div>'+
+    '<div class="acc-body"><div class="acc-content">'+
+      '<div class="pw-field"><label class="pw-label">Password Lama</label><div class="pw-wrap"><input class="pw-input" type="password" id="pw-old" placeholder="••••••••"><button class="pw-eye" type="button" onclick="togglePw(\'pw-old\',this)">'+EYE+'</button></div></div>'+
+      '<div class="pw-field"><label class="pw-label">Password Baru</label><div class="pw-wrap"><input class="pw-input" type="password" id="pw-new" placeholder="••••••••"><button class="pw-eye" type="button" onclick="togglePw(\'pw-new\',this)">'+EYE+'</button></div></div>'+
+      '<div class="pw-field"><label class="pw-label">Tulis Ulang Password Baru</label><div class="pw-wrap"><input class="pw-input" type="password" id="pw-new2" placeholder="••••••••"><button class="pw-eye" type="button" onclick="togglePw(\'pw-new2\',this)">'+EYE+'</button></div></div>'+
+      '<button class="pw-btn" onclick="gantiPassword()">Simpan Password</button>'+
+      '<div id="pw-msg" style="margin-top:8px;font-size:12px;text-align:center;display:none"></div>'+
+    '</div></div>'+
+  '</div>'+
 
-  // Render orders — 4 tipe produk dengan warna beda
-  function prodClass(pkg) {
-    if (!pkg) return 'ptero';
-    const p = pkg.toLowerCase();
-    if (p.includes('pulsa'))    return 'pulsa';
-    if (p.includes('data') || p.includes('paket')) return 'data';
-    if (p.includes('follow') || p.includes('suntik')) return 'follo';
-    return 'ptero';
-  }
-  function prodName(pkg) {
-    if (!pkg) return 'Panel Pterodactyl';
-    const p = pkg.toLowerCase();
-    if (p.includes('pulsa'))    return 'Pulsa & Operator';
-    if (p.includes('data') || p.includes('paket')) return 'Paket Internet';
-    if (p.includes('follow') || p.includes('suntik')) return 'Suntik Follower';
-    return 'Panel Pterodactyl';
-  }
+  // Accordion Kelola User
+  '<div class="acc" id="acc-user">'+
+    '<div class="acc-header" onclick="toggleAcc(\'acc-user\')">'+
+      '<div class="acc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>'+
+      '<div style="flex:1"><div class="acc-title">Kelola User</div><div class="acc-sub">'+panelUsers.length+' user panel terdaftar</div></div>'+
+      CHEV+
+    '</div>'+
+    '<div class="acc-body"><div class="acc-content">'+
+      '<a href="/buat-user" style="display:flex;align-items:center;gap:8px;padding:10px 0;color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;margin-bottom:4px;"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>Buat User Panel Baru</a>'+
+      userListHTML+
+    '</div></div>'+
+  '</div>'+
 
-  const orderListHTML = orders.length === 0
-    ? `<div class="order-empty">📭 Belum ada order</div>`
-    : orders.slice().reverse().map(o => `
-      <div class="prod-card ${prodClass(o.pkg)}">
-        <div class="prod-card-top">
-          <div class="prod-card-name">${prodName(o.pkg)}</div>
-          <div class="order-badge ${o.status}">${o.status==='aktif'?'Aktif':o.status==='pending'?'Pending':'Expired'}</div>
-        </div>
-        <div class="order-meta">
-          <div class="order-meta-item">Paket: <strong>${o.pkg||'-'}</strong></div>
-          <div class="order-meta-item">User: <strong>${o.user||'-'}</strong></div>
-          <div class="order-meta-item">Harga: <strong>${o.price||'-'}</strong></div>
-          <div class="order-meta-item">Tanggal: <strong>${new Date(o.created).toLocaleDateString('id-ID')}</strong></div>
-        </div>
-      </div>`).join('');
+  // Accordion Riwayat Order
+  '<div class="acc" id="acc-order">'+
+    '<div class="acc-header" onclick="toggleAcc(\'acc-order\')">'+
+      '<div class="acc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffb300" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>'+
+      '<div style="flex:1"><div class="acc-title">Riwayat Order</div><div class="acc-sub">'+orders.length+' order</div></div>'+
+      CHEV+
+    '</div>'+
+    '<div class="acc-body"><div class="acc-content">'+orderListHTML+'</div></div>'+
+  '</div>'+
 
-  el.innerHTML = `
-  <!-- Profile Hero - sama bg dengan accordion -->
-  <div class="profile-hero">
-    <div class="profile-avatar-wrap">
-      <div class="profile-avatar">
-        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-      </div>
-      <div class="profile-name">${user.username}</div>
-    </div>
-    <!-- Stats 3 kotak -->
-    <div class="stats-row">
-      <div class="stat-box kuning">
-        <div class="stat-num">${pending}</div>
-        <div class="stat-label">Transaksi</div>
-        <div class="stat-sub">Pending</div>
-      </div>
-      <div class="stat-box hijau">
-        <div class="stat-num">${sukses}</div>
-        <div class="stat-label">Transaksi</div>
-        <div class="stat-sub">Sukses</div>
-      </div>
-      <div class="stat-box merah">
-        <div class="stat-num">${batal}</div>
-        <div class="stat-label">Transaksi</div>
-        <div class="stat-sub">Batal</div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Accordion: Ganti Password -->
-  <div style="height:10px"></div>
-  <div class="acc" id="acc-pw">
-    <div class="acc-header" onclick="toggleAcc('acc-pw')">
-      <div class="acc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--blue)" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
-      <div style="flex:1"><div class="acc-title">Ganti Password</div><div class="acc-sub">Ubah password akun DzzStore</div></div>
-      ${chev}
-    </div>
-    <div class="acc-body">
-      <div class="acc-content">
-        <div class="pw-field">
-          <label class="pw-label">Password Lama</label>
-          <div class="pw-wrap"><input class="pw-input" type="password" id="pw-old" placeholder="••••••••"><button class="pw-eye" type="button" onclick="togglePw('pw-old',this)">${eyeSvg}</button></div>
-        </div>
-        <div class="pw-field">
-          <label class="pw-label">Password Baru</label>
-          <div class="pw-wrap"><input class="pw-input" type="password" id="pw-new" placeholder="••••••••"><button class="pw-eye" type="button" onclick="togglePw('pw-new',this)">${eyeSvg}</button></div>
-        </div>
-        <div class="pw-field">
-          <label class="pw-label">Tulis Ulang Password Baru</label>
-          <div class="pw-wrap"><input class="pw-input" type="password" id="pw-new2" placeholder="••••••••"><button class="pw-eye" type="button" onclick="togglePw('pw-new2',this)">${eyeSvg}</button></div>
-        </div>
-        <button class="pw-btn" onclick="gantiPassword()">Simpan Password</button>
-        <div id="pw-msg" style="margin-top:8px;font-size:12px;text-align:center;display:none"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- Accordion: Kelola User -->
-  <div class="acc" id="acc-user">
-    <div class="acc-header" onclick="toggleAcc('acc-user')">
-      <div class="acc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></div>
-      <div style="flex:1"><div class="acc-title">Kelola User</div><div class="acc-sub">${panelUsers.length} user panel terdaftar</div></div>
-      ${chev}
-    </div>
-    <div class="acc-body">
-      <div class="acc-content">
-        <a href="/buat-user" style="display:flex;align-items:center;gap:8px;padding:10px 0;color:var(--accent);font-size:13px;font-weight:700;text-decoration:none;margin-bottom:4px;">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-          Buat User Panel Baru
-        </a>
-        ${userListHTML}
-      </div>
-    </div>
-  </div>
-
-  <!-- Accordion: Riwayat Order -->
-  <div class="acc" id="acc-order">
-    <div class="acc-header" onclick="toggleAcc('acc-order')">
-      <div class="acc-icon"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#ffb300" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-      <div style="flex:1"><div class="acc-title">Riwayat Order</div><div class="acc-sub">${orders.length} order</div></div>
-      ${chev}
-    </div>
-    <div class="acc-body">
-      <div class="acc-content">${orderListHTML}</div>
-    </div>
-  </div>
-
-  <!-- Logout -->
-  <button class="logout-btn" onclick="doLogout()">🚪 Keluar dari Akun</button>
-  `;
+  '<button class="logout-btn" onclick="doLogout()">🚪 Keluar dari Akun</button>';
 }
 
-function gantiPassword() {
-  const oldPw  = document.getElementById('pw-old').value;
-  const newPw  = document.getElementById('pw-new').value;
-  const newPw2 = document.getElementById('pw-new2').value;
-  const msg    = document.getElementById('pw-msg');
-  msg.style.display = 'block';
-  if (!oldPw || !newPw || !newPw2) { msg.style.color='#ff6b6b'; msg.textContent='Semua field wajib diisi'; return; }
-  if (newPw.length < 8) { msg.style.color='#ff6b6b'; msg.textContent='Password baru minimal 8 karakter'; return; }
-  if (newPw !== newPw2) { msg.style.color='#ff6b6b'; msg.textContent='Password baru tidak cocok'; return; }
-  // TODO: panggil Supabase updateUser
-  msg.style.color='#00c864'; msg.textContent='✓ Password berhasil diubah (segera hadir koneksi API)';
-}
-
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', function() {
-    const user = getUser();
-    if (user) { document.getElementById('drop-guest').style.display='none'; document.getElementById('drop-user').style.display='block'; document.getElementById('drop-uname').textContent=user.username; }
+// Init topbar dan render
+(function(){
+  var user=getUser();
+  if(user){
+    var dg=document.getElementById('drop-guest');
+    var du=document.getElementById('drop-user');
+    var dn=document.getElementById('drop-uname');
+    if(dg) dg.style.display='none';
+    if(du) du.style.display='block';
+    if(dn) dn.textContent=user.username;
+  }
+  if(document.readyState==='loading'){
+    document.addEventListener('DOMContentLoaded',renderContent);
+  } else {
     renderContent();
-  });
-} else {
-  const user = getUser();
-  if (user) { document.getElementById('drop-guest').style.display='none'; document.getElementById('drop-user').style.display='block'; document.getElementById('drop-uname').textContent=user.username; }
-  renderContent();
-}
+  }
+})();
 </script>
 </body>
 </html>
