@@ -77,7 +77,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
   display:flex;flex-direction:column;align-items:center;justify-content:center;
   min-height:50vh;text-align:center;padding:40px 20px;
 }
-.guest-icon{font-size:56px;margin-bottom:16px;opacity:.4;}
+.guest-icon{margin-bottom:16px;display:flex;justify-content:center;}
 .guest-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text2);margin-bottom:6px;}
 .guest-sub{font-size:13px;color:var(--text2);opacity:.6;margin-bottom:28px;}
 .guest-btns{display:flex;gap:12px;}
@@ -192,7 +192,9 @@ function renderContent() {
   if (!user) {
     el.innerHTML = `
     <div class="guest-state">
-      <div class="guest-icon">🧾</div>
+      <div class="guest-icon">
+        <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:.35;color:var(--text2)"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/></svg>
+      </div>
       <div class="guest-title">Anda belum login</div>
       <div class="guest-sub">Mohon login untuk melihat riwayat transaksi kamu</div>
       <div class="guest-btns">
