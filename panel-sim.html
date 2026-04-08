@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Panel Saya – DzzStore</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#050a14;--bg2:#0a1628;--bg3:#0f1f3d;--blue:#1e90ff;--blue2:#0d6efd;--blue-glow:#1e90ff55;--blue-light:#60b4ff;--accent:#00d4ff;--text:#e8f0ff;--text2:#8ba8d4;--border:#1a3258;--nav-h:70px;}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:calc(var(--nav-h)+16px);}
+.bg-deco{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden;}
+.bg-deco span{position:absolute;border:1px solid rgba(30,144,255,.18);border-radius:6px;background:rgba(30,144,255,.03);}
+.bg-deco span:nth-child(1){width:40px;height:40px;top:8%;left:6%;transform:rotate(15deg);}
+.bg-deco span:nth-child(2){width:22px;height:22px;top:18%;right:10%;animation:bgf1 6s ease-in-out infinite;}
+.bg-deco span:nth-child(3){width:60px;height:60px;top:35%;left:3%;animation:bgf2 8s ease-in-out infinite;}
+.bg-deco span:nth-child(4){width:16px;height:16px;top:50%;right:7%;animation:bgf1 5s ease-in-out infinite 1s;}
+.bg-deco span:nth-child(5){width:32px;height:32px;top:65%;left:12%;animation:bgf2 7s ease-in-out infinite .5s;}
+.bg-deco span:nth-child(6){width:48px;height:48px;top:78%;right:5%;animation:bgf1 9s ease-in-out infinite 2s;}
+.bg-deco span:nth-child(7){width:18px;height:18px;top:88%;left:40%;animation:bgf2 6s ease-in-out infinite 1.5s;}
+.bg-deco span:nth-child(8){width:28px;height:28px;top:12%;left:55%;animation:bgf1 7s ease-in-out infinite 3s;}
+@keyframes bgf1{0%,100%{transform:rotate(15deg) translateY(0);}50%{transform:rotate(15deg) translateY(-10px);}}
+@keyframes bgf2{0%,100%{transform:rotate(8deg) translateY(0);}50%{transform:rotate(8deg) translateY(8px);}}
+
+.g-topbar{position:sticky;top:0;z-index:400;padding:10px 16px;background:var(--bg);}
+.g-topbar-inner{background:var(--bg2);border:1px solid var(--border);border-radius:18px;height:52px;display:flex;align-items:center;padding:0 14px;gap:12px;box-shadow:0 4px 24px rgba(0,0,0,.4);}
+.back-btn{cursor:pointer;padding:6px;background:none;border:none;color:var(--text2);display:flex;align-items:center;}
+.g-topbar-title{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;color:var(--text);flex:1;}
+
+.page-wrap{max-width:680px;margin:0 auto;padding:0 20px 40px;position:relative;z-index:1;}
+
+/* GUEST */
+.guest-state{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:55vh;text-align:center;padding:40px 20px;}
+.guest-icon{margin-bottom:16px;}
+.guest-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;color:var(--text2);margin-bottom:6px;}
+.guest-sub{font-size:13px;color:var(--text2);opacity:.6;margin-bottom:28px;}
+.guest-btns{display:flex;gap:12px;}
+.guest-btn-login{padding:12px 28px;background:var(--blue);border:2px solid #000;border-radius:12px;color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;text-decoration:none;}
+.guest-btn-register{padding:12px 28px;background:#000;border:2px solid var(--blue);border-radius:12px;color:var(--blue);font-family:'Outfit',sans-serif;font-weight:800;font-size:14px;text-decoration:none;}
+
+/* STATS */
+.panel-stats{display:flex;gap:10px;margin:16px 0;}
+.ps-box{flex:1;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px 10px;text-align:center;}
+.ps-num{font-family:'Outfit',sans-serif;font-size:22px;font-weight:800;color:var(--accent);}
+.ps-lbl{font-size:9px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:2px;}
+
+/* TABS */
+.panel-tabs{display:flex;gap:8px;margin-bottom:16px;overflow-x:auto;padding-bottom:4px;}
+.panel-tab{padding:8px 16px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;border:1.5px solid var(--border);color:var(--text2);white-space:nowrap;transition:all .2s;background:var(--bg2);}
+.panel-tab.active{background:var(--blue);border-color:var(--blue);color:#000;}
+
+/* SERVER CARDS */
+.server-card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:12px;transition:border-color .2s;}
+.server-card:hover{border-color:rgba(30,144,255,.3);}
+.sc-top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:12px;}
+.sc-name{font-family:'Outfit',sans-serif;font-size:15px;font-weight:800;}
+.sc-pkg{font-size:11px;color:var(--text2);margin-top:2px;}
+.sc-badge{font-size:10px;font-weight:700;padding:4px 10px;border-radius:20px;flex-shrink:0;}
+.sc-badge.aktif{background:rgba(0,200,100,.12);color:#00c864;border:1px solid rgba(0,200,100,.3);}
+.sc-badge.suspend{background:rgba(255,80,80,.1);color:#ff5050;border:1px solid rgba(255,80,80,.25);}
+.sc-badge.expired{background:rgba(150,150,150,.1);color:var(--text2);border:1px solid var(--border);}
+.sc-specs{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:14px;}
+.sc-spec{background:var(--bg3);border-radius:10px;padding:8px;text-align:center;}
+.sc-spec-val{font-family:'Outfit',sans-serif;font-size:13px;font-weight:800;color:var(--text);}
+.sc-spec-lbl{font-size:9px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.3px;margin-top:2px;}
+.sc-expire{font-size:11px;color:var(--text2);margin-bottom:12px;display:flex;align-items:center;gap:5px;}
+.sc-expire.soon{color:#ffb300;}
+.sc-expire.expired-text{color:#ff5050;}
+.sc-actions{display:flex;gap:8px;}
+.sc-btn{flex:1;padding:10px 0;border-radius:10px;font-size:12px;font-weight:700;font-family:'Outfit',sans-serif;cursor:pointer;border:1.5px solid;transition:all .2s;text-align:center;}
+.sc-btn.primary{background:linear-gradient(135deg,var(--blue),var(--accent));border-color:transparent;color:#000;}
+.sc-btn.outline{background:transparent;border-color:var(--border);color:var(--text2);}
+.sc-btn.outline:hover{border-color:var(--blue);color:var(--text);}
+.sc-btn.danger{background:transparent;border-color:rgba(255,80,80,.3);color:#ff6b6b;}
+.sc-btn.danger:hover{background:rgba(255,80,80,.08);}
+
+/* ORDER CARDS */
+.order-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:14px;margin-bottom:10px;}
+.oc-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.oc-name{font-family:'Outfit',sans-serif;font-size:14px;font-weight:800;}
+.oc-meta{display:flex;gap:12px;flex-wrap:wrap;}
+.oc-item{font-size:11px;color:var(--text2);}
+.oc-item strong{color:var(--text);}
+
+/* EMPTY */
+.empty-state{text-align:center;padding:40px 20px;color:var(--text2);opacity:.6;}
+.empty-icon{margin-bottom:12px;}
+.empty-text{font-size:13px;}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,.75);backdrop-filter:blur(8px);display:none;align-items:flex-end;justify-content:center;}
+.modal-overlay.open{display:flex;}
+.modal-card{background:var(--bg2);border:1px solid var(--border);border-radius:24px 24px 0 0;width:100%;max-width:520px;padding:24px 20px 32px;max-height:80vh;overflow-y:auto;animation:modalUp .3s cubic-bezier(.34,1.56,.64,1);}
+@keyframes modalUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.modal-title{font-family:'Outfit',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px;}
+.modal-sub{font-size:12px;color:var(--text2);margin-bottom:20px;}
+.modal-close{position:absolute;top:16px;right:16px;background:var(--bg3);border:1px solid var(--border);border-radius:50%;width:32px;height:32px;color:var(--text2);cursor:pointer;font-size:18px;display:flex;align-items:center;justify-content:center;}
+.modal-card{position:relative;}
+.m-field{margin-bottom:14px;}
+.m-label{font-size:10px;font-weight:800;color:var(--accent);letter-spacing:1px;text-transform:uppercase;display:block;margin-bottom:6px;}
+.m-input{width:100%;padding:12px 14px;background:var(--bg3);border:1.5px solid var(--border);border-radius:12px;color:var(--text);font-size:14px;outline:none;transition:border-color .2s;font-family:'DM Sans',sans-serif;}
+.m-input:focus{border-color:var(--blue);}
+.m-btn{width:100%;padding:14px;background:linear-gradient(135deg,var(--blue),var(--accent));border:none;border-radius:12px;color:#000;font-family:'Outfit',sans-serif;font-weight:800;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
+.m-btn:hover{transform:translateY(-1px);}
+.m-btn.danger{background:rgba(255,80,80,.1);color:#ff6b6b;border:1px solid rgba(255,80,80,.3);}
+.m-warn{background:rgba(255,180,0,.08);border:1px solid rgba(255,180,0,.2);border-radius:10px;padding:10px 12px;font-size:12px;color:#ffb300;margin-bottom:14px;line-height:1.6;}
+
+/* BOTTOM NAV */
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;height:var(--nav-h);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:center;z-index:800;backdrop-filter:blur(10px);padding:0 4px;}
+.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;padding:8px 4px;position:relative;}
+.nav-item .nav-icon{width:24px;height:24px;display:flex;align-items:center;justify-content:center;color:var(--text2);}
+.nav-item .nav-label{font-size:9px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.5px;}
+.nav-item.active .nav-icon{color:var(--blue);}
+.nav-item.active .nav-label{color:var(--blue-light);}
+.nav-item.active::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:28px;height:2.5px;background:linear-gradient(90deg,var(--blue),var(--accent));border-radius:0 0 4px 4px;}
+.nav-fab{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;position:relative;}
+.fab-circle{width:52px;height:52px;background:linear-gradient(135deg,var(--blue2),var(--accent));border-radius:50%;display:flex;align-items:center;justify-content:center;box-shadow:0 0 20px var(--blue-glow);margin-top:-22px;border:3px solid var(--bg2);}
+.nav-fab .nav-label{font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;margin-top:-2px;color:var(--blue-light);}
+::-webkit-scrollbar{width:4px;}::-webkit-scrollbar-track{background:transparent;}::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px;}
+
+.toast{position:fixed;bottom:calc(var(--nav-h) + 12px);left:50%;transform:translateX(-50%);background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:10px 20px;font-size:13px;font-weight:700;z-index:2000;opacity:0;transition:opacity .3s;pointer-events:none;white-space:nowrap;box-shadow:0 8px 24px rgba(0,0,0,.4);}
+.toast.show{opacity:1;}
+.toast.success{border-color:rgba(0,200,100,.3);color:#00c864;}
+.toast.warning{border-color:rgba(255,180,0,.3);color:#ffb300;}
+</style>
+</head>
+<body>
+<div class="bg-deco"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+<div class="toast" id="toast"></div>
+
+<div class="g-topbar">
+  <div class="g-topbar-inner">
+    <button class="back-btn" onclick="history.back()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg></button>
+    <span class="g-topbar-title">Panel Saya</span>
+  </div>
+</div>
+
+<div class="page-wrap" id="content"></div>
+
+<!-- MODAL PERPANJANG -->
+<div class="modal-overlay" id="modal-perpanjang">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('modal-perpanjang')">✕</button>
+    <div class="modal-title">Perpanjang Server</div>
+    <div class="modal-sub" id="mp-sub">Pilih durasi perpanjangan</div>
+    <div class="m-field">
+      <label class="m-label">Durasi</label>
+      <select class="m-input" id="mp-durasi">
+        <option value="15">15 Hari</option>
+        <option value="30">30 Hari</option>
+      </select>
+    </div>
+    <div class="m-warn">⚠️ Perpanjang dilakukan manual — setelah klik konfirmasi, admin akan memproses dalam 1×24 jam.</div>
+    <button class="m-btn" onclick="konfirmasiPerpanjang()">Konfirmasi Perpanjang</button>
+  </div>
+</div>
+
+<!-- MODAL SUSPEND -->
+<div class="modal-overlay" id="modal-suspend">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('modal-suspend')">✕</button>
+    <div class="modal-title">Suspend Server</div>
+    <div class="modal-sub" id="ms-sub">Server akan dinonaktifkan sementara</div>
+    <div class="m-warn">⚠️ Server yang disuspend tidak dapat diakses. Data tidak akan hilang.</div>
+    <button class="m-btn danger" onclick="konfirmasiSuspend()">Ya, Suspend Server</button>
+    <button class="m-btn" style="margin-top:8px;background:var(--bg3);color:var(--text2)" onclick="closeModal('modal-suspend')">Batal</button>
+  </div>
+</div>
+
+<!-- MODAL DETAIL -->
+<div class="modal-overlay" id="modal-detail">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal('modal-detail')">✕</button>
+    <div class="modal-title" id="md-title">Detail Server</div>
+    <div id="md-content" style="margin-top:12px"></div>
+  </div>
+</div>
+
+<nav class="bottom-nav">
+  <div class="nav-item" onclick="location.href='/'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div><span class="nav-label">Home</span></div>
+  <div class="nav-item" onclick="location.href='/riwayat'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div><span class="nav-label">Riwayat</span></div>
+  <div class="nav-fab" onclick="location.href='/produk'"><div class="fab-circle"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg></div><span class="nav-label">Produk</span></div>
+  <div class="nav-item" onclick="location.href='/kontak'"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.61 3.35 2 2 0 0 1 3.6 1h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L7.91 8.6A16 16 0 0 0 15.4 16.09l.97-.97a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><span class="nav-label">Kontak</span></div>
+  <div class="nav-item active"><div class="nav-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></div><span class="nav-label">Profil</span></div>
+</nav>
+
+<script>
+function getUser(){try{return JSON.parse(localStorage.getItem('dzz_user'));}catch{return null;}}
+
+// ── DATA HELPERS ──
+function getOrders(uid){try{return JSON.parse(localStorage.getItem('dzz_orders_'+uid)||'[]');}catch{return[];}}
+function saveOrders(uid,arr){localStorage.setItem('dzz_orders_'+uid,JSON.stringify(arr));}
+
+function toast(msg,type='success'){
+  var t=document.getElementById('toast');
+  t.textContent=msg;t.className='toast show '+type;
+  setTimeout(function(){t.className='toast';},2500);
+}
+
+function closeModal(id){document.getElementById(id).classList.remove('open');}
+
+// ── CURRENT SERVER for modal ──
+var currentIdx=-1;
+
+// ── PERPANJANG ──
+function openPerpanjang(idx){
+  currentIdx=idx;
+  var user=getUser();
+  var orders=getOrders(user.id);
+  var o=orders[idx];
+  document.getElementById('mp-sub').textContent='Server: '+o.serverName+' · '+o.pkg;
+  document.getElementById('modal-perpanjang').classList.add('open');
+}
+function konfirmasiPerpanjang(){
+  var user=getUser();
+  var orders=getOrders(user.id);
+  var days=parseInt(document.getElementById('mp-durasi').value);
+  var o=orders[currentIdx];
+  // Simulasi — tambah hari dari expiry sekarang
+  var oldExp=o.expiresAt?new Date(o.expiresAt):new Date();
+  if(oldExp<new Date()) oldExp=new Date();
+  oldExp.setDate(oldExp.getDate()+days);
+  orders[currentIdx].expiresAt=oldExp.toISOString();
+  orders[currentIdx].status='aktif';
+  saveOrders(user.id,orders);
+  closeModal('modal-perpanjang');
+  toast('✓ Perpanjang berhasil! +'+days+' hari');
+  renderContent();
+}
+
+// ── SUSPEND / AKTIFKAN ──
+function openSuspend(idx){
+  currentIdx=idx;
+  var user=getUser();
+  var orders=getOrders(user.id);
+  var o=orders[idx];
+  document.getElementById('ms-sub').textContent='Server: '+o.serverName;
+  document.getElementById('modal-suspend').classList.add('open');
+}
+function konfirmasiSuspend(){
+  var user=getUser();
+  var orders=getOrders(user.id);
+  var o=orders[currentIdx];
+  var isSuspended=o.status==='suspend';
+  orders[currentIdx].status=isSuspended?'aktif':'suspend';
+  saveOrders(user.id,orders);
+  closeModal('modal-suspend');
+  toast(isSuspended?'✓ Server diaktifkan kembali':'Server disuspend','warning');
+  renderContent();
+}
+
+// ── DETAIL ──
+function openDetail(idx){
+  var user=getUser();
+  var orders=getOrders(user.id);
+  var o=orders[idx];
+  document.getElementById('md-title').textContent=o.serverName||o.pkg;
+  var exp=o.expiresAt?new Date(o.expiresAt).toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'}):'Tidak diketahui';
+  document.getElementById('md-content').innerHTML=
+    '<div style="display:flex;flex-direction:column;gap:10px">'+
+    row('Paket',o.pkg)+row('RAM',o.ram||'-')+row('CPU',o.cpu||'-')+
+    row('Disk',o.disk||'-')+row('Username',o.user||'-')+
+    row('Panel',o.panelUrl||'https://panel.nyzz.my.id')+
+    row('Expired',exp)+row('Status',o.status)+
+    '</div>';
+  document.getElementById('modal-detail').classList.add('open');
+}
+function row(k,v){
+  return '<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">'+
+    '<span style="font-size:12px;color:var(--text2);font-weight:600;text-transform:uppercase;letter-spacing:.5px">'+k+'</span>'+
+    '<span style="font-family:Outfit,sans-serif;font-size:13px;font-weight:800;color:var(--text)">'+v+'</span></div>';
+}
+
+// ── TABS ──
+var currentTab='server';
+function switchTab(t){
+  currentTab=t;
+  document.querySelectorAll('.panel-tab').forEach(function(el){
+    el.classList.toggle('active',el.dataset.tab===t);
+  });
+  renderTab();
+}
+
+function renderTab(){
+  var user=getUser();
+  var orders=getOrders(user.id);
+  var wrap=document.getElementById('tab-content');
+  if(!wrap)return;
+
+  if(currentTab==='server'){
+    var servers=orders.filter(function(o){return o.pkg&&(o.pkg.toLowerCase().includes('gb')||o.pkg.toLowerCase().includes('panel')||o.pkg.toLowerCase().includes('unlimited'));});
+    if(servers.length===0){
+      wrap.innerHTML='<div class="empty-state"><div class="empty-icon"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:.3"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div><div class="empty-text">Belum ada server panel</div></div>';
+      return;
+    }
+    wrap.innerHTML=servers.map(function(o,i){
+      var realIdx=orders.indexOf(o);
+      var exp=o.expiresAt?new Date(o.expiresAt):null;
+      var now=new Date();
+      var diffDays=exp?Math.ceil((exp-now)/(1000*60*60*24)):null;
+      var expStr=exp?exp.toLocaleDateString('id-ID',{day:'numeric',month:'short',year:'numeric'}):'?';
+      var expClass=diffDays!==null?(diffDays<3?'expired-text':diffDays<7?'soon':''):'';
+      var status=o.status||'aktif';
+      var isSuspended=status==='suspend';
+      return '<div class="server-card">'+
+        '<div class="sc-top"><div><div class="sc-name">'+(o.serverName||o.user+'-server')+'</div><div class="sc-pkg">'+o.pkg+'</div></div>'+
+        '<div class="sc-badge '+status+'">'+(status==='aktif'?'Aktif':status==='suspend'?'Suspend':'Expired')+'</div></div>'+
+        '<div class="sc-specs">'+
+          '<div class="sc-spec"><div class="sc-spec-val">'+(o.ram||'1 GB')+'</div><div class="sc-spec-lbl">RAM</div></div>'+
+          '<div class="sc-spec"><div class="sc-spec-val">'+(o.cpu||'100%')+'</div><div class="sc-spec-lbl">CPU</div></div>'+
+          '<div class="sc-spec"><div class="sc-spec-val">'+(o.disk||'1 GB')+'</div><div class="sc-spec-lbl">Disk</div></div>'+
+          '<div class="sc-spec"><div class="sc-spec-val">'+(diffDays!==null?(diffDays<0?'Expired':diffDays+'h'):'?')+'</div><div class="sc-spec-lbl">Sisa</div></div>'+
+        '</div>'+
+        '<div class="sc-expire '+expClass+'"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>Expired: '+expStr+'</div>'+
+        '<div class="sc-actions">'+
+          '<div class="sc-btn primary" onclick="openDetail('+realIdx+')">Detail</div>'+
+          '<div class="sc-btn outline" onclick="openPerpanjang('+realIdx+')">Perpanjang</div>'+
+          '<div class="sc-btn danger" onclick="openSuspend('+realIdx+')">'+(isSuspended?'Aktifkan':'Suspend')+'</div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  } else {
+    // Riwayat semua order
+    if(orders.length===0){
+      wrap.innerHTML='<div class="empty-state"><div class="empty-text">Belum ada riwayat order</div></div>';
+      return;
+    }
+    wrap.innerHTML=orders.slice().reverse().map(function(o,i){
+      var realIdx=orders.length-1-i;
+      var tgl=o.created?new Date(o.created).toLocaleDateString('id-ID'):'?';
+      var status=o.status||'aktif';
+      return '<div class="order-card">'+
+        '<div class="oc-top"><div class="oc-name">'+o.pkg+'</div>'+
+        '<div class="sc-badge '+status+'">'+(status==='aktif'?'Aktif':status==='suspend'?'Suspend':status==='pending'?'Pending':'Expired')+'</div></div>'+
+        '<div class="oc-meta">'+
+          '<div class="oc-item">User: <strong>'+(o.user||'-')+'</strong></div>'+
+          '<div class="oc-item">Harga: <strong>'+(o.price||'-')+'</strong></div>'+
+          '<div class="oc-item">Tanggal: <strong>'+tgl+'</strong></div>'+
+        '</div>'+
+      '</div>';
+    }).join('');
+  }
+}
+
+function renderContent(){
+  var el=document.getElementById('content');
+  if(!el)return;
+  var user=getUser();
+  if(!user){
+    el.innerHTML='<div class="guest-state">'+
+      '<div class="guest-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.2" style="opacity:.3;color:var(--text2)"><rect x="2" y="2" width="20" height="8" rx="2"/><rect x="2" y="14" width="20" height="8" rx="2"/><line x1="6" y1="6" x2="6.01" y2="6"/><line x1="6" y1="18" x2="6.01" y2="18"/></svg></div>'+
+      '<div class="guest-title">Anda belum login</div>'+
+      '<div class="guest-sub">Login untuk melihat panel server kamu</div>'+
+      '<div class="guest-btns"><a href="/register" class="guest-btn-register">Register</a><a href="/login" class="guest-btn-login">Login</a></div>'+
+    '</div>';
+    return;
+  }
+  var orders=getOrders(user.id);
+  var servers=orders.filter(function(o){return o.pkg&&(o.pkg.toLowerCase().includes('gb')||o.pkg.toLowerCase().includes('unlimited'));});
+  var aktif=servers.filter(function(o){return o.status==='aktif';}).length;
+  var suspend=servers.filter(function(o){return o.status==='suspend';}).length;
+
+  el.innerHTML=
+    '<div class="panel-stats">'+
+      '<div class="ps-box"><div class="ps-num">'+servers.length+'</div><div class="ps-lbl">Total Server</div></div>'+
+      '<div class="ps-box"><div class="ps-num" style="color:#00c864">'+aktif+'</div><div class="ps-lbl">Aktif</div></div>'+
+      '<div class="ps-box"><div class="ps-num" style="color:#ff5050">'+suspend+'</div><div class="ps-lbl">Suspend</div></div>'+
+    '</div>'+
+    '<div class="panel-tabs">'+
+      '<div class="panel-tab active" data-tab="server" onclick="switchTab(\'server\')">🖥️ Server Saya</div>'+
+      '<div class="panel-tab" data-tab="riwayat" onclick="switchTab(\'riwayat\')">🧾 Riwayat Order</div>'+
+    '</div>'+
+    '<div id="tab-content"></div>';
+
+  renderTab();
+}
+
+// Close modal on overlay click
+document.querySelectorAll('.modal-overlay').forEach(function(el){
+  el.addEventListener('click',function(e){if(e.target===this)this.classList.remove('open');});
+});
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded',renderContent);
+}else{renderContent();}
+</script>
+</body>
+</html>
